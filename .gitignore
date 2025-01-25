@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -11,14 +11,14 @@
 !.yarn/versions
 
 # testing
-/coverage
+coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build
 
 # misc
 .DS_Store
@@ -39,3 +39,52 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+############################
+
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# Virtual environments
+venv/
+env/
+*.egg-info/
+pip-wheel-metadata/
+
+# Logs
+*.log
+*.pot
+*.pyc
+
+# Database
+*.sqlite3
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+.tox/
+
+# Miscellaneous
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# OS/Editor-specific files
+Thumbs.db
+*.swp
+*.swo
+
+# IDE-specific settings
+.vscode/
+.idea/
+*.iml
