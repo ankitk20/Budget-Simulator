@@ -1,0 +1,61 @@
+{
+    "2025": {
+        "income": {
+            "salary": 60000,
+            "bonus": 5000
+        },
+        "expense": {
+            "rent": 18000,
+            "food": 6000,
+            "utilities": 3000
+        },
+        "debt": {
+            "homeLoan": 12000,
+            "carLoan": 5000
+        },
+        "inv": {
+            "stocks": 15000,
+            "crypto": 5000
+        },
+        "summary": {
+            "eatenInv": 2000,
+            "ntWrth": 150000,
+            "inflAdjNtWrth": 140000
+        },
+        "ratio": {
+            "highRiskEat": 0.3,
+            "moderateRiskEat": 0.4,
+            "lowRiskEat": 0.2
+        }
+    },
+    "2026": {
+        "income": {
+            "salary": 65000,
+            "bonus": 6000
+        },
+        "expense": {
+            "rent": 19000,
+            "food": 6500,
+            "utilities": 3200
+        },
+        "debt": {
+            "homeLoan": 12000,
+            "carLoan": 5000
+        },
+        "inv": {
+            "stocks": 20000,
+            "crypto": 6000
+        },
+        "summary": {
+            "eatenInv": 2500,
+            "ntWrth": 160000,
+            "inflAdjNtWrth": 145000
+        },
+        "ratio": {
+            "highRiskEat": 0.25,
+            "moderateRiskEat": 0.45,
+            "lowRiskEat": 0.2,
+            "savingsEat": 0.1
+        }
+    }
+}
