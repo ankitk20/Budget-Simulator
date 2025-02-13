@@ -1,0 +1,58 @@
+{
+    "india": {
+        "currency": "INR",
+        "symbol": "₹",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0
+    },
+    "japan": {
+        "currency": "Yen",
+        "symbol": "¥",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0
+    },
+    "usa": {
+        "currency": "USD",
+        "symbol": "$",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0
+    },
+    "uk": {
+        "currency": "Pound",
+        "symbol": "£",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0
+    }
+}

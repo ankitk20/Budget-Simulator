@@ -1,0 +1,88 @@
+{
+    "simYr": 30,
+    "inflRate": 7,
+    "ltcgTaxRate": 12.5,
+    "stcgTaxRate": 20.0,
+    "country": "USA",
+    "currency": "USD",
+    "income": {
+        "active": {
+            "monthlyAmt": 5000,
+            "stYr": 2025,
+            "numOfYr": 20,
+            "rateOfInc": 5.0
+        },
+        "passive": {
+            "monthlyAmt": 1000,
+            "stYr": 2030,
+            "numOfYr": 15,
+            "rateOfInc": 10.0
+        }
+    },
+    "expense": {
+        "housing": {
+            "monthlyAmt": 2000,
+            "stYr": 2025,
+            "numOfYr": 30,
+            "rateOfInc": 7
+        },
+        "transportation": {
+            "monthlyAmt": 1500,
+            "stYr": 2026,
+            "numOfYr": 25,
+            "rateOfInc": 7
+        },
+        "food": {
+            "monthlyAmt": 1000,
+            "stYr": 2027,
+            "numOfYr": 20,
+            "rateOfInc": 7
+        }
+    },
+    "debt": {
+        "homeLoan": {
+            "totalAmt": 300000,
+            "downPay": 60000,
+            "stYr": 2025,
+            "numOfYr": 30,
+            "rateOfInt": 9.0
+        },
+        "carLoan": {
+            "totalAmt": 50000,
+            "downPay": 10000,
+            "stYr": 2025,
+            "numOfYr": 5,
+            "rateOfInt": 11.0
+        },
+        "studentLoan": {
+            "totalAmt": 80000,
+            "downPay": 20000,
+            "stYr": 2026,
+            "numOfYr": 10,
+            "rateOfInt": 5.0
+        }
+    },
+    "inv": {
+        "highRisk": {
+            "currAmt": 50000,
+            "monthlyAmt": 2000,
+            "stYr": 2025,
+            "numOfYr": 30,
+            "rateOfInt": 12.0
+        },
+        "moderateRisk": {
+            "currAmt": 30000,
+            "monthlyAmt": 1500,
+            "stYr": 2025,
+            "numOfYr": 30,
+            "rateOfInt": 9.0
+        },
+        "lowRisk": {
+            "currAmt": 20000,
+            "monthlyAmt": 1000,
+            "stYr": 2025,
+            "numOfYr": 30,
+            "rateOfInt": 7.0
+        }
+    }
+}
