@@ -33,7 +33,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-async def simulate_years(data: Dict[str, Any]):
+async def simulate_years(data: SimulationInput):
     sim_years = data["simYr"]
     start_year = 2025
     inflRate = data["inflRate"]
@@ -215,10 +215,11 @@ async def simulate_financials(request: Request, payload: SimulationInput):
     try:
         parsed_payload = SimulationInput.model_validate(payload)  # Validate using Pydantic
         parsed_payload = parsed_payload.model_dump(by_alias=True)  # Convert to dict with camelCase keys
+    
         # Call your processing function
         async def result_generator():
             async for result in simulate_years(parsed_payload):
-                yield f"{result}"
+                yield f"{result}\n"
         return StreamingResponse(result_generator(), media_type="application/json")
 
     except ValidationError as e:
