@@ -33,9 +33,6 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-async def get_eater_ratios (bal, inv_type, inv_data):
-    return ()
-
 async def simulate_years(data: Dict[str, Any]):
     sim_years = data["simYr"]
     start_year = 2025
