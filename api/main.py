@@ -164,7 +164,6 @@ async def simulate_years(data: Dict[str, Any]):
                 bal = 0
             else:
                 low_ratio = round (yearly_data["inv"]["lowRisk"] / init_bal, 2)
-                print(yearly_data["inv"]["lowRisk"], init_bal, bal)
                 bal += yearly_data["inv"]["lowRisk"]
                 yearly_data["inv"]["lowRisk"] = 0
 
