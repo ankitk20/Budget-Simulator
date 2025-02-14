@@ -290,7 +290,7 @@ export default function BudgetSimulation() {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id} className="border border-gray-300 p-2 min-w-[150px] w-[200px] text-left">{flexRender(header.column.columnDef.header, header.getContext())}</th>
+                <th key={header.id} className="border border-gray-300 p-2 min-w-[100px] w-[200px] text-left">{flexRender(header.column.columnDef.header, header.getContext())}</th>
               ))}
             </tr>
           ))}
