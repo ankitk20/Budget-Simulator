@@ -264,18 +264,6 @@ export default function BudgetSimulation() {
     setLoading(false);
   };
 
-  // const columns = [
-  //   { accessorKey: "category", header: "Category" },
-  //   { accessorKey: "type", header: "Type" },
-  //   { accessorKey: "currentAmount", header: "Current Value" },
-  //   { accessorKey: "monthlyAmount", header: "Monthly Value" },
-  //   { accessorKey: "startYear", header: "Starts From" },
-  //   { accessorKey: "numOfYears", header: "Number of Years" },
-  //   { accessorKey: "rateOfInterest", header: "Rate of Interest" },
-  //   { accessorKey: "rateOfIncrement", header: "Rate of Increase" },
-  //   ...years.map((year) => ({ accessorKey: year, header: year })),
-  // ];
-
   const table = useReactTable({
     data: tableData,
     columns,
