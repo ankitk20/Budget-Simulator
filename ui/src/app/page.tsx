@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
 
 interface DataEntry {
   category: string;
@@ -24,21 +23,21 @@ interface DataEntry {
 }
 
 const initialData: DataEntry[] = [
-  { category: "Income", type: "Active", monthlyAmount: 7000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
-  { category: "Income", type: "Passive", monthlyAmount: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
+  { category: "income", type: "active", monthlyAmount: 7000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
+  { category: "Income", type: "passive", monthlyAmount: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
   
-  { category: "Expense", type: "Housing", monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
-  { category: "Expense", type: "Transportation", monthlyAmount: 1500, startYear: 2026, numOfYears: 25, rateOfIncrement: 7 },
-  { category: "Expense", type: "Food", monthlyAmount: 1000, startYear: 2027, numOfYears: 20, rateOfIncrement: 7 },
+  { category: "expense", type: "housing", monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
+  { category: "expense", type: "transportation", monthlyAmount: 1500, startYear: 2026, numOfYears: 25, rateOfIncrement: 7 },
+  { category: "expense", type: "food", monthlyAmount: 1000, startYear: 2027, numOfYears: 20, rateOfIncrement: 7 },
   
-  { category: "Debt", type: "Home Loan", totalAmount: 300000, downPayment: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
-  { category: "Debt", type: "Car Loan", totalAmount: 50000, downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 11 },
-  { category: "Debt", type: "Student Loan", totalAmount: 80000, downPayment: 0, startYear: 2026, numOfYears: 10, rateOfInterest: 5 },
+  { category: "debt", type: "homeLoan", totalAmount: 300000, downPayment: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
+  { category: "debt", type: "carLoan", totalAmount: 50000, downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 11 },
+  { category: "debt", type: "studentLoan", totalAmount: 80000, downPayment: 0, startYear: 2026, numOfYears: 10, rateOfInterest: 5 },
   
-  { category: "Investment", type: "High Risk", currentAmount: 50000, monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfInterest: 12 },
-  { category: "Investment", type: "Moderate Risk", currentAmount: 30000, monthlyAmount: 1500, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
-  { category: "Investment", type: "Low Risk", currentAmount: 20000, monthlyAmount: 1000, startYear: 2025, numOfYears: 30, rateOfInterest: 7, rateOfIncrement: 0 },
-  { category: "Investment", type: "Savings", currentAmount: 0, monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 3.5, rateOfIncrement: 0 }
+  { category: "inv", type: "highRisk", currentAmount: 50000, monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfInterest: 12 },
+  { category: "inv", type: "moderateRisk", currentAmount: 30000, monthlyAmount: 1500, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
+  { category: "inv", type: "lowRisk", currentAmount: 20000, monthlyAmount: 1000, startYear: 2025, numOfYears: 30, rateOfInterest: 7, rateOfIncrement: 0 },
+  { category: "inv", type: "savings", currentAmount: 0, monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 3.5, rateOfIncrement: 0 }
 ];
 
 const simulationInput =  {
@@ -139,69 +138,77 @@ const simulationInput =  {
   }
 }
 
-const years = Array.from({ length: 30 }, (_, i) => 2025 + i);
+const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
-  const [data, setData] = useState<any[]>([]);
+  // const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.post("/api/simulation", simulationInput); // Send actual input data
-  //     const simulationData = response.data;
-  //     const updatedData = tableData.map((row) => {
-  //       const categoryKey = row.category.toLowerCase();
-  //       return {
-  //         ...row,
-  //         ...years.reduce((acc, year) => {
-  //           acc[year] = simulationData[year]?.[categoryKey]?.[row.type.toLowerCase()] || "-";
-  //           return acc;
-  //         }, {} as Record<string, number | string>),
-  //       };
-  //     });
-  //     setTableData(updatedData);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
 
   const fetchStream = async () => {
     setLoading(true);
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",  // Specify JSON content type
+        "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: JSON.stringify(simulationInput)
+      body: JSON.stringify(simulationInput),
     });
-
+  
     if (!response.body) return;
-
+  
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let accumulated = "";
+  
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      
+  
       accumulated += decoder.decode(value, { stream: true });
-      console.log(accumulated);
-
+  
       const lines = accumulated.split("\n");
-      // accumulated = lines.pop() || ""; // Store any incomplete JSON chunk
-
+      accumulated = lines.pop() || ""; // Store incomplete JSON for next iteration
       lines.forEach((line) => {
         if (line.trim()) {
-          setData((prev) => [...prev, JSON.parse(line)]);
+          try {
+            const columnData = JSON.parse(line); // { year: 2025, income: { active: 5000, passive: 1000 }, ... }
+  
+            const year = Object.keys(columnData)[0]; // Extract the year from JSON
+            const yearData = columnData[year];
+            
+            if (!year || !yearData || typeof yearData !== "object") {
+              console.warn("Unexpected JSON format:", columnData);
+              return;
+            }
+
+            setTableData((prevData) =>
+              prevData.map((row) => {
+
+                const categoryKey = row.category;
+                const typeKey = row.type;
+
+                // Check if the current row corresponds to the streamed data
+                if (yearData[categoryKey] && yearData[categoryKey][typeKey] !== undefined) {
+                  return {
+                    ...row,
+                    [year]: yearData[categoryKey][typeKey], // Update only this year's value
+                  };
+                }
+                return row;
+              })
+            );
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
         }
       });
     }
-
+  
     setLoading(false);
   };
-
+  
   return (
     <div className="p-4">
       <button onClick={fetchStream} className="p-2 bg-blue-500 text-white mb-4">Run Simulation</button>
@@ -233,7 +240,7 @@ export default function BudgetSimulation() {
               <td>{row.rateOfInterest ?? "-"}</td>
               <td>{row.rateOfIncrement ?? "-"}</td>
               {years.map((year) => (
-                <td key={year}>{row[year] ?? "-"}</td>
+                <td key={year}>{row[year] ?? "-"}</td>  // Dynamically updated column
               ))}
             </tr>
           ))}

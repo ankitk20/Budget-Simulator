@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import List, AsyncGenerator
+import json
 import asyncio
 import jwt
 import os
@@ -69,13 +70,13 @@ async def simulate_years(data: SimulationInput):
         for inc_type, inc_data in data["income"].items():
             if data["income"][inc_type]["stYr"] == year:
                 increase_factor = (1 + inc_data["rateOfInc"] / 100) ** (year - inc_data["stYr"])
-                yearly_income = math.floor(inc_data["monthlyAmt"] * 12 * increase_factor)
-                yearly_data["income"][inc_type] = yearly_income
+                yearly_income = int(inc_data["monthlyAmt"] * 12 * increase_factor)
+                yearly_data["income"][inc_type] = int(yearly_income)
                 total_income += yearly_income
             elif data["income"][inc_type]["stYr"] < year < data["income"][inc_type]["stYr"] + data["income"][inc_type]["numOfYr"]:
                 # for inc_type, inc_data in yearly_data["income"].items():
                 yearly_income = yearly_data["income"][inc_type] * (1 + data["income"][inc_type]["rateOfInc"]/100)
-                yearly_data["income"][inc_type] = yearly_income
+                yearly_data["income"][inc_type] = int(yearly_income)
                 total_income += yearly_income
             else:
                 yearly_data["income"][inc_type] = 0
@@ -85,11 +86,11 @@ async def simulate_years(data: SimulationInput):
             if data["expense"][exp_type]["stYr"] == year:
                 increase_factor = (1 + exp_data["rateOfInc"] / 100) ** (year - exp_data["stYr"])
                 yearly_expense = exp_data["monthlyAmt"] * 12 * increase_factor
-                yearly_data["expense"][exp_type] = yearly_expense
+                yearly_data["expense"][exp_type] = int(yearly_expense)
                 total_expense += yearly_expense
             elif exp_data["stYr"] < year < exp_data["stYr"] + exp_data["numOfYr"]:
                 yearly_expense = yearly_data["expense"][exp_type] * (1 + data["expense"][exp_type]["rateOfInc"]/100)
-                yearly_data["expense"][exp_type] = yearly_expense
+                yearly_data["expense"][exp_type] = int(yearly_expense)
                 total_expense += yearly_expense
             else:
                 yearly_data["expense"][exp_type] = 0
@@ -105,17 +106,17 @@ async def simulate_years(data: SimulationInput):
                 num_months = debt_data["numOfYr"] * 12
                 
                 # EMI Calculation using standard formula
-                emi = math.ceil((principal * monthly_rate * (1 + monthly_rate) ** num_months) / ((1 + monthly_rate) ** num_months - 1))
+                emi = int((principal * monthly_rate * (1 + monthly_rate) ** num_months) / ((1 + monthly_rate) ** num_months - 1))
                 yearly_emi = emi * 12  # Convert to yearly payment
                 
                 # Store yearly EMI payment
-                yearly_data["debt"][debt_type] = yearly_emi
+                yearly_data["debt"][debt_type] = int(yearly_emi)
                 total_debt += yearly_emi
             elif data["debt"][debt_type]["stYr"] < year < data["debt"][debt_type]["stYr"] + data["debt"][debt_type]["numOfYr"]:
                 yearly_emi = yearly_data["debt"][debt_type]
 
                 # Store yearly EMI payment
-                yearly_data["debt"][debt_type] = yearly_emi
+                yearly_data["debt"][debt_type] = int(yearly_emi)
                 total_debt += yearly_emi
             else:
                 yearly_data["debt"][debt_type] = 0
@@ -126,16 +127,16 @@ async def simulate_years(data: SimulationInput):
         for inv_type, inv_data in data["inv"].items():
             if data["inv"][inv_type]["stYr"] == year:
                 increase_factor = (1 + inv_data["rateOfInt"] / 100)
-                new_corpus = math.floor(investment_corpus[inv_type] * increase_factor + inv_data["monthlyAmt"] * 12)
+                new_corpus = investment_corpus[inv_type] * increase_factor + inv_data["monthlyAmt"] * 12
                 investment_corpus[inv_type] = new_corpus
-                yearly_data["inv"][inv_type] = new_corpus
+                yearly_data["inv"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
                 total_inv_expense += inv_data["monthlyAmt"] * 12
             elif data["inv"][inv_type]["stYr"] < year < data["inv"][inv_type]["stYr"] + data["inv"][inv_type]["numOfYr"]:
                 increase_factor = (1 + data["inv"][inv_type]["rateOfInt"] / 100)
-                new_corpus = math.floor(yearly_data["inv"][inv_type] * increase_factor + data["inv"][inv_type]["monthlyAmt"] * 12)
+                new_corpus = int(yearly_data["inv"][inv_type] * increase_factor + data["inv"][inv_type]["monthlyAmt"] * 12)
                 # investment_corpus[inv_type] = new_corpus
-                yearly_data["inv"][inv_type] = new_corpus
+                yearly_data["inv"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
                 total_inv_expense += data["inv"][inv_type]["monthlyAmt"] * 12
             else:
@@ -143,8 +144,8 @@ async def simulate_years(data: SimulationInput):
 
         total_expense += total_inv_expense
 
-        bal = total_income - total_debt - total_expense
-        init_bal = math.ceil(abs(bal))
+        bal = int(total_income - total_debt - total_expense)
+        init_bal = int(abs(bal))
         low_ratio = 0
         moderate_ratio = 0
         high_ratio = 0
@@ -185,8 +186,8 @@ async def simulate_years(data: SimulationInput):
                 bal += yearly_data["inv"]["highRisk"]
                 yearly_data["inv"]["highRisk"] = 0
 
-        ntWrth = math.floor(total_income + total_inv - total_debt - total_expense - init_bal)
-        inflAdjNtWrth = math.floor(ntWrth/((1+(inflRate/100))**(year-start_year)))
+        ntWrth = int(total_income + total_inv - total_debt - total_expense - init_bal)
+        inflAdjNtWrth = int(ntWrth/((1+(inflRate/100))**(year-start_year)))
 
         summary = {"eaten_inv": eaten_inv, "ntWrth": ntWrth, "inflAdjNtWrth": inflAdjNtWrth}
         ratio = {"highRiskEat": high_ratio, "moderateRiskEat": moderate_ratio, "lowRiskEat": low_ratio}
@@ -219,7 +220,9 @@ async def simulate_financials(request: Request, payload: SimulationInput):
         # Call your processing function
         async def result_generator():
             async for result in simulate_years(parsed_payload):
-                yield f"{result}\n"
+                yield json.dumps(result) + "\n"
+                await asyncio.sleep(0.1)
+
         return StreamingResponse(result_generator(), media_type="application/json")
 
     except ValidationError as e:
