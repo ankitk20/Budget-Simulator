@@ -125,12 +125,28 @@ export default function BudgetSimulation() {
     {
       accessorKey: "category",
       header: "Category",
-      cell: ({ row }) => row.original.category,
+      cell: ({ row }) => (
+        <input
+          type="text"
+          defaultValue={row.original.category || ""}
+          onChange={(e) => updateCell(row.index, "category", e.target.value)}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
     },
     {
       accessorKey: "type",
       header: "Type",
-      cell: ({ row }) => row.original.type,
+      cell: ({ row }) => (
+        <input
+          type="text"
+          defaultValue={row.original.type || ""}
+          onChange={(e) => updateCell(row.index, "type", e.target.value)}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
     },
     {
       accessorKey: "monthlyAmount",
@@ -138,7 +154,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          value={row.original.monthlyAmount || ""}
+          defaultValue={row.original.monthlyAmount || ""}
           onChange={(e) => updateCell(row.index, "monthlyAmount", Number(e.target.value))}
           className="border w-full p-1 bg-transparent text-white"
 
@@ -151,7 +167,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          value={row.original.startYear || ""}
+          defaultValue={row.original.startYear || ""}
           onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
           className="border w-full p-1 bg-transparent text-white"
 
@@ -164,7 +180,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          value={row.original.numOfYears || ""}
+          defaultValue={row.original.numOfYears || ""}
           onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
           className="border w-full p-1 bg-transparent text-white"
 
@@ -177,7 +193,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          value={row.original.rateOfIncrement || ""}
+          defaultValue={row.original.rateOfIncrement || ""}
           onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
           className="border w-full p-1 bg-transparent text-white"
 
@@ -274,7 +290,7 @@ export default function BudgetSimulation() {
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <th key={header.id} className="border border-gray-300 p-2">{flexRender(header.column.columnDef.header, header.getContext())}</th>
+                <th key={header.id} className="border border-gray-300 p-2 min-w-[150px] w-[200px] text-left">{flexRender(header.column.columnDef.header, header.getContext())}</th>
               ))}
             </tr>
           ))}
