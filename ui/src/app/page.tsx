@@ -27,27 +27,8 @@ interface DataEntry {
   [year: string]: number | string | undefined;
 }
 
-// const initialData: DataEntry[] = [
-//   { category: "income", type: "active", monthlyAmount: 7000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
-//   { category: "Income", type: "passive", monthlyAmount: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
-  
-//   { category: "expense", type: "housing", monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
-//   { category: "expense", type: "transportation", monthlyAmount: 1500, startYear: 2026, numOfYears: 25, rateOfIncrement: 7 },
-//   { category: "expense", type: "food", monthlyAmount: 1000, startYear: 2027, numOfYears: 20, rateOfIncrement: 7 },
-//   { category: "expense", type: "utility", monthlyAmount: 1000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
-  
-//   { category: "debt", type: "homeLoan", totalAmount: 300000, downPayment: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
-//   { category: "debt", type: "carLoan", totalAmount: 50000, downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 11 },
-//   { category: "debt", type: "studentLoan", totalAmount: 80000, downPayment: 0, startYear: 2026, numOfYears: 10, rateOfInterest: 5 },
-  
-//   { category: "inv", type: "highRisk", currentAmount: 50000, monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfInterest: 12 },
-//   { category: "inv", type: "moderateRisk", currentAmount: 30000, monthlyAmount: 1500, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
-//   { category: "inv", type: "lowRisk", currentAmount: 20000, monthlyAmount: 1000, startYear: 2025, numOfYears: 30, rateOfInterest: 7, rateOfIncrement: 0 },
-//   { category: "inv", type: "savings", currentAmount: 0, monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 3.5, rateOfIncrement: 0 }
-// ];
-
 const initialData: DataEntry[] = [
-  { category: "income", type: "active", monthlyAmount: 10000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
+  { category: "income", type: "active", monthlyAmount: 30000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
   { category: "income", type: "passive", monthlyAmount: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
 
   { category: "expense", type: "grocery", monthlyAmount: 1000, startYear: 2025, numOfYears: 20, rateOfIncrement: 7 },
