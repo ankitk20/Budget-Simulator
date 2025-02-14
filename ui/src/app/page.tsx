@@ -113,13 +113,79 @@ export default function BudgetSimulation() {
 
     console.log(JSON.stringify(simulationInput2, null, 2));
 
-  const updateData = (rowIndex: number, columnId: string, value: string | number) => {
+  const updateCell = (rowIndex: number, columnId: string, value: string | number) => {
     setTableData((old) =>
       old.map((row, index) =>
         index === rowIndex ? { ...row, [columnId]: value } : row
       )
     );
   };
+
+  const columns = [
+    {
+      accessorKey: "category",
+      header: "Category",
+      cell: ({ row }) => row.original.category,
+    },
+    {
+      accessorKey: "type",
+      header: "Type",
+      cell: ({ row }) => row.original.type,
+    },
+    {
+      accessorKey: "monthlyAmount",
+      header: "Monthly Amount",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          value={row.original.monthlyAmount || ""}
+          onChange={(e) => updateCell(row.index, "monthlyAmount", Number(e.target.value))}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
+    },
+    {
+      accessorKey: "startYear",
+      header: "Start Year",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          value={row.original.startYear || ""}
+          onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
+    },
+    {
+      accessorKey: "numOfYears",
+      header: "Number of Years",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          value={row.original.numOfYears || ""}
+          onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
+    },
+    {
+      accessorKey: "rateOfIncrement",
+      header: "Rate of Increment (%)",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          value={row.original.rateOfIncrement || ""}
+          onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
+          className="border w-full p-1 bg-transparent text-white"
+
+        />
+      ),
+    },
+    ...years.map((year) => ({ accessorKey: year, header: year })),
+  ];
 
   const fetchStream = async () => {
     setLoading(true);
@@ -182,17 +248,17 @@ export default function BudgetSimulation() {
     setLoading(false);
   };
 
-  const columns = [
-    { accessorKey: "category", header: "Category" },
-    { accessorKey: "type", header: "Type" },
-    { accessorKey: "currentAmount", header: "Current Value" },
-    { accessorKey: "monthlyAmount", header: "Monthly Value" },
-    { accessorKey: "startYear", header: "Starts From" },
-    { accessorKey: "numOfYears", header: "Number of Years" },
-    { accessorKey: "rateOfInterest", header: "Rate of Interest" },
-    { accessorKey: "rateOfIncrement", header: "Rate of Increase" },
-    ...years.map((year) => ({ accessorKey: year, header: year })),
-  ];
+  // const columns = [
+  //   { accessorKey: "category", header: "Category" },
+  //   { accessorKey: "type", header: "Type" },
+  //   { accessorKey: "currentAmount", header: "Current Value" },
+  //   { accessorKey: "monthlyAmount", header: "Monthly Value" },
+  //   { accessorKey: "startYear", header: "Starts From" },
+  //   { accessorKey: "numOfYears", header: "Number of Years" },
+  //   { accessorKey: "rateOfInterest", header: "Rate of Interest" },
+  //   { accessorKey: "rateOfIncrement", header: "Rate of Increase" },
+  //   ...years.map((year) => ({ accessorKey: year, header: year })),
+  // ];
 
   const table = useReactTable({
     data: tableData,
