@@ -129,9 +129,10 @@ export default function BudgetSimulation() {
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
             Object.keys(yearData).forEach((categoryKey) => {
               if (categoryKey !== "summary" && categoryKey !== "ratio") {
+                ribbonEntry[categoryKey] = 0
                 Object.keys(yearData[categoryKey]).forEach((typeKey) => {
                   const key = `${categoryKey}_${typeKey}`;
-                  ribbonEntry[key] = yearData[categoryKey][typeKey] || 0;
+                  ribbonEntry[categoryKey] += yearData[categoryKey][typeKey] || 0;
                 });
               }
             });
@@ -167,9 +168,9 @@ export default function BudgetSimulation() {
   return (
     <div className="p-4">
       <SimulationButton fetchStream={fetchStream} loading={loading} />
-      <YearlyRibbonChart data={ribbonChartData} />
-      <YearlyLineChart  data={ lineChartData.data } />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
+      <YearlyLineChart  data={ lineChartData.data } />
+      <YearlyRibbonChart data={ribbonChartData} />
     </div>
   );
 }
