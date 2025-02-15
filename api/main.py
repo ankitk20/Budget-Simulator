@@ -99,7 +99,7 @@ async def simulate_years(data: SimulationInput):
         for debt_type, debt_data in data["debt"].items():
             if data["debt"][debt_type]["stYr"] == year:
                 # Loan principal
-                principal = debt_data["currAmt"] - debt_data["downPay"] # TODO: Downpayment adjust is pending
+                principal = debt_data["currAmt"] - debt_data["downPay"]
                 # Monthly interest rate
                 monthly_rate = (debt_data["rateOfInt"] / 100) / 12
                 # Number of months
@@ -189,7 +189,7 @@ async def simulate_years(data: SimulationInput):
         ntWrth = int(total_income + total_inv - total_debt - total_expense - init_bal)
         inflAdjNtWrth = int(ntWrth/((1+(inflRate/100))**(year-start_year)))
 
-        summary = {"eaten_inv": eaten_inv, "ntWrth": ntWrth, "inflAdjNtWrth": inflAdjNtWrth}
+        summary = {"eatenInv": eaten_inv, "ntWrth": ntWrth, "inflAdjNtWrth": inflAdjNtWrth}
         ratio = {"highRiskEat": high_ratio, "moderateRiskEat": moderate_ratio, "lowRiskEat": low_ratio}
         yearly_data["summary"] = summary
         yearly_data["ratio"] = ratio
@@ -199,6 +199,9 @@ async def simulate_years(data: SimulationInput):
 # Setup rate limiter (limits requests per user based on IP)
 limiter = Limiter(key_func=get_remote_address)
 
+# TODO currently all inv types are mandatory due to bal eat hardcoding
+# TODO handle api response where things are -ve
+# TODO: Downpayment adjust is pending
 @app.post("/simulate")
 @limiter.limit("50/minute")  # Limit requests per minute
 async def simulate_financials(request: Request, payload: SimulationInput):
