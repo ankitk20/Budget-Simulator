@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { years, DataEntry } from "../app/utils/data";
+import AddRowButton from "./AddRowButton";
 import {
   useReactTable,
   getCoreRowModel,
@@ -61,12 +62,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
             className="text-inherit bg-transparent border-none outline-none w-full"
           />
           {hoveredRow === row.index && (
-            <button 
-              onClick={() => addRowAt(row.index)} 
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-1 bg-green-500 text-white rounded"
-            >
-              +
-            </button>
+          <AddRowButton onAddRow={() => addRowAt(row.index)} />
           )}
         </div>
       ),
