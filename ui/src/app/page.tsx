@@ -111,8 +111,6 @@ export default function BudgetSimulation() {
     simulationInput2[category][type] = entry;
   });
 
-    console.log(JSON.stringify(simulationInput2, null, 2));
-
   const updateCell = (rowIndex: number, columnId: string, value: string | number) => {
     setTableData((old) =>
       old.map((row, index) =>
