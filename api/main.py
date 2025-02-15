@@ -99,7 +99,7 @@ async def simulate_years(data: SimulationInput):
         for debt_type, debt_data in data["debt"].items():
             if data["debt"][debt_type]["stYr"] == year:
                 # Loan principal
-                principal = debt_data["totalAmt"] - debt_data["downPay"] # TODO: Downpayment adjust is pending
+                principal = debt_data["currAmt"] - debt_data["downPay"] # TODO: Downpayment adjust is pending
                 # Monthly interest rate
                 monthly_rate = (debt_data["rateOfInt"] / 100) / 12
                 # Number of months

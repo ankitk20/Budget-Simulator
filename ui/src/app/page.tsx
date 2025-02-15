@@ -10,9 +10,8 @@ import {
 interface DataEntry {
   category: string;
   type: string;
-  monthlyAmount?: number;
-  currentAmount?: number;
-  totalAmount?: number;
+  currAmt?: number;
+  monthlyAmt?: number;
   downPayment?: number;
   startYear?: number;
   numOfYears?: number;
@@ -28,46 +27,46 @@ interface DataEntry {
 }
 
 const initialData: DataEntry[] = [
-  { category: "income", type: "active", monthlyAmount: 30000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
-  { category: "income", type: "passive", monthlyAmount: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
+  { category: "income", currAmt: 0, type: "active", monthlyAmt: 30000, startYear: 2025, numOfYears: 20, rateOfIncrement: 5 },
+  { category: "income", currAmt: 0, type: "passive", monthlyAmt: 1000, startYear: 2030, numOfYears: 15, rateOfIncrement: 10 },
 
-  { category: "expense", type: "grocery", monthlyAmount: 1000, startYear: 2025, numOfYears: 20, rateOfIncrement: 7 },
-  { category: "expense", type: "utility", monthlyAmount: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 7 },
-  { category: "expense", type: "clothing", monthlyAmount: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 7 },
-  { category: "expense", type: "rent", monthlyAmount: 2000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
-  { category: "expense", type: "houseMaintenance", monthlyAmount: 0, startYear: 2025, numOfYears: 35, rateOfIncrement: 7 },
-  { category: "expense", type: "selfDevelopment", monthlyAmount: 0, startYear: 2025, numOfYears: 20, rateOfIncrement: 10 },
-  { category: "expense", type: "childrenEducation", monthlyAmount: 0, startYear: 2035, numOfYears: 0, rateOfIncrement: 20 },
-  { category: "expense", type: "childrenExpense", monthlyAmount: 0, startYear: 2030, numOfYears: 0, rateOfIncrement: 7 },
-  { category: "expense", type: "parentsExpense", monthlyAmount: 0, startYear: 2025, numOfYears: 25, rateOfIncrement: 7 },
-  { category: "expense", type: "wifeExpense", monthlyAmount: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 5 },
-  { category: "expense", type: "healthInsurance", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
-  { category: "expense", type: "lifeInsurance", monthlyAmount: 0, startYear: 2025, numOfYears: 35, rateOfIncrement: 0 },
-  { category: "expense", type: "vehicleInsurance", monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 5 },
-  { category: "expense", type: "houseInsurance", monthlyAmount: 0, startYear: 2025, numOfYears: 0, rateOfIncrement: 5 },
-  { category: "expense", type: "charity", monthlyAmount: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 5 },
-  { category: "expense", type: "travel", monthlyAmount: 1500, startYear: 2027, numOfYears: 25, rateOfIncrement: 7 },
-  { category: "expense", type: "trip", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
-  { category: "expense", type: "finOps", monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 5 },
-  { category: "expense", type: "servant", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
-  { category: "expense", type: "medicine", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
-  { category: "expense", type: "entertainment", monthlyAmount: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 10 },
-  { category: "expense", type: "emergency", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
-  { category: "expense", type: "gift", monthlyAmount: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
-  { category: "expense", type: "investmentHighRisk", monthlyAmount: 2000, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
-  { category: "expense", type: "investmentModerateRisk", monthlyAmount: 1500, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
-  { category: "expense", type: "investmentLowRisk", monthlyAmount: 1000, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
-  { category: "expense", type: "others", monthlyAmount: 0, startYear: 2025, numOfYears: 1, rateOfIncrement: 10 },
+  { category: "expense", currAmt: 0, type: "grocery", monthlyAmt: 1000, startYear: 2025, numOfYears: 20, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "utility", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "clothing", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 7 },
+  { category: "expense", currAmt: 0, type: "rent", monthlyAmt: 2000, startYear: 2025, numOfYears: 30, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "houseMaintenance", monthlyAmt: 0, startYear: 2025, numOfYears: 35, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "selfDevelopment", monthlyAmt: 0, startYear: 2025, numOfYears: 20, rateOfIncrement: 10 },
+  // { category: "expense", currAmt: 0, type: "childrenEducation", monthlyAmt: 0, startYear: 2035, numOfYears: 0, rateOfIncrement: 20 },
+  // { category: "expense", currAmt: 0, type: "childrenExpense", monthlyAmt: 0, startYear: 2030, numOfYears: 0, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "parentsExpense", monthlyAmt: 0, startYear: 2025, numOfYears: 25, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "wifeExpense", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "healthInsurance", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "lifeInsurance", monthlyAmt: 0, startYear: 2025, numOfYears: 35, rateOfIncrement: 0 },
+  // { category: "expense", currAmt: 0, type: "vehicleInsurance", monthlyAmt: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "houseInsurance", monthlyAmt: 0, startYear: 2025, numOfYears: 0, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "charity", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfIncrement: 5 },
+  { category: "expense", currAmt: 0, type: "travel", monthlyAmt: 1500, startYear: 2027, numOfYears: 25, rateOfIncrement: 7 },
+  // { category: "expense", currAmt: 0, type: "trip", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "finOps", monthlyAmt: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "servant", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
+  // { category: "expense", currAmt: 0, type: "medicine", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
+  // { category: "expense", currAmt: 0, type: "entertainment", monthlyAmt: 0, startYear: 2025, numOfYears: 30, rateOfIncrement: 10 },
+  // { category: "expense", currAmt: 0, type: "emergency", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 5 },
+  // { category: "expense", currAmt: 0, type: "gift", monthlyAmt: 0, startYear: 2025, numOfYears: 40, rateOfIncrement: 10 },
+  { category: "expense", currAmt: 0, type: "investmentHighRisk", monthlyAmt: 2000, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
+  { category: "expense", currAmt: 0, type: "investmentModerateRisk", monthlyAmt: 1500, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
+  { category: "expense", currAmt: 0, type: "investmentLowRisk", monthlyAmt: 1000, startYear: 2025, numOfYears: 19, rateOfIncrement: 0 },
+  { category: "expense", currAmt: 0, type: "others", monthlyAmt: 0, startYear: 2025, numOfYears: 1, rateOfIncrement: 10 },
 
-  { category: "debt", type: "house", totalAmount: 300000, downPayment: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
-  { category: "debt", type: "vehicle", totalAmount: 50000, downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 11 },
-  { category: "debt", type: "education", totalAmount: 80000, downPayment: 0, startYear: 2026, numOfYears: 10, rateOfInterest: 5 },
-  { category: "debt", type: "others", totalAmount: 0, downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 10 },
+  { category: "debt", currAmt: 300000, type: "house", downPayment: 0, startYear: 2025, numOfYears: 30, rateOfInterest: 9 },
+  { category: "debt", currAmt: 50000, type: "vehicle", downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 11 },
+  { category: "debt", currAmt: 80000, type: "education", downPayment: 0, startYear: 2026, numOfYears: 10, rateOfInterest: 5 },
+  { category: "debt", currAmt: 0, type: "others", downPayment: 0, startYear: 2025, numOfYears: 5, rateOfInterest: 10 },
 
-  { category: "inv", type: "highRisk", currentAmount: 50000, monthlyAmount: 2000, startYear: 2025, numOfYears: 19, rateOfInterest: 12, rateOfIncrement: 0 },
-  { category: "inv", type: "moderateRisk", currentAmount: 30000, monthlyAmount: 1500, startYear: 2025, numOfYears: 19, rateOfInterest: 9, rateOfIncrement: 0 },
-  { category: "inv", type: "lowRisk", currentAmount: 20000, monthlyAmount: 1000, startYear: 2025, numOfYears: 19, rateOfInterest: 7, rateOfIncrement: 0 },
-  { category: "inv", type: "savings", currentAmount: 0, monthlyAmount: 0, startYear: 2025, numOfYears: 50, rateOfInterest: 3.5, rateOfIncrement: 0 }
+  { category: "inv", currAmt: 50000, type: "highRisk", monthlyAmt: 2000, startYear: 2025, numOfYears: 19, rateOfInterest: 12, rateOfIncrement: 0 },
+  { category: "inv", currAmt: 30000, type: "moderateRisk", monthlyAmt: 1500, startYear: 2025, numOfYears: 19, rateOfInterest: 9, rateOfIncrement: 0 },
+  { category: "inv", currAmt: 0, type: "lowRisk", monthlyAmt: 1000, startYear: 2025, numOfYears: 19, rateOfInterest: 7, rateOfIncrement: 0 },
+  { category: "inv", currAmt: 0, type: "savings", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfInterest: 3.5, rateOfIncrement: 0 }
 ];
 
 const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
@@ -76,7 +75,7 @@ export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const [loading, setLoading] = useState(false);
 
-  const simulationInput2 = {
+  const simulationInput = {
     simYr: 30,
     inflRate: 7,
     ltcgTaxRate: 12.5,
@@ -84,7 +83,7 @@ export default function BudgetSimulation() {
     country: "USA",
     currency: "USD",
     income: {},
-    expense: {},
+    expense: {},  
     debt: {},
     inv: {}
   };
@@ -94,9 +93,8 @@ export default function BudgetSimulation() {
     const type = row.type;
 
     const entry = {
-      monthlyAmt: row.monthlyAmount || 0,
-      currAmt: row.currentAmount || 0,
-      totalAmt: row.totalAmount || 0,
+      currAmt: row.currAmt || 0,
+      monthlyAmt: row.monthlyAmt || 0,
       downPay: row.downPayment || 0,
       stYr: row.startYear || 2025,
       numOfYr: row.numOfYears || 0,
@@ -104,12 +102,14 @@ export default function BudgetSimulation() {
       rateOfInc: row.rateOfIncrement || 0
     };
 
-    if (!simulationInput2[category]) {
-      simulationInput2[category] = {};
+    if (!simulationInput[category]) {
+      simulationInput[category] = {};
     }
 
-    simulationInput2[category][type] = entry;
+    simulationInput[category][type] = entry;
   });
+
+  console.log(simulationInput);
 
   const updateCell = (rowIndex: number, columnId: string, value: string | number) => {
     setTableData((old) =>
@@ -147,13 +147,26 @@ export default function BudgetSimulation() {
       ),
     },
     {
-      accessorKey: "monthlyAmount",
+      accessorKey: "currAmt",
+      header: "Current Amount",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          defaultValue={row.original.currAmt || ""}
+          onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
+          className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+
+        />
+      ),
+    },
+    {
+      accessorKey: "monthlyAmt",
       header: "Monthly Amount",
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.monthlyAmount || ""}
-          onChange={(e) => updateCell(row.index, "monthlyAmount", Number(e.target.value))}
+          defaultValue={row.original.monthlyAmt || ""}
+          onChange={(e) => updateCell(row.index, "monthlyAmt", Number(e.target.value))}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
 
         />
@@ -186,6 +199,19 @@ export default function BudgetSimulation() {
       ),
     },
     {
+      accessorKey: "rateOfInterest",
+      header: "Rate of Interest (%)",
+      cell: ({ row }) => (
+        <input
+          type="number"
+          defaultValue={row.original.rateOfInterest || ""}
+          onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
+          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+
+        />
+      ),
+    },
+    {
       accessorKey: "rateOfIncrement",
       header: "Rate of Increment (%)",
       cell: ({ row }) => (
@@ -209,7 +235,7 @@ export default function BudgetSimulation() {
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: JSON.stringify(simulationInput2),
+      body: JSON.stringify(simulationInput),
     });
 
     if (!response.body) return;
