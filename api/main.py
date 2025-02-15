@@ -127,7 +127,7 @@ async def simulate_years(data: SimulationInput):
         for inv_type, inv_data in data["inv"].items():
             increase_factor = (1 + data["inv"][inv_type]["rateOfInt"] / 100)
             if data["inv"][inv_type]["stYr"] == year:
-                new_corpus = yearly_data["inv"][inv_type] * increase_factor + inv_data["monthlyAmt"] * 12
+                new_corpus = max(data["inv"][inv_type]["currAmt"], yearly_data["inv"][inv_type]) * increase_factor + inv_data["monthlyAmt"] * 12
                 investment_corpus[inv_type] = new_corpus
                 yearly_data["inv"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
@@ -139,11 +139,7 @@ async def simulate_years(data: SimulationInput):
                 total_inv += new_corpus
                 total_inv_expense += data["inv"][inv_type]["monthlyAmt"] * 12
             else:
-                if year < data["inv"][inv_type]["stYr"]:
-                    yearly_data["inv"][inv_type] = int(data["inv"][inv_type]["currAmt"] * increase_factor)
-                else:
-                    yearly_data["inv"][inv_type] = int(yearly_data["inv"][inv_type] * increase_factor)
-
+                yearly_data["inv"][inv_type] = int(max(data["inv"][inv_type]["currAmt"], yearly_data["inv"][inv_type]) * increase_factor)
         total_expense += total_inv_expense
 
         bal = int(total_income - total_debt - total_expense)
