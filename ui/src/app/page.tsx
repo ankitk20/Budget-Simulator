@@ -89,6 +89,7 @@ export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editedData = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   
   const simulationInput = {
     simYr: 30,
@@ -131,19 +132,46 @@ export default function BudgetSimulation() {
     };
   };
 
+  const addRowAt = (index: number) => {
+    const newRow: DataEntry = {
+      category: editedData.current[index]["category"] || "",
+      type: "",
+      currAmt: 0,
+      monthlyAmt: 0,
+      startYear: 2025,
+      numOfYears: 0,
+      rateOfInterest: 0,
+      rateOfIncrement: 0,
+    };
+    editedData.current.splice(index + 1, 0, newRow);
+    setTableData([...editedData.current]);
+  };
+
   const columns = [
     {
       accessorKey: "category",
       header: "Category",
       cell: ({ row }) => (
-        <input
-          type="text"
-          defaultValue={editedData.current[row.index]?.category || ""}
-          onChange={(e) => updateCell(row.index, "category", e.target.value)}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full"
-
-        />
+        <div
+          className="relative"
+          onMouseEnter={() => setHoveredRow(row.index)}
+          onMouseLeave={() => setHoveredRow(null)}
+        >
+          <input
+            type="text"
+            defaultValue={editedData.current[row.index]?.category || ""}
+            onChange={(e) => updateCell(row.index, "category", e.target.value)}
+            className="text-inherit bg-transparent border-none outline-none w-full"
+          />
+          {hoveredRow === row.index && (
+            <button 
+              onClick={() => addRowAt(row.index)} 
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-1 bg-green-500 text-white rounded"
+            >
+              +
+            </button>
+          )}
+        </div>
       ),
     },
     {
