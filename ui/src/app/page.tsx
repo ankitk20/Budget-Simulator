@@ -123,7 +123,6 @@ export default function BudgetSimulation() {
     simulationInput[category][type] = entry;
   });
 
-  console.log(JSON.stringify(simulationInput));
   const updateCell = (rowIndex: number, columnId: string, value: string | number) => {
     setTableData((old) =>
       old.map((row, index) =>
@@ -287,7 +286,6 @@ export default function BudgetSimulation() {
               prevData.map((row) => {
                 const categoryKey = row.category;
                 const typeKey = row.type;
-                console.log(categoryKey, typeKey);
                 if (yearData[categoryKey] && yearData[categoryKey][typeKey] !== undefined) {
                   return {
                     ...row,
