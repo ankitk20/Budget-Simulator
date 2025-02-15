@@ -74,13 +74,13 @@ const initialData: DataEntry[] = [
   { category: "inv", currAmt: 0, type: "lowRisk", monthlyAmt: 1000, startYear: 2025, numOfYears: 19, rateOfInterest: 7, rateOfIncrement: 0 },
   { category: "inv", currAmt: 0, type: "savings", monthlyAmt: 0, startYear: 2025, numOfYears: 50, rateOfInterest: 3.5, rateOfIncrement: 0 },
 
-  { category: "summary", type: "eatenInv", startYear: 2025, numOfYears: 50 },
-  { category: "summary", type: "ntWrth", startYear: 2025, numOfYears: 50 },
-  { category: "summary", type: "inflAdjNtWrth", startYear: 2025, numOfYears: 50 },
+  { category: "summary", type: "eatenInv" },
+  { category: "summary", type: "ntWrth" },
+  { category: "summary", type: "inflAdjNtWrth" },
 
-  { category: "ratio", type: "highRiskEat", startYear: 2025, numOfYears: 50 },
-  { category: "ratio", type: "moderateRiskEat", startYear: 2025, numOfYears: 50 },
-  { category: "ratio", type: "lowRiskEat", startYear: 2025, numOfYears: 50 },
+  { category: "ratio", type: "highRiskEat" },
+  { category: "ratio", type: "moderateRiskEat" },
+  { category: "ratio", type: "lowRiskEat" },
 ];
 
 const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
