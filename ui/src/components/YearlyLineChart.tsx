@@ -1,6 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from "recharts";
 
-export interface ChartProps {
+export interface LineChartData {
   data: { year: number; inflAdjNtWrth: number; ntWrth: number }[];
 }
 
@@ -15,7 +15,7 @@ const formatYAxis = (value: number) => {
   return value.toString();
 };
 
-const YearlyLineChart: React.FC<ChartProps> = ({ data }) => {
+const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={data}>

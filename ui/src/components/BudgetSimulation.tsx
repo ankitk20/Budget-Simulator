@@ -5,14 +5,18 @@ import { initialData, simulationInput, DataEntry } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
-import { ChartProps } from "./YearlyLineChart";
+import { LineChartData } from "./YearlyLineChart";
+import YearlyRibbonChart from "./YearlyRibbonChart";
+import { RibbonChartData } from "./YearlyRibbonChart";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editDataRef = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
-  const chartDataRef = useRef<ChartProps>({data: []});
-  const [chartData, setChartData] = useState<ChartProps>({data: []});
+  const chartDataRef = useRef<LineChartData>({data: []});
+  const [chartData, setChartData] = useState<LineChartData>({data: []});
+  const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
+  const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
 
   editDataRef.current.forEach((row) => {
     const category = row.category;
@@ -120,6 +124,19 @@ export default function BudgetSimulation() {
               inflAdjNtWrth: inflAdjNetWorth
             });
 
+            // Process Ribbon Chart Data
+            const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
+            Object.keys(yearData).forEach((categoryKey) => {
+              if (categoryKey !== "summary" && categoryKey !== "ratio") {
+                Object.keys(yearData[categoryKey]).forEach((typeKey) => {
+                  const key = `${categoryKey}_${typeKey}`;
+                  ribbonEntry[key] = yearData[categoryKey][typeKey] || 0;
+                });
+              }
+            });
+
+            ribbonChartDataRef.current.push(ribbonEntry);
+
             setTableData((prevData) =>
               prevData.map((row) => {
                 const categoryKey = row.category;
@@ -135,6 +152,7 @@ export default function BudgetSimulation() {
             );
 
             setChartData({data: [...chartDataRef.current.data]}); // Update state once all data is processed
+            setRibbonChartData([...ribbonChartDataRef.current]); // Update state for Ribbon Chart
           } catch (error) {
             console.error("Error parsing JSON:", error);
           }
@@ -148,6 +166,7 @@ export default function BudgetSimulation() {
   return (
     <div className="p-4">
       <SimulationButton fetchStream={fetchStream} loading={loading} />
+      <YearlyRibbonChart data={ribbonChartData} />
       <YearlyLineChart  data={ chartData.data } />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
     </div>
