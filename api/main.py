@@ -125,22 +125,24 @@ async def simulate_years(data: SimulationInput):
 
         # Process Investments
         for inv_type, inv_data in data["inv"].items():
+            increase_factor = (1 + data["inv"][inv_type]["rateOfInt"] / 100)
             if data["inv"][inv_type]["stYr"] == year:
-                increase_factor = (1 + inv_data["rateOfInt"] / 100)
-                new_corpus = investment_corpus[inv_type] * increase_factor + inv_data["monthlyAmt"] * 12
+                new_corpus = yearly_data["inv"][inv_type] * increase_factor + inv_data["monthlyAmt"] * 12
                 investment_corpus[inv_type] = new_corpus
                 yearly_data["inv"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
                 total_inv_expense += inv_data["monthlyAmt"] * 12
             elif data["inv"][inv_type]["stYr"] < year < data["inv"][inv_type]["stYr"] + data["inv"][inv_type]["numOfYr"]:
-                increase_factor = (1 + data["inv"][inv_type]["rateOfInt"] / 100)
-                new_corpus = int(yearly_data["inv"][inv_type] * increase_factor + data["inv"][inv_type]["monthlyAmt"] * 12)
-                # investment_corpus[inv_type] = new_corpus
+                new_corpus = yearly_data["inv"][inv_type] * increase_factor + data["inv"][inv_type]["monthlyAmt"] * 12
+                investment_corpus[inv_type] = new_corpus
                 yearly_data["inv"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
                 total_inv_expense += data["inv"][inv_type]["monthlyAmt"] * 12
             else:
-                pass
+                if year < data["inv"][inv_type]["stYr"]:
+                    yearly_data["inv"][inv_type] = int(data["inv"][inv_type]["currAmt"] * increase_factor)
+                else:
+                    yearly_data["inv"][inv_type] = int(yearly_data["inv"][inv_type] * increase_factor)
 
         total_expense += total_inv_expense
 
@@ -202,6 +204,7 @@ limiter = Limiter(key_func=get_remote_address)
 # TODO currently all inv types are mandatory due to bal eat hardcoding
 # TODO handle api response where things are -ve
 # TODO: Downpayment adjust is pending
+# TODO: Current Amt bug is there as it sets the current year to 0 if inv is starting from future years and also sets it to 0 if inv ends
 @app.post("/simulate")
 @limiter.limit("50/minute")  # Limit requests per minute
 async def simulate_financials(request: Request, payload: SimulationInput):
