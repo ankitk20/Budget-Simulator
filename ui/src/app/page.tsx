@@ -89,7 +89,7 @@ export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editedData = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
-  console.log(editedData);
+  
   const simulationInput = {
     simYr: 30,
     inflRate: 7,
@@ -138,7 +138,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="text"
-          value={editedData.current[row.index]?.category || ""}
+          defaultValue={editedData.current[row.index]?.category || ""}
           onChange={(e) => updateCell(row.index, "category", e.target.value)}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
@@ -152,7 +152,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="text"
-          value={editedData.current[row.index]?.type || ""}
+          defaultValue={editedData.current[row.index]?.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
@@ -166,7 +166,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          value={editedData.current[row.index]?.currAmt || ""}
+          defaultValue={editedData.current[row.index]?.currAmt || ""}
           onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
