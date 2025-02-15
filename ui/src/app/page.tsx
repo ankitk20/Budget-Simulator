@@ -141,6 +141,7 @@ export default function BudgetSimulation() {
           type="text"
           defaultValue={row.original.category || ""}
           onChange={(e) => updateCell(row.index, "category", e.target.value)}
+          onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
 
         />
@@ -154,6 +155,7 @@ export default function BudgetSimulation() {
           type="text"
           defaultValue={row.original.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
+          onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
 
         />
@@ -167,6 +169,7 @@ export default function BudgetSimulation() {
           type="number"
           defaultValue={row.original.currAmt || ""}
           onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
+          onFocus={(e) => e.target.select()}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
 
         />
@@ -180,6 +183,7 @@ export default function BudgetSimulation() {
           type="number"
           defaultValue={row.original.monthlyAmt || ""}
           onChange={(e) => updateCell(row.index, "monthlyAmt", Number(e.target.value))}
+          onFocus={(e) => e.target.select()}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
 
         />
@@ -193,6 +197,7 @@ export default function BudgetSimulation() {
           type="number"
           defaultValue={row.original.startYear || ""}
           onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
+          onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 
         />
@@ -206,6 +211,7 @@ export default function BudgetSimulation() {
           type="number"
           defaultValue={row.original.numOfYears || ""}
           onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
+          onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 
         />
