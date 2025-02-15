@@ -274,7 +274,7 @@ export default function BudgetSimulation() {
   ];
 
   const fetchStream = async () => {
-    // setTableData([...editedData.current]);
+    setTableData([...editedData.current]);
     const simulationInput = {
       simYr: 30,
       inflRate: 7,
@@ -288,7 +288,7 @@ export default function BudgetSimulation() {
       inv: {}
     };
     
-      editedData.current.forEach((row) => {
+    editedData.current.forEach((row) => {
       const category = row.category;
       const type = row.type;
       
@@ -301,7 +301,7 @@ export default function BudgetSimulation() {
         rateOfInt: row.rateOfInterest || 0,
         rateOfInc: row.rateOfIncrement || 0
       };
-      
+    
       if (!simulationInput[category]) {
         simulationInput[category] = {};
       }
@@ -309,7 +309,6 @@ export default function BudgetSimulation() {
       simulationInput[category][type] = entry;
     });
 
-    
     setLoading(true);
 
     const response = await fetch("/api/simulation", {
