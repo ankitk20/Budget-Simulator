@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -87,8 +87,9 @@ const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
+  const editedData = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
-
+  console.log(editedData);
   const simulationInput = {
     simYr: 30,
     inflRate: 7,
@@ -102,7 +103,7 @@ export default function BudgetSimulation() {
     inv: {}
   };
 
-  tableData.forEach((row) => {
+  editedData.current.forEach((row) => {
     const category = row.category;
     const type = row.type;
 
@@ -123,12 +124,11 @@ export default function BudgetSimulation() {
     simulationInput[category][type] = entry;
   });
 
-  const updateCell = (rowIndex: number, columnId: string, value: string | number) => {
-    setTableData((old) =>
-      old.map((row, index) =>
-        index === rowIndex ? { ...row, [columnId]: value } : row
-      )
-    );
+  const updateCell = (index: number, key: string, value: any) => {
+    editedData.current[index] = {
+      ...editedData.current[index],
+      [key]: value,
+    };
   };
 
   const columns = [
@@ -138,7 +138,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="text"
-          defaultValue={row.original.category || ""}
+          value={editedData.current[row.index]?.category || ""}
           onChange={(e) => updateCell(row.index, "category", e.target.value)}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
@@ -152,7 +152,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="text"
-          defaultValue={row.original.type || ""}
+          value={editedData.current[row.index]?.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
@@ -166,7 +166,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.currAmt || ""}
+          value={editedData.current[row.index]?.currAmt || ""}
           onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
@@ -180,7 +180,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.monthlyAmt || ""}
+          defaultValue={editedData.current[row.index]?.monthlyAmt || ""}
           onChange={(e) => updateCell(row.index, "monthlyAmt", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
@@ -194,7 +194,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.startYear || ""}
+          defaultValue={editedData.current[row.index]?.startYear || ""}
           onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -208,7 +208,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.numOfYears || ""}
+          defaultValue={editedData.current[row.index]?.numOfYears || ""}
           onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -222,7 +222,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.rateOfInterest || ""}
+          defaultValue={editedData.current[row.index]?.rateOfInterest || ""}
           onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 
@@ -235,7 +235,7 @@ export default function BudgetSimulation() {
       cell: ({ row }) => (
         <input
           type="number"
-          defaultValue={row.original.rateOfIncrement || ""}
+          defaultValue={editedData.current[row.index]?.rateOfIncrement || ""}
           onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 
@@ -246,7 +246,44 @@ export default function BudgetSimulation() {
   ];
 
   const fetchStream = async () => {
+    // setTableData([...editedData.current]);
+    const simulationInput = {
+      simYr: 30,
+      inflRate: 7,
+      ltcgTaxRate: 12.5,
+      stcgTaxRate: 20.0,
+      country: "USA",
+      currency: "USD",
+      income: {},
+      expense: {},  
+      debt: {},
+      inv: {}
+    };
+    
+      editedData.current.forEach((row) => {
+      const category = row.category;
+      const type = row.type;
+      
+      const entry = {
+        currAmt: row.currAmt || 0,
+        monthlyAmt: row.monthlyAmt || 0,
+        downPay: row.downPayment || 0,
+        stYr: row.startYear || 2025,
+        numOfYr: row.numOfYears || 0,
+        rateOfInt: row.rateOfInterest || 0,
+        rateOfInc: row.rateOfIncrement || 0
+      };
+      
+      if (!simulationInput[category]) {
+        simulationInput[category] = {};
+      }
+      
+      simulationInput[category][type] = entry;
+    });
+
+    
     setLoading(true);
+
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
