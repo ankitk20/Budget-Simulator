@@ -13,7 +13,7 @@ export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editDataRef = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
-  const chartDataRef = useRef<LineChartData>({data: []});
+  const lineChartDataRef = useRef<LineChartData>({data: []});
   const [chartData, setChartData] = useState<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
@@ -41,7 +41,8 @@ export default function BudgetSimulation() {
 
   const fetchStream = async () => {
     setTableData([...editDataRef.current]);
-    chartDataRef.current = {data: []};
+    lineChartDataRef.current = {data: []};
+    ribbonChartDataRef.current = [];
     const simulationInput = {
       simYr: 30,
       inflRate: 7,
@@ -118,7 +119,7 @@ export default function BudgetSimulation() {
             const inflAdjNetWorth = yearData.summary?.inflAdjNtWrth || 0;
 
             // Update chart data
-            chartDataRef.current.data.push({
+            lineChartDataRef.current.data.push({
               year: Number(year),
               ntWrth: netWorth,
               inflAdjNtWrth: inflAdjNetWorth
@@ -151,7 +152,7 @@ export default function BudgetSimulation() {
               })
             );
 
-            setChartData({data: [...chartDataRef.current.data]}); // Update state once all data is processed
+            setChartData({data: [...lineChartDataRef.current.data]}); // Update state once all data is processed
             setRibbonChartData([...ribbonChartDataRef.current]); // Update state for Ribbon Chart
           } catch (error) {
             console.error("Error parsing JSON:", error);
