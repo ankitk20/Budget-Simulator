@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { initialData, simulationInput, DataEntry } from "../app/utils/data";
+import { initialData, SimulationInput, DataEntry } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
@@ -32,18 +32,18 @@ export default function BudgetSimulation() {
       rateOfInc: row.rateOfIncrement || 0
     };
 
-    if (!simulationInput[category]) {
-      simulationInput[category] = {};
-    }
+    // if (!simulationInput[category]) {
+    //   simulationInput[category] = {};
+    // }
 
-    simulationInput[category][type] = entry;
+    // simulationInput[category][type] = entry;
   });
 
   const fetchStream = async () => {
     setTableData([...editDataRef.current]);
     lineChartDataRef.current = {data: []};
     ribbonChartDataRef.current = [];
-    const simulationInput = {
+    const simulationInput: SimulationInput = {
       simYr: 30,
       inflRate: 7,
       ltcgTaxRate: 12.5,

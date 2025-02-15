@@ -76,15 +76,26 @@ export const initialData: DataEntry[] = [
 
 export const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
 
-export const simulationInput = {
-  simYr: 30,
-  inflRate: 7,
-  ltcgTaxRate: 12.5,
-  stcgTaxRate: 20.0,
-  country: "USA",
-  currency: "USD",
-  income: {},
-  expense: {},  
-  debt: {},
-  inv: {}
+export type EntryType = {
+  currAmt: number;       // Current amount
+  monthlyAmt: number;    // Monthly contribution
+  downPay: number;       // Down payment
+  stYr: number;          // Start year
+  numOfYr: number;       // Number of years
+  rateOfInt: number;     // Rate of interest
+  rateOfInc: number;     // Rate of increment
 };
+
+export type SimulationInput = {
+  simYr: number;
+  inflRate: number;
+  ltcgTaxRate: number;
+  stcgTaxRate: number;
+  country: string;
+  currency: string;
+  income: Record<string, EntryType>;
+  expense: Record<string, EntryType>;
+  debt: Record<string, EntryType>;
+  inv: Record<string, EntryType>;
+  [key: string]: Record<string, EntryType> | number | string; // Allow dynamic categories
+}; 
