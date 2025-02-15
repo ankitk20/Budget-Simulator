@@ -1,19 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { initialData, years, simulationInput } from "./utils/data";
+import { initialData, simulationInput } from "./utils/data";
 import SimulationButton from "../components/SimulationButton";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-} from "@tanstack/react-table";
+import BudgetTable from "../components/BudgetTable";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editedData = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
 
   editedData.current.forEach((row) => {
     const category = row.category;
@@ -35,154 +30,6 @@ export default function BudgetSimulation() {
 
     simulationInput[category][type] = entry;
   });
-
-  const updateCell = (index: number, key: string, value: any) => {
-    editedData.current[index] = {
-      ...editedData.current[index],
-      [key]: value,
-    };
-  };
-
-  const addRowAt = (index: number) => {
-    const newRow: DataEntry = {
-      category: editedData.current[index]["category"] || "",
-      type: "",
-      currAmt: 0,
-      monthlyAmt: 0,
-      startYear: 2025,
-      numOfYears: 0,
-      rateOfInterest: 0,
-      rateOfIncrement: 0,
-    };
-    editedData.current.splice(index + 1, 0, newRow);
-    setTableData([...editedData.current]);
-  };
-
-  const columns = [
-    {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => (
-        <div
-          className="relative"
-          onMouseEnter={() => setHoveredRow(row.index)}
-          onMouseLeave={() => setHoveredRow(null)}
-        >
-          <input
-            type="text"
-            defaultValue={editedData.current[row.index]?.category || ""}
-            onChange={(e) => updateCell(row.index, "category", e.target.value)}
-            className="text-inherit bg-transparent border-none outline-none w-full"
-          />
-          {hoveredRow === row.index && (
-            <button 
-              onClick={() => addRowAt(row.index)} 
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-1 bg-green-500 text-white rounded"
-            >
-              +
-            </button>
-          )}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "type",
-      header: "Type",
-      cell: ({ row }) => (
-        <input
-          type="text"
-          defaultValue={editedData.current[row.index]?.type || ""}
-          onChange={(e) => updateCell(row.index, "type", e.target.value)}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "currAmt",
-      header: "Current Amount",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.currAmt || ""}
-          onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "monthlyAmt",
-      header: "Monthly Amount",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.monthlyAmt || ""}
-          onChange={(e) => updateCell(row.index, "monthlyAmt", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "startYear",
-      header: "Start Year",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.startYear || ""}
-          onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "numOfYears",
-      header: "Number of Years",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.numOfYears || ""}
-          onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "rateOfInterest",
-      header: "Rate of Interest (%)",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.rateOfInterest || ""}
-          onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
-    },
-    {
-      accessorKey: "rateOfIncrement",
-      header: "Rate of Increment (%)",
-      cell: ({ row }) => (
-        <input
-          type="number"
-          defaultValue={editedData.current[row.index]?.rateOfIncrement || ""}
-          onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
-    },
-    ...years.map((year) => ({ accessorKey: year, header: year })),
-  ];
 
   const fetchStream = async () => {
     setTableData([...editedData.current]);
@@ -280,35 +127,10 @@ export default function BudgetSimulation() {
     setLoading(false);
   };
 
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
   return (
     <div className="p-4">
       <SimulationButton fetchStream={fetchStream} loading={loading} />
-      <table className="border-collapse border border-gray-300 w-full">
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th key={header.id} className="border border-gray-300 p-1 min-w-[150px] w-[200px] text-left">{flexRender(header.column.columnDef.header, header.getContext())}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="border border-gray-300 p-1 min-w-[150px] w-[200px] text-left">{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editedData} />
     </div>
   );
 }
