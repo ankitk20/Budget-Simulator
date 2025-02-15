@@ -55,12 +55,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
           onMouseEnter={() => setHoveredRow(row.index)}
           onMouseLeave={() => setHoveredRow(null)}
         >
-          <input
-            type="text"
-            defaultValue={editDataRef.current[row.index]?.category || ""}
-            onChange={(e) => updateCell(row.index, "category", e.target.value)}
-            className="text-inherit bg-transparent border-none outline-none w-full"
-          />
+          {editDataRef.current[row.index]?.category ?? ""}
           {hoveredRow === row.index && (
           <AddRowButton onAddRow={() => addRowAt(row.index)} />
           )}
