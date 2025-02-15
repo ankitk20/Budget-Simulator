@@ -4,11 +4,15 @@ import { useRef, useState } from "react";
 import { initialData, simulationInput, DataEntry } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
+import YearlyLineChart from "./YearlyLineChart";
+import { ChartProps } from "./YearlyLineChart";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
   const editDataRef = useRef<DataEntry[]>([...initialData]);
   const [loading, setLoading] = useState(false);
+  const chartDataRef = useRef<ChartProps>({data: []});
+  const [chartData, setChartData] = useState<ChartProps>({data: []});
 
   editDataRef.current.forEach((row) => {
     const category = row.category;
@@ -33,6 +37,7 @@ export default function BudgetSimulation() {
 
   const fetchStream = async () => {
     setTableData([...editDataRef.current]);
+    chartDataRef.current = {data: []};
     const simulationInput = {
       simYr: 30,
       inflRate: 7,
@@ -104,6 +109,17 @@ export default function BudgetSimulation() {
               return;
             }
 
+            // Extract net worth data
+            const netWorth = yearData.summary?.ntWrth || 0;
+            const inflAdjNetWorth = yearData.summary?.inflAdjNtWrth || 0;
+
+            // Update chart data
+            chartDataRef.current.data.push({
+              year: Number(year),
+              ntWrth: netWorth,
+              inflAdjNtWrth: inflAdjNetWorth
+            });
+
             setTableData((prevData) =>
               prevData.map((row) => {
                 const categoryKey = row.category;
@@ -117,6 +133,8 @@ export default function BudgetSimulation() {
                 return row;
               })
             );
+
+            setChartData({data: [...chartDataRef.current.data]}); // Update state once all data is processed
           } catch (error) {
             console.error("Error parsing JSON:", error);
           }
@@ -130,6 +148,7 @@ export default function BudgetSimulation() {
   return (
     <div className="p-4">
       <SimulationButton fetchStream={fetchStream} loading={loading} />
+      <YearlyLineChart  data={ chartData.data } />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
     </div>
   );
