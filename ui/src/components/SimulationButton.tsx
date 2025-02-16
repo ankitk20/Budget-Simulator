@@ -8,12 +8,14 @@ interface SimulationButtonProps {
       <button
         onClick={fetchStream}
         disabled={loading}
-        className={`p-2 bg-blue-500 text-white mb-4 rounded ${
-          loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-        }`}
+        className={`text-white px-4 py-2 my-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 
+          ${loading 
+            ? "cursor-not-allowed" 
+            : "rounded hover:bg-gray-600 transition"
+          }
+        `}
       >
         {loading ? "Simulating..." : "Run Simulation"}
       </button>
     );
   }
-  

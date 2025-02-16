@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { years, DataEntry } from "../app/utils/data";
+import { years, DataEntry, isInputColumnKeys } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import {
   useReactTable,
@@ -14,14 +14,7 @@ interface BudgetTableProps {
 
 export default function BudgetTable({ tableData, setTableData, editDataRef }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const handleEdit = (rowIndex: number, column: string, value: string | number) => {
-    const updatedData = [...tableData];
-    updatedData[rowIndex][column] = value;
-    setTableData(updatedData);
-
-    // Update reference without triggering re-render
-    editDataRef.current[rowIndex][column] = value;
-  };
+  const [showInputs, setShowInputs] = useState(true);
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
@@ -168,30 +161,46 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
   });
 
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-[800px] shadow-lg rounded-lg border border-gray-700">
+    <div className="overflow-x-auto overflow-y-auto max-h-[750px] shadow-lg rounded-lg border border-gray-700">
+      {/* Toggle Button */}
+      <div className="flex justify-start p-2">
+        <button
+          className="px-3 py-1 text-sm font-semibold bg-gray-700 text-gray-300 rounded hover:bg-gray-600 transition"
+          onClick={() => setShowInputs((prev) => !prev)}
+        >
+          {showInputs ? "Hide Inputs" : "Show Inputs"}
+        </button>
+      </div>
+  
       <table className="w-full border-collapse text-white bg-gray-900">
-        {/* Sticky Header */}
+        {/* Table Header */}
         <thead className="sticky top-0 z-10 shadow-md bg-gray-800 text-gray-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="border border-gray-700 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase"
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
+              {headerGroup.headers.map((header) => {
+              const isInputColumn = isInputColumnKeys.includes(header.column.id);
+  
+                return (
+                  <th
+                    key={header.id}
+                    className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase 
+                      ${!showInputs && isInputColumn ? "hidden" : ""}
+                    `}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                );
+              })}
             </tr>
           ))}
         </thead>
-
+  
         {/* Table Body */}
         <tbody>
           {table.getRowModel().rows.map((row, rowIndex) => {
             const isSummaryRow = row.original?.category === "summary";
             const isRatioRow = row.original?.category === "ratio";
-
+  
             return (
               <tr
                 key={row.id}
@@ -203,13 +212,13 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
               >
                 {row.getVisibleCells().map((cell) => {
                   const cellKey = cell.column.id;
-                  const isEditable = editDataRef.current.includes(cellKey) && !isSummaryRow && !isRatioRow;
-
+                  const isInputColumn = isInputColumnKeys.includes(cellKey);
+  
                   return (
                     <td
                       key={cell.id}
-                      className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left
-                        ${isEditable ? "bg-gray-700 text-yellow-300 font-semibold" : ""}
+                      className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left 
+                        ${!showInputs && isInputColumn ? "hidden" : ""}
                       `}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -222,5 +231,5 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
         </tbody>
       </table>
     </div>
-  );
+  );  
 }

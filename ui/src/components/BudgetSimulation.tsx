@@ -8,7 +8,6 @@ import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
 import YearlyRibbonChart from "./YearlyRibbonChart";
 import { RibbonChartData } from "./YearlyRibbonChart";
-import FireFortuneForm from "./UserInput";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
@@ -51,12 +50,6 @@ export default function BudgetSimulation() {
     const priority = priorityRef.current?.value;
     const years = yearsRef.current?.value ? Number(yearsRef.current.value) : undefined;
     const fortuneAmount = fortuneAmountRef.current?.value ? Number(fortuneAmountRef.current.value) : undefined;
-
-    // if (!priority || (priority === "fortune" && (!fortuneAmount || !years)) || (priority === "fire" && !years)) {
-    //   alert("Please fill out all required fields.");
-    //   return;
-    // }
-    console.log("Simulating with:", { priority, years, fortuneAmount });
 
     setTableData([...editDataRef.current]);
     lineChartDataRef.current = {data: []};
@@ -190,7 +183,6 @@ export default function BudgetSimulation() {
 
   return (
     <div className="p-4">
-      {/* <FireFortuneForm /> */}
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
       <YearlyLineChart  data={ lineChartData.data } />

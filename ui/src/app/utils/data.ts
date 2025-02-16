@@ -99,3 +99,12 @@ export type SimulationInput = {
   inv: Record<string, EntryType>;
   [key: string]: Record<string, EntryType> | number | string; // Allow dynamic categories
 }; 
+
+export const isInputColumnKeys = [
+  "currAmt",
+  "monthlyAmt",
+  "startYear",
+  "numOfYears",
+  "rateOfInterest",
+  "rateOfIncrement",
+];
