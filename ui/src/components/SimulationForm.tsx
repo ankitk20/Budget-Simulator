@@ -89,7 +89,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
 
         {/* Current Age */}
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Current Age</label>
+          <label className="block text-gray-300 text-sm mb-1">Current Age (Years)</label>
           <input
             ref={currentAgeRef}
             type="number"
@@ -109,7 +109,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
 
         {/* Life Expectancy */}
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Expected Life Age</label>
+          <label className="block text-gray-300 text-sm mb-1">Expected Life Age (Years)</label>
           <input
             ref={lifeExpectancyRef}
             type="number"
