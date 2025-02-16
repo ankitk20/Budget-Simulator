@@ -64,6 +64,9 @@ class YearData(BaseModel):
 # Simulation Output Model (Mapping Years to Data)
 class SimulationOutput(BaseModel):
     _root_: Dict[str, YearData]  # Infinite mapping of years (e.g., {2025: YearData, 2026: YearData})
+    currency: str
+    symbol: str
+    locale: str
 
     class Config:
         populate_by_name = True

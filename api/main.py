@@ -9,6 +9,7 @@ import os
 import time
 import random
 import math
+from country_mapping import get_country_data
 from fastapi.security import OAuth2PasswordBearer
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -217,12 +218,17 @@ async def simulate_financials(request: Request, payload: SimulationInput):
     try:
         parsed_payload = SimulationInput.model_validate(payload)  # Validate using Pydantic
         parsed_payload = parsed_payload.model_dump(by_alias=True)  # Convert to dict with camelCase keys
-    
+
         # Call your processing function
         async def result_generator():
             async for result in simulate_years(parsed_payload):
+                result.update({
+                    "locale": get_country_data(parsed_payload["country"], "locale"),
+                    "currency": get_country_data(parsed_payload["country"], "currency"),
+                    "symbol": get_country_data(parsed_payload["country"], "symbol"),
+                })
                 yield json.dumps(result) + "\n"
-                await asyncio.sleep(0.1)
+                # await asyncio.sleep(0.1)
 
         return StreamingResponse(result_generator(), media_type="application/json")
 
