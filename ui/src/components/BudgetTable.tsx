@@ -1,20 +1,25 @@
 import { useState } from "react";
-import { years, DataEntry, isInputColumnKeys } from "../app/utils/data";
+import { years, TableData, isInputColumnKeys } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
+  Row,
 } from "@tanstack/react-table";
 interface BudgetTableProps {
   tableData: any[];
   setTableData: (data: any[]) => void;
   editDataRef: React.RefObject<any[]>;
+  simYr: number;
 }
 
-export default function BudgetTable({ tableData, setTableData, editDataRef }: BudgetTableProps) {
+export default function BudgetTable({ tableData, setTableData, editDataRef, simYr }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(true);
+  // const [years, setYears] = useState(() => 
+  //   Array.from({ length: simYr }, (_, i) => String(new Date().getFullYear() + i))
+  // );
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
@@ -24,12 +29,12 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
   };
 
   const addRowAt = (index: number) => {
-    const newRow: DataEntry = {
+    const newRow: TableData = {
       category: editDataRef.current[index]["category"] || "",
       type: "",
       currAmt: 0,
       monthlyAmt: 0,
-      startYear: 2025,
+      stYr: undefined,
       numOfYears: 0,
       rateOfInterest: 0,
       rateOfIncrement: 0,
@@ -42,7 +47,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "category",
       header: "Category",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <div
           className="relative"
           onMouseEnter={() => setHoveredRow(row.index)}
@@ -58,7 +63,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "type",
       header: "Type",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="text"
           defaultValue={editDataRef.current[row.index]?.type || ""}
@@ -72,7 +77,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "currAmt",
       header: "Current Amount",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.currAmt || ""}
@@ -86,7 +91,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "monthlyAmt",
       header: "Monthly Amount",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.monthlyAmt || ""}
@@ -100,10 +105,10 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "startYear",
       header: "Start Year",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
-          defaultValue={editDataRef.current[row.index]?.startYear || ""}
+          defaultValue={editDataRef.current[row.index]?.stYr || ""}
           onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -114,7 +119,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "numOfYears",
       header: "Number of Years",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.numOfYears || ""}
@@ -128,7 +133,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "rateOfInterest",
       header: "Rate of Interest (%)",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.rateOfInterest || ""}
@@ -141,7 +146,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
     {
       accessorKey: "rateOfIncrement",
       header: "Rate of Increment (%)",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.rateOfIncrement || ""}
