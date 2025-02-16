@@ -168,16 +168,16 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
   });
 
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-[750px] shadow-lg rounded-lg border border-gray-600">
-      <table className="w-full border-collapse bg-gray-900 text-white">
-        {/* Table Header with Sticky Effect */}
-        <thead className="bg-gray-700 text-gray-200 sticky top-0 z-10 shadow-md">
+    <div className="overflow-x-auto overflow-y-auto max-h-[800px] shadow-lg rounded-lg border border-gray-700">
+      <table className="w-full border-collapse text-white bg-gray-900">
+        {/* Sticky Header */}
+        <thead className="sticky top-0 z-10 shadow-md bg-gray-800 text-gray-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="border border-gray-600 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase tracking-wide"
+                  className="border border-gray-700 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase"
                 >
                   {flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
@@ -188,20 +188,37 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
 
         {/* Table Body */}
         <tbody>
-          {table.getRowModel().rows.map((row, rowIndex) => (
-            <tr
-              key={row.id}
-              className={`border border-gray-600 ${
-                rowIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"
-              } hover:bg-gray-700 transition-all duration-200`}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border border-gray-600 p-2 min-w-[150px] w-[200px]">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {table.getRowModel().rows.map((row, rowIndex) => {
+            const isSummaryRow = row.original?.category === "summary";
+            const isRatioRow = row.original?.category === "ratio";
+
+            return (
+              <tr
+                key={row.id}
+                className={`transition-all duration-200 
+                  ${rowIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"}
+                  ${!isSummaryRow && !isRatioRow ? "hover:bg-gray-700" : ""}
+                  ${isSummaryRow || isRatioRow ? "font-bold" : ""}
+                `}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  const cellKey = cell.column.id;
+                  const isEditable = editDataRef.current.includes(cellKey) && !isSummaryRow && !isRatioRow;
+
+                  return (
+                    <td
+                      key={cell.id}
+                      className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left
+                        ${isEditable ? "bg-gray-700 text-yellow-300 font-semibold" : ""}
+                      `}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
