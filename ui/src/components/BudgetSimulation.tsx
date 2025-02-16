@@ -25,6 +25,7 @@ export default function BudgetSimulation() {
   const fortuneAmtRef = useRef<HTMLInputElement>(null);
   const currentAgeRef = useRef<HTMLInputElement>(null);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLSelectElement>(null);
 
   editDataRef.current.forEach((row) => {
     const category = row.category;
@@ -55,6 +56,9 @@ export default function BudgetSimulation() {
     const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : undefined;
     const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : undefined;
     const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : undefined;
+    const country = countryRef.current?.value;
+
+    console.log(priority, years, fortuneAmt, currentAge, lifeExpectancy, country);
 
     setTableData([...editDataRef.current]);
     lineChartDataRef.current = {data: []};
@@ -195,6 +199,7 @@ export default function BudgetSimulation() {
         fortuneAmtRef={fortuneAmtRef}
         currentAgeRef={currentAgeRef}
         lifeExpectancyRef={lifeExpectancyRef}
+        countryRef={countryRef}
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
