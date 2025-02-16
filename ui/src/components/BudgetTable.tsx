@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { years, TableData, isInputColumnKeys } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
+import DelRowButton from "./DelRowButton";
 import {
   useReactTable,
   getCoreRowModel,
@@ -47,6 +48,11 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     setTableData([...editDataRef.current]);
   };
 
+  const delRowAt = (index: number) => {
+    editDataRef.current.splice(index, 1);
+    setTableData([...editDataRef.current]);
+  };
+
   const columns = [
     {
       accessorKey: "category",
@@ -59,7 +65,16 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         >
           {editDataRef.current[row.index]?.category ?? ""}
           {hoveredRow === row.index && (
-          <AddRowButton onAddRow={() => addRowAt(row.index)} />
+          <div className="absolute top-0 right-0 flex space-x-2">
+            {/* Add Row Button */}
+            <AddRowButton
+              onAddRow={() => addRowAt(row.index)}
+            />
+            {/* Delete Row Button */}
+            <DelRowButton
+              onDelRow={() => delRowAt(row.index)}
+            />
+          </div>
           )}
         </div>
       ),
