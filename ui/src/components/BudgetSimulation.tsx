@@ -25,6 +25,7 @@ export default function BudgetSimulation() {
   const fortuneAmtRef = useRef<HTMLInputElement>(null);
   const currentAgeRef = useRef<HTMLInputElement>(null);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null);
+  const locale = useRef<{ [key: string]: string }>({});
 
   const fetchStream = async () => {
 
@@ -74,7 +75,7 @@ export default function BudgetSimulation() {
     });
 
     setLoading(true);
-    console.log(JSON.stringify(simulationInput));
+
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
@@ -113,6 +114,7 @@ export default function BudgetSimulation() {
             // Extract net worth data
             const netWorth = yearData.summary?.ntWrth || 0;
             const inflAdjNetWorth = yearData.summary?.inflAdjNtWrth || 0;
+            locale.current = {"locale": columnData["locale"], "currency": columnData["currency"]};
 
             // Update chart data
             lineChartDataRef.current.data.push({
@@ -173,7 +175,7 @@ export default function BudgetSimulation() {
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <div className="mb-8">
-        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={Number(yearsRef.current?.value)} />
+        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={Number(yearsRef.current?.value)} locale={locale.current} />
       </div>
       <div className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />

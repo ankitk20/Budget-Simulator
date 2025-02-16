@@ -12,9 +12,10 @@ interface BudgetTableProps {
   setTableData: (data: any[]) => void;
   editDataRef: React.RefObject<any[]>;
   simYr: number;
+  locale: { [key: string]: string }; // Key-value dictionary for locale
 }
 
-export default function BudgetTable({ tableData, setTableData, editDataRef, simYr }: BudgetTableProps) {
+export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(true);
   // const [years, setYears] = useState(() => 
@@ -77,39 +78,71 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     {
       accessorKey: "currAmt",
       header: "Current Amount",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.currAmt || ""}
-          onChange={(e) => updateCell(row.index, "currAmt", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const rawValue = editDataRef.current[row.index]?.currAmt || "";
+        
+        // Format value with currency (rounded to zero decimals)
+        const formattedValue = rawValue
+        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+            style: "currency",
+            currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0
+          })
+        : "";
+    
+        return (
+          <input
+            type="text" // Changing to "text" for formatted display
+            defaultValue={formattedValue}
+            onChange={(e) => {
+              const numericValue = Number(e.target.value.replace(/,/g, '')); // Remove commas if any
+              updateCell(row.index, "currAmt", numericValue);
+            }}
+            onFocus={(e) => e.target.select()}
+            className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+          />
+        );
+      }
     },
     {
       accessorKey: "monthlyAmt",
       header: "Monthly Amount",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.monthlyAmt || ""}
-          onChange={(e) => updateCell(row.index, "monthlyAmt", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const rawValue = editDataRef.current[row.index]?.monthlyAmt || "";
+        
+        // Format value with currency (rounded to zero decimals)
+        const formattedValue = rawValue
+        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+            style: "currency",
+            currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0
+          })
+        : "";
+    
+        return (
+          <input
+            type="text" // Changing to "text" for formatted display
+            defaultValue={formattedValue}
+            onChange={(e) => {
+              const numericValue = Number(e.target.value.replace(/,/g, '')); // Remove commas if any
+              updateCell(row.index, "monthlyAmt", numericValue);
+            }}
+            onFocus={(e) => e.target.select()}
+            className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+          />
+        );
+      },
     },
     {
-      accessorKey: "startYear",
+      accessorKey: "stYr",
       header: "Start Year",
       cell: ({ row }: { row: Row<TableData> }) => (
         <input
           type="number"
           defaultValue={editDataRef.current[row.index]?.stYr || ""}
-          onChange={(e) => updateCell(row.index, "startYear", Number(e.target.value))}
+          onChange={(e) => updateCell(row.index, "stYr", Number(e.target.value))}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 
@@ -156,7 +189,38 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         />
       ),
     },
-    ...years.map((year) => ({ accessorKey: year, header: year })),
+    ...years.map((year) => ({
+      accessorKey: year,
+      header: year,
+      cell: ({ row }: { row: Row<TableData> }) => {
+        // Get the raw value for the specific year, defaulting to 0 if there's no value
+        const rawValue = row.getValue(year) || 0;
+    
+        // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
+        const formattedValue = rawValue
+        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+          style: "currency",
+          currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+          minimumFractionDigits: 0, 
+          maximumFractionDigits: 0
+        })
+          : "";
+    
+        return (
+          <input
+            type="text"
+            defaultValue={formattedValue} // Display the formatted value, even if empty
+            onChange={(e) => {
+              // Remove commas and convert the value to a number
+              const numericValue = Math.round(Number(e.target.value.replace(/,/g, ''))); // Round to zero decimal
+              updateCell(row.index, year, numericValue); // Update the respective year with the numeric value
+            }}
+            onFocus={(e) => e.target.select()} // Select all text on focus
+            className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+          />
+        );
+      },
+    }))
   ];
 
   const table = useReactTable({
