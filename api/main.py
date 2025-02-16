@@ -200,7 +200,6 @@ limiter = Limiter(key_func=get_remote_address)
 # TODO currently all inv types are mandatory due to bal eat hardcoding
 # TODO handle api response where things are -ve
 # TODO: Downpayment adjust is pending
-# TODO: Current Amt bug is there as it sets the current year to 0 if inv is starting from future years and also sets it to 0 if inv ends
 @app.post("/simulate")
 @limiter.limit("50/minute")  # Limit requests per minute
 async def simulate_financials(request: Request, payload: SimulationInput):

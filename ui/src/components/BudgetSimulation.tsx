@@ -8,6 +8,7 @@ import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
 import YearlyRibbonChart from "./YearlyRibbonChart";
 import { RibbonChartData } from "./YearlyRibbonChart";
+import SimulationForm from "./SimulationForm";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
@@ -21,7 +22,9 @@ export default function BudgetSimulation() {
   // Refs for user inputs (FIRE vs Fortune form)
   const priorityRef = useRef<HTMLSelectElement>(null);
   const yearsRef = useRef<HTMLInputElement>(null);
-  const fortuneAmountRef = useRef<HTMLInputElement>(null);
+  const fortuneAmtRef = useRef<HTMLInputElement>(null);
+  const currentAgeRef = useRef<HTMLInputElement>(null);
+  const lifeExpectancyRef = useRef<HTMLInputElement>(null);
 
   editDataRef.current.forEach((row) => {
     const category = row.category;
@@ -49,7 +52,9 @@ export default function BudgetSimulation() {
     // Read user inputs only when Simulate button is clicked
     const priority = priorityRef.current?.value;
     const years = yearsRef.current?.value ? Number(yearsRef.current.value) : undefined;
-    const fortuneAmount = fortuneAmountRef.current?.value ? Number(fortuneAmountRef.current.value) : undefined;
+    const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : undefined;
+    const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : undefined;
+    const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : undefined;
 
     setTableData([...editDataRef.current]);
     lineChartDataRef.current = {data: []};
@@ -183,6 +188,14 @@ export default function BudgetSimulation() {
 
   return (
     <div className="p-4">
+      {/* User Input Form */}
+      <SimulationForm
+        priorityRef={priorityRef}
+        yearsRef={yearsRef}
+        fortuneAmtRef={fortuneAmtRef}
+        currentAgeRef={currentAgeRef}
+        lifeExpectancyRef={lifeExpectancyRef}
+      />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
       <YearlyLineChart  data={ lineChartData.data } />
