@@ -1,4 +1,4 @@
-import { ComposedChart, XAxis, YAxis, Tooltip, Legend, Area, Line, ResponsiveContainer } from "recharts";
+import { ComposedChart, XAxis, YAxis, Tooltip, Legend, Area, ResponsiveContainer } from "recharts";
 
 export interface RibbonChartData {
   year: number;
@@ -22,7 +22,7 @@ const getCategoryKeys = (data: RibbonChartData[]) => {
 };
 
 const getColor = (index: number) => {
-  const colors = ["#008000", "#ff6666", "#ffcc66", "#6666ff", "#66ccff", "#ff33cc", "#9900cc"];
+  const colors = ["#34D399", "#F87171", "#FACC15", "#818CF8", "#60A5FA", "#EC4899", "#9333EA"];
   return colors[index % colors.length]; // Cycle through colors
 };
 
@@ -30,22 +30,31 @@ const RibbonChart: React.FC<RibbonChartProps> = ({ data }) => {
   const categories = getCategoryKeys(data);
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <ComposedChart data={data}>
-        <XAxis dataKey="year" />
-        <YAxis tickFormatter={formatYAxis} />
-        <Tooltip formatter={(value) => formatYAxis(value as number)} />
-        <Legend />
+    <div className="p-4 bg-gray-900 rounded-lg shadow-lg">
+      <ResponsiveContainer width="100%" height={400}>
+        <ComposedChart data={data}>
+          <XAxis dataKey="year" stroke="#ddd" />
+          <YAxis tickFormatter={formatYAxis} stroke="#ddd" />
+          <Tooltip 
+            contentStyle={{ backgroundColor: "#1F2937", color: "#fff", border: "none" }} 
+            formatter={(value) => formatYAxis(value as number)} 
+          />
+          <Legend wrapperStyle={{ color: "#ddd" }} />
 
-        {categories.map((category, index) => (
-          category === "income" ? (
-            <Line key={category} type="monotone" dataKey={category} stroke={getColor(index)} strokeWidth={2} name={category} />
-          ) : (
-            <Area key={category} type="monotone" dataKey={category} stackId="1" fill={getColor(index)} stroke={getColor(index)} name={category} />
-          )
-        ))}
-      </ComposedChart>
-    </ResponsiveContainer>
+          {categories.map((category, index) => (
+            <Area 
+              key={category} 
+              type="monotone" 
+              dataKey={category} 
+              stackId="1" 
+              fill={getColor(index)} 
+              stroke={getColor(index)} 
+              name={category} 
+            />
+          ))}
+        </ComposedChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
 
