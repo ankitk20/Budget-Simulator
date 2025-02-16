@@ -30,7 +30,7 @@ const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
             axisLine={{ stroke: "#555" }} 
           />
           <Tooltip 
-            contentStyle={{ backgroundColor: "#1F2937", color: "#fff", border: "none" }} 
+            contentStyle={{ backgroundColor: "#121820", color: "#fff", border: "none" }} 
             itemStyle={{ color: "#fff" }} // Removes color indicators from items
             formatter={(value) => formatYAxis(value as number)} 
           />

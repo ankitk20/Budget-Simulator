@@ -36,7 +36,7 @@ const RibbonChart: React.FC<RibbonChartProps> = ({ data }) => {
           <XAxis dataKey="year" stroke="#ddd" />
           <YAxis tickFormatter={formatYAxis} stroke="#ddd" />
           <Tooltip 
-            contentStyle={{ backgroundColor: "#1F2937", color: "#fff", border: "none" }} 
+            contentStyle={{ backgroundColor: "#121820", color: "#fff", border: "none" }} 
             itemStyle={{ color: "#fff" }} // Removes color indicators from items
             formatter={(value) => formatYAxis(value as number)} 
           />
