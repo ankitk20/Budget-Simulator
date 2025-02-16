@@ -1,7 +1,24 @@
 # country_mapping.py
 
 COUNTRY_MAPPING = {
-        "au": {
+    "ae": {
+        "currency": "AED",
+        "symbol": "د.إ",
+        "locale": "ar-AE",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0,
+        "ltcgTaxRate": 0.0,
+        "stcgTaxRate": 0.0
+    },
+    "au": {
         "currency": "AUD",
         "symbol": "A$",
         "locale": "en-AU",
@@ -56,6 +73,23 @@ COUNTRY_MAPPING = {
         "currency": "CNY",
         "symbol": "¥",
         "locale": "zh-CN",
+        "inflRt": 0.0,
+        "incomeRtOfInc": 0.0,
+        "expRtOfInc": 0.0,
+        "homeLoanRtOfInt": 0.0,
+        "vehicleLoanRtOfInt": 0.0,
+        "EduLoanRtOfInt": 0.0,
+        "highRiskRtOfInt": 0.0,
+        "moderateRiskRtOfInt": 0.0,
+        "lowRiskRtOfInt": 0.0,
+        "savingsRtOfInt": 0.0,
+        "ltcgTaxRate": 0.0,
+        "stcgTaxRate": 0.0
+    },
+    "es": {
+        "currency": "EUR",
+        "symbol": "€",
+        "locale": "es-ES",
         "inflRt": 0.0,
         "incomeRtOfInc": 0.0,
         "expRtOfInc": 0.0,
