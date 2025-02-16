@@ -9,6 +9,7 @@ import { LineChartData } from "./YearlyLineChart";
 import YearlyRibbonChart from "./YearlyRibbonChart";
 import { RibbonChartData } from "./YearlyRibbonChart";
 import SimulationForm from "./SimulationForm";
+import Footer from "./Footer";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<DataEntry[]>(initialData);
@@ -211,6 +212,9 @@ export default function BudgetSimulation() {
       <div className="mb-8">
         <YearlyRibbonChart data={ribbonChartData} />
       </div>
+
+      {/* Footer Component */}
+      <Footer />
     </div>
   );
 }

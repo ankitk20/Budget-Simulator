@@ -1,17 +1,13 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-interface LineChartData {
+export interface LineChartData {
   data: { year: number; inflAdjNtWrth: number; ntWrth: number }[];
 }
 
 const formatYAxis = (value: number) => {
-  if (value >= 1_000_000_000) {
-    return `${(value / 1_000_000_000).toFixed(1)}B`;
-  } else if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1)}M`;
-  } else if (value >= 1_000) {
-    return `${(value / 1_000).toFixed(1)}K`;
-  }
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
   return value.toString();
 };
 
@@ -34,9 +30,9 @@ const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
             axisLine={{ stroke: "#555" }} 
           />
           <Tooltip 
-            formatter={(value: number) => formatYAxis(value)}
-            contentStyle={{ backgroundColor: "#333", borderColor: "#666", color: "#ddd" }}
-            itemStyle={{ color: "#ddd" }}
+            contentStyle={{ backgroundColor: "#1F2937", color: "#fff", border: "none" }} 
+            itemStyle={{ color: "#fff" }} // Removes color indicators from items
+            formatter={(value) => formatYAxis(value as number)} 
           />
           <Legend wrapperStyle={{ color: "#ddd" }} />
 

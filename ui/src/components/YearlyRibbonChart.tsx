@@ -30,13 +30,14 @@ const RibbonChart: React.FC<RibbonChartProps> = ({ data }) => {
   const categories = getCategoryKeys(data);
 
   return (
-    <div className="p-4 bg-gray-900 rounded-lg shadow-lg">
+    <div className="p-4 bg-gray-800 rounded-lg shadow-lg">
       <ResponsiveContainer width="100%" height={400}>
         <ComposedChart data={data}>
           <XAxis dataKey="year" stroke="#ddd" />
           <YAxis tickFormatter={formatYAxis} stroke="#ddd" />
           <Tooltip 
             contentStyle={{ backgroundColor: "#1F2937", color: "#fff", border: "none" }} 
+            itemStyle={{ color: "#fff" }} // Removes color indicators from items
             formatter={(value) => formatYAxis(value as number)} 
           />
           <Legend wrapperStyle={{ color: "#ddd" }} />
