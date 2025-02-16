@@ -21,12 +21,32 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
     <div className="mb-4 p-4 bg-gray-800 rounded-lg shadow">
       <h2 className="text-lg font-semibold text-gray-200 mb-2">Choose Your Goal</h2>
       <div className="grid grid-cols-3 gap-4">
-        {/* Priority Select */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">Priority</label>
-          <select ref={priorityRef} className="w-full p-2 rounded bg-gray-700 text-white">
-            <option value="fire">FIRE (Financial Independence, Retire Early)</option>
-            <option value="fortune">Fortune</option>
+
+         {/* Country */}
+         <div>
+          <label className="block text-gray-300 text-sm mb-1">Country</label>
+          <select ref={countryRef} className="w-full p-2 rounded bg-gray-700 text-white" defaultValue="us">
+            <option value="au">Australia</option>
+            <option value="br">Brazil</option>
+            <option value="ca">Canada</option>
+            <option value="cn">China</option>
+            <option value="fr">France</option>
+            <option value="de">Germany</option>
+            <option value="in">India</option>
+            <option value="id">Indonesia</option>
+            <option value="it">Italy</option>
+            <option value="jp">Japan</option>
+            <option value="mx">Mexico</option>
+            <option value="ru">Russia</option>
+            <option value="sa">Saudi Arabia</option>
+            <option value="sa">Singapore</option>
+            <option value="za">South Africa</option>
+            <option value="kr">South Korea</option>
+            <option value="es">Spain</option>
+            <option value="tr">Turkey</option>
+            <option value="ae">United Arab Emirates</option>
+            <option value="gb">United Kingdom</option>
+            <option value="us">United States of America</option>
           </select>
         </div>
 
@@ -105,34 +125,6 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             }}
             onFocus={(e) => e.target.select()}
           />
-        </div>
-
-         {/* Country */}
-         <div>
-          <label className="block text-gray-300 text-sm mb-1">Country</label>
-          <select ref={countryRef} className="w-full p-2 rounded bg-gray-700 text-white" defaultValue="us">
-            <option value="au">Australia</option>
-            <option value="br">Brazil</option>
-            <option value="ca">Canada</option>
-            <option value="cn">China</option>
-            <option value="fr">France</option>
-            <option value="de">Germany</option>
-            <option value="in">India</option>
-            <option value="id">Indonesia</option>
-            <option value="it">Italy</option>
-            <option value="jp">Japan</option>
-            <option value="mx">Mexico</option>
-            <option value="ru">Russia</option>
-            <option value="sa">Saudi Arabia</option>
-            <option value="sa">Singapore</option>
-            <option value="za">South Africa</option>
-            <option value="kr">South Korea</option>
-            <option value="es">Spain</option>
-            <option value="tr">Turkey</option>
-            <option value="ae">United Arab Emirates</option>
-            <option value="gb">United Kingdom</option>
-            <option value="us">United States of America</option>
-          </select>
         </div>
       </div>
     </div>
