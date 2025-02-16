@@ -131,7 +131,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             <option value="tr">Turkey</option>
             <option value="ae">United Arab Emirates</option>
             <option value="gb">United Kingdom</option>
-            <option value="us">USA</option>
+            <option value="us">United States of America</option>
           </select>
         </div>
       </div>
