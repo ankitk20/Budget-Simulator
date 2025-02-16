@@ -29,6 +29,8 @@ export default function BudgetSimulation() {
 
   const fetchStream = async () => {
 
+    setTableData(editDataRef.current);
+
     // Read user inputs only when Simulate button is clicked
     const country = countryRef.current?.value ? countryRef.current.value : "us";
     const years = yearsRef.current?.value ? Number(yearsRef.current.value): 1;
