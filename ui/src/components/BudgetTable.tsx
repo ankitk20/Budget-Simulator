@@ -168,25 +168,42 @@ export default function BudgetTable({ tableData, setTableData, editDataRef }: Bu
   });
 
   return (
-    <table className="border-collapse border border-gray-300 w-full">
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
+    <div className="overflow-x-auto overflow-y-auto max-h-[750px] shadow-lg rounded-lg border border-gray-600">
+      <table className="w-full border-collapse bg-gray-900 text-white">
+        {/* Table Header with Sticky Effect */}
+        <thead className="bg-gray-700 text-gray-200 sticky top-0 z-10 shadow-md">
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map(header => (
-                <th key={header.id} className="border border-gray-300 p-1 min-w-[150px] w-[200px] text-left">{flexRender(header.column.columnDef.header, header.getContext())}</th>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="border border-gray-600 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase tracking-wide"
+                >
+                  {flexRender(header.column.columnDef.header, header.getContext())}
+                </th>
               ))}
             </tr>
           ))}
         </thead>
+
+        {/* Table Body */}
         <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="border border-gray-300 p-1 min-w-[150px] w-[200px] text-left">{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+          {table.getRowModel().rows.map((row, rowIndex) => (
+            <tr
+              key={row.id}
+              className={`border border-gray-600 ${
+                rowIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"
+              } hover:bg-gray-700 transition-all duration-200`}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="border border-gray-600 p-2 min-w-[150px] w-[200px]">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
   );
 }
