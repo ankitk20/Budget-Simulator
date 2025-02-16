@@ -1,16 +1,14 @@
 import React, { RefObject } from "react";
 
 interface SimulationFormProps {
-  priorityRef: RefObject<HTMLSelectElement | null>;
+  countryRef: RefObject<HTMLSelectElement | null>;
   yearsRef: RefObject<HTMLInputElement | null>;
   fortuneAmtRef: RefObject<HTMLInputElement | null>;
   currentAgeRef: RefObject<HTMLInputElement | null>;
   lifeExpectancyRef: RefObject<HTMLInputElement | null>;
-  countryRef: RefObject<HTMLSelectElement | null>;
 }
 
 const SimulationForm: React.FC<SimulationFormProps> = ({ 
-  priorityRef, 
   yearsRef, 
   fortuneAmtRef, 
   currentAgeRef, 

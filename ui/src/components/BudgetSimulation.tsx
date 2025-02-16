@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { initialData, SimulationInput, DataEntry } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
@@ -12,65 +12,41 @@ import SimulationForm from "./SimulationForm";
 import Footer from "./Footer";
 
 export default function BudgetSimulation() {
-  const [tableData, setTableData] = useState<DataEntry[]>(initialData);
-  const editDataRef = useRef<DataEntry[]>([...initialData]);
-  const [loading, setLoading] = useState(false);
-  const lineChartDataRef = useRef<LineChartData>({data: []});
+  const [tableData, setTableData] = useState<TableData[]>(initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
-  const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
-    
-  // Refs for user inputs (FIRE vs Fortune form)
-  const priorityRef = useRef<HTMLSelectElement>(null);
+  const [loading, setLoading] = useState(false);
+  
+  const lineChartDataRef = useRef<LineChartData>({data: []});
+  const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
+  const editDataRef = useRef<TableData[]>([...initialData]);
+  const countryRef = useRef<HTMLSelectElement>(null);
   const yearsRef = useRef<HTMLInputElement>(null);
   const fortuneAmtRef = useRef<HTMLInputElement>(null);
   const currentAgeRef = useRef<HTMLInputElement>(null);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null);
-  const countryRef = useRef<HTMLSelectElement>(null);
-
-  editDataRef.current.forEach((row) => {
-    const category = row.category;
-    const type = row.type;
-
-    const entry = {
-      currAmt: row.currAmt || 0,
-      monthlyAmt: row.monthlyAmt || 0,
-      downPay: row.downPayment || 0,
-      stYr: row.startYear || 2025,
-      numOfYr: row.numOfYears || 0,
-      rateOfInt: row.rateOfInterest || 0,
-      rateOfInc: row.rateOfIncrement || 0
-    };
-
-    // if (!simulationInput[category]) {
-    //   simulationInput[category] = {};
-    // }
-
-    // simulationInput[category][type] = entry;
-  });
 
   const fetchStream = async () => {
 
     // Read user inputs only when Simulate button is clicked
-    const priority = priorityRef.current?.value;
-    const years = yearsRef.current?.value ? Number(yearsRef.current.value) : undefined;
-    const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : undefined;
-    const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : undefined;
-    const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : undefined;
-    const country = countryRef.current?.value;
+    const country = countryRef.current?.value ? countryRef.current.value : "us";
+    const years = yearsRef.current?.value ? Number(yearsRef.current.value): 1;
+    const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : 1;
+    const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : 1;
+    const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : 1;
 
-    console.log(priority, years, fortuneAmt, currentAge, lifeExpectancy, country);
-
-    setTableData([...editDataRef.current]);
     lineChartDataRef.current = {data: []};
     ribbonChartDataRef.current = [];
+
     const simulationInput: SimulationInput = {
-      simYr: 30,
+      simYr: years,
+      country: country,
+      currentAge: currentAge,
+      lifeExpectancy: lifeExpectancy,
+      fortuneAmt: fortuneAmt,
       inflRate: 7,
       ltcgTaxRate: 12.5,
       stcgTaxRate: 20.0,
-      country: "USA",
-      currency: "USD",
       income: {},
       expense: {},  
       debt: {},
@@ -85,21 +61,20 @@ export default function BudgetSimulation() {
         currAmt: row.currAmt || 0,
         monthlyAmt: row.monthlyAmt || 0,
         downPay: row.downPayment || 0,
-        stYr: row.startYear || 2025,
+        stYr: row.stYr || 2025,
         numOfYr: row.numOfYears || 0,
         rateOfInt: row.rateOfInterest || 0,
         rateOfInc: row.rateOfIncrement || 0
       };
     
       if (!simulationInput[category]) {
-        simulationInput[category] = {};
+        simulationInput[category] = {} as Record<string, EntryType>;
       }
-      
-      simulationInput[category][type] = entry;
+      (simulationInput[category] as Record<string, EntryType>)[type] = entry;
     });
 
     setLoading(true);
-
+    console.log(JSON.stringify(simulationInput));
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
@@ -186,25 +161,19 @@ export default function BudgetSimulation() {
     setLoading(false);
   };
 
-  const handleUserInput = (data: any) => {
-    console.log("User Input:", data);
-    // Handle FIRE or Fortune logic here
-  };
-
   return (
     <div className="p-4">
       {/* User Input Form */}
       <SimulationForm
-        priorityRef={priorityRef}
+        countryRef={countryRef}
         yearsRef={yearsRef}
         fortuneAmtRef={fortuneAmtRef}
         currentAgeRef={currentAgeRef}
         lifeExpectancyRef={lifeExpectancyRef}
-        countryRef={countryRef}
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <div className="mb-8">
-        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
+        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={Number(yearsRef.current?.value)} />
       </div>
       <div className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />
