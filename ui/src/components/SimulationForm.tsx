@@ -19,7 +19,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
 }) => {
   return (
     <div className="mb-4 p-4 bg-gray-800 rounded-lg shadow">
-      <h2 className="text-lg font-semibold text-gray-200 mb-2">Choose Your Goal</h2>
+      <h2 className="text-lg font-semibold text-gray-200 mb-2">Start Your Financial Journey</h2>
       <div className="grid grid-cols-3 gap-4">
 
          {/* Country */}
