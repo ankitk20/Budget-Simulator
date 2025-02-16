@@ -12,7 +12,10 @@ interface BudgetTableProps {
   setTableData: (data: any[]) => void;
   editDataRef: React.RefObject<any[]>;
   simYr: number;
-  locale: { [key: string]: string }; // Key-value dictionary for locale
+  locale: { 
+    locale: string;    // Assuming this will hold the locale string like 'en-US'
+    currency: string;  // Currency like 'USD'
+  };
 }
 
 export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale }: BudgetTableProps) {
@@ -198,9 +201,9 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     
         // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
         const formattedValue = rawValue
-        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+        ? rawValue.toLocaleString(locale["locale"] ?? "en-US", {
           style: "currency",
-          currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+          currency: locale["currency"] ?? "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
           minimumFractionDigits: 0, 
           maximumFractionDigits: 0
         })
