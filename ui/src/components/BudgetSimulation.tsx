@@ -202,9 +202,15 @@ export default function BudgetSimulation() {
         countryRef={countryRef}
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
-      <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
-      <YearlyLineChart  data={ lineChartData.data } />
-      <YearlyRibbonChart data={ribbonChartData} />
+      <div className="mb-8">
+        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} />
+      </div>
+      <div className="mb-8">
+        <YearlyLineChart  data={ lineChartData.data } />
+      </div>
+      <div className="mb-8">
+        <YearlyRibbonChart data={ribbonChartData} />
+      </div>
     </div>
   );
 }
