@@ -17,6 +17,7 @@ export default function BudgetSimulation() {
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
   const [loading, setLoading] = useState(false);
   const [simYr, setSimYr] = useState(0);
+  const [showInput, setShowInput] = useState(true);
   
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
@@ -29,7 +30,8 @@ export default function BudgetSimulation() {
   const locale = useRef<{ [key: string]: string }>({});
 
   const fetchStream = async () => {
-
+    
+    setShowInput(false);
     setSimYr(yearsRef.current?.value);
     setTableData(editDataRef.current);
 
@@ -179,7 +181,7 @@ export default function BudgetSimulation() {
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <div className="mb-8">
-        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={simYr} locale={locale.current} />
+        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={simYr} locale={locale.current} showInput={showInput} />
       </div>
       <div className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />

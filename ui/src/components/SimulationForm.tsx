@@ -56,7 +56,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             type="number"
             className="w-full p-2 rounded bg-gray-700 text-white"
             placeholder="30"
-            defaultValue={20}
+            defaultValue={10}
             onChange={(e) => {
               let value = Number(e.target.value);
               if (value < 1) value = 1;

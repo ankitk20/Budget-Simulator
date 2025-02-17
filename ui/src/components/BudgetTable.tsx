@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { years, TableData, isInputColumnKeys } from "../app/utils/data";
+import { useEffect, useState } from "react";
+import { TableData, isInputColumnKeys } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
 import {
@@ -17,12 +17,20 @@ interface BudgetTableProps {
     locale: string;    // Assuming this will hold the locale string like 'en-US'
     currency: string;  // Currency like 'USD'
   };
+  showInput: boolean;
 }
 
-export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale }: BudgetTableProps) {
+export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale, showInput }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
-  const [showInputs, setShowInputs] = useState(true);
+  const [showInputs, setShowInputs] = useState(showInput);
   const years = Array.from({ length: Number(simYr) }, (_, i) => String(new Date().getFullYear() + i));
+
+  // Rerender only if input columns are visible
+  useEffect(() => {
+    if (showInput !== showInputs) {
+      setShowInputs(showInput);
+    }
+  }, [showInput]);
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
@@ -223,7 +231,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
           minimumFractionDigits: 0, 
           maximumFractionDigits: 0
         })
-        : isRatioRow ? String(rawValue * 100)+"%" : "";
+        : isRatioRow ? String(rawValue * 100) + "%" : "";
     
         return (
           <input

@@ -68,8 +68,6 @@ export const initialData: TableData[] = [
   { category: "ratio", type: "lowRiskEat" },
 ];
 
-export const years = Array.from({ length: 30 }, (_, i) => String(2025 + i));
-
 export type EntryType = {
   currAmt: number;       // Current amount
   monthlyAmt: number;    // Monthly contribution
@@ -99,7 +97,7 @@ export type SimulationInput = {
 export const isInputColumnKeys = [
   "currAmt",
   "monthlyAmt",
-  "startYear",
+  "stYr",
   "numOfYears",
   "rateOfInterest",
   "rateOfIncrement",
