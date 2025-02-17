@@ -24,13 +24,13 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(showInput);
   const years = Array.from({ length: Number(simYr) }, (_, i) => String(new Date().getFullYear() + i));
-
+ 
   // Rerender only if input columns are visible
-  useEffect(() => {
-    if (showInput !== showInputs) {
-      setShowInputs(showInput);
-    }
-  }, [showInput]);
+  // useEffect(() => {
+  //   if (showInput !== showInputs) {
+  //     setShowInputs(showInput);
+  //   }
+  // }, [showInput]);
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
