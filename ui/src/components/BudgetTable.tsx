@@ -235,6 +235,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
             }}
             onFocus={(e) => e.target.select()} // Select all text on focus
             className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+            readOnly
           />
         );
       },
