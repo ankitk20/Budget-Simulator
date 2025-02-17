@@ -140,7 +140,9 @@ async def simulate_years(data: SimulationInput):
                 total_inv += new_corpus
                 total_inv_expense += data["inv"][inv_type]["monthlyAmt"] * 12
             else:
-                yearly_data["inv"][inv_type] = int(max(data["inv"][inv_type]["currAmt"], yearly_data["inv"][inv_type]) * increase_factor)
+                new_corpus = int(max(data["inv"][inv_type]["currAmt"], yearly_data["inv"][inv_type]) * increase_factor)
+                total_inv += new_corpus
+                yearly_data["inv"][inv_type] = int(new_corpus)
         total_expense += total_inv_expense
 
         bal = int(total_income - total_debt - total_expense)
@@ -198,8 +200,8 @@ async def simulate_years(data: SimulationInput):
 # Setup rate limiter (limits requests per user based on IP)
 limiter = Limiter(key_func=get_remote_address)
 
-# TODO currently all inv types are mandatory due to bal eat hardcoding
-# TODO handle api response where things are -ve
+# TODO: currently all inv types are mandatory due to bal eat hardcoding
+# TODO: handle api response where things are -ve
 # TODO: Downpayment adjust is pending
 @app.post("/simulate")
 @limiter.limit("50/minute")  # Limit requests per minute
