@@ -101,9 +101,9 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         
         // Format value with currency (rounded to zero decimals)
         const formattedValue = rawValue
-        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+        ? rawValue.toLocaleString(locale.locale || "en-US", {
             style: "currency",
-            currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+            currency: locale.currency || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
             minimumFractionDigits: 0, 
             maximumFractionDigits: 0
           })
@@ -131,9 +131,9 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         
         // Format value with currency (rounded to zero decimals)
         const formattedValue = rawValue
-        ? rawValue.toLocaleString(locale["locale"] || "en-US", {
+        ? rawValue.toLocaleString(locale.locale || "en-US", {
             style: "currency",
-            currency: locale["currency"] || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+            currency: locale.currency || "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
             minimumFractionDigits: 0, 
             maximumFractionDigits: 0
           })
@@ -216,9 +216,9 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     
         // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
         const formattedValue = rawValue
-        ? rawValue.toLocaleString(locale["locale"] ?? "en-US", {
+        ? rawValue.toLocaleString(locale.locale ?? "en-US", {
           style: "currency",
-          currency: locale["currency"] ?? "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
+          currency: locale.currency ?? "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
           minimumFractionDigits: 0, 
           maximumFractionDigits: 0
         })
