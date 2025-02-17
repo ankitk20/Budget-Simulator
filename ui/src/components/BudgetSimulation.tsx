@@ -22,17 +22,20 @@ export default function BudgetSimulation() {
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
   const editDataRef = useRef<TableData[]>([...initialData]);
-  const countryRef = useRef<HTMLSelectElement>(null);
-  const yearsRef = useRef<HTMLInputElement>(null);
-  const fortuneAmtRef = useRef<HTMLInputElement>(null);
-  const currentAgeRef = useRef<HTMLInputElement>(null);
-  const lifeExpectancyRef = useRef<HTMLInputElement>(null);
-  const locale = useRef<{ [key: string]: string }>({});
+  const countryRef = useRef<HTMLSelectElement>(null!);
+  const yearsRef = useRef<HTMLInputElement>(null!);
+  const fortuneAmtRef = useRef<HTMLInputElement>(null!);
+  const currentAgeRef = useRef<HTMLInputElement>(null!);
+  const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
+  const locale = useRef<{ locale: string; currency: string }>({
+    locale: 'en-US',  // Default locale
+    currency: 'USD'   // Default currency
+  });
 
   const fetchStream = async () => {
     
     setShowInput(false);
-    setSimYr(yearsRef.current?.value);
+    setSimYr(Number(yearsRef.current?.value) || 0);
     setTableData(editDataRef.current);
 
     // Read user inputs only when Simulate button is clicked
@@ -181,7 +184,14 @@ export default function BudgetSimulation() {
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <div className="mb-8">
-        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={simYr} locale={locale.current} showInput={showInput} />
+      <BudgetTable
+        tableData={tableData}
+        setTableData={setTableData}
+        editDataRef={editDataRef}
+        simYr={simYr}
+        locale={locale.current}
+        showInput={showInput}
+      />
       </div>
       <div className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />

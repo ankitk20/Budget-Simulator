@@ -217,21 +217,24 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
       accessorKey: year,
       header: year,
       cell: ({ row }: { row: Row<TableData> }) => {
+
         // Get the raw value for the specific year, defaulting to 0 if there's no value
         const rawValue = row.getValue(year) || 0;
-    
+
         // Check if the category column has "ratio" value
         const isRatioRow = row.original?.category === "ratio";
 
         // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
         const formattedValue = rawValue && !isRatioRow
-        ? rawValue.toLocaleString(locale.locale ?? "en-US", {
+        ? Number(rawValue).toLocaleString(locale.locale, {
           style: "currency",
-          currency: locale.currency ?? "USD", // Specify the currency here (e.g., "USD", "EUR", etc.)
-          minimumFractionDigits: 0, 
+          currency: locale.currency, // Use locale.currency directly
+          minimumFractionDigits: 0,
           maximumFractionDigits: 0
         })
-        : isRatioRow ? String(rawValue * 100) + "%" : "";
+        : isRatioRow
+          ? String(Number(rawValue) * 100) + "%"
+          : "";
     
         return (
           <input
