@@ -16,6 +16,7 @@ export default function BudgetSimulation() {
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [simYr, setSimYr] = useState(0);
   
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
@@ -29,6 +30,7 @@ export default function BudgetSimulation() {
 
   const fetchStream = async () => {
 
+    setSimYr(yearsRef.current?.value);
     setTableData(editDataRef.current);
 
     // Read user inputs only when Simulate button is clicked
@@ -177,7 +179,7 @@ export default function BudgetSimulation() {
       />
       <SimulationButton fetchStream={fetchStream} loading={loading} />
       <div className="mb-8">
-        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={Number(yearsRef.current?.value)} locale={locale.current} />
+        <BudgetTable tableData={tableData} setTableData={setTableData} editDataRef={editDataRef} simYr={simYr} locale={locale.current} />
       </div>
       <div className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />

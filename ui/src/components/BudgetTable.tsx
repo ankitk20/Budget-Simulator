@@ -22,9 +22,7 @@ interface BudgetTableProps {
 export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(true);
-  // const [years, setYears] = useState(() => 
-  //   Array.from({ length: simYr }, (_, i) => String(new Date().getFullYear() + i))
-  // );
+  const years = Array.from({ length: Number(simYr) }, (_, i) => String(new Date().getFullYear() + i));
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
