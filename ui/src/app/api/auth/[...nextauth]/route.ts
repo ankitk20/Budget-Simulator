@@ -20,6 +20,7 @@ export const authOptions = {
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       session.accessToken = token.accessToken;
+      session.idToken = token.idToken;
       session.user.image = token.picture;
       return session;
     },

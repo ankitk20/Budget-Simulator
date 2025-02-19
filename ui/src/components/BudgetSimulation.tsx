@@ -108,8 +108,7 @@ export default function BudgetSimulation() {
 
     setLoading(true);
 
-    const token = session?.accessToken; // ⬅️ Extract token
-
+    const token = session?.idToken; // Extract token
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
