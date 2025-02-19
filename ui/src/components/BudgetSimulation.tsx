@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { initialData, SimulationInput, TableData, EntryType } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
@@ -10,6 +10,7 @@ import YearlyRibbonChart from "./YearlyRibbonChart";
 import { RibbonChartData } from "./YearlyRibbonChart";
 import SimulationForm from "./SimulationForm";
 import Footer from "./Footer";
+import StackedBarChart from "./Yearly100%StackedBarChart";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<TableData[]>(initialData);
@@ -31,6 +32,25 @@ export default function BudgetSimulation() {
     locale: 'en-US',  // Default locale
     currency: 'USD'   // Default currency
   });
+
+  const categoriesRef = useRef<Set<string>>(new Set());
+  const simulationDataRef = useRef<FlattenedData[]>([]);
+
+  const flattenJSON = (year: string, data: any) => {
+    const flatData: any = { year: Number(year) };
+
+    Object.entries(data).forEach(([category, categoryData]: [string, any]) => {
+      if (typeof categoryData === "object") {
+        Object.entries(categoryData).forEach(([type, value]) => {
+          flatData[`${category}_${type}`] = value;
+        });
+      } else {
+        flatData[category] = categoryData;
+      }
+    });
+
+    return flatData;
+  };
 
   const fetchStream = async () => {
     
@@ -136,6 +156,7 @@ export default function BudgetSimulation() {
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
             Object.keys(yearData).forEach((categoryKey) => {
               if (categoryKey !== "summary" && categoryKey !== "ratio") {
+                categoriesRef.current.add(categoryKey);
                 ribbonEntry[categoryKey] = 0
                 Object.keys(yearData[categoryKey]).forEach((typeKey) => {
                   const key = `${categoryKey}_${typeKey}`;
@@ -145,7 +166,6 @@ export default function BudgetSimulation() {
             });
 
             ribbonChartDataRef.current.push(ribbonEntry);
-
             setTableData((prevData) =>
               prevData.map((row) => {
                 const categoryKey = row.category;
@@ -160,6 +180,8 @@ export default function BudgetSimulation() {
               })
             );
 
+            // Flatten and store the simulation data
+            simulationDataRef.current.push(flattenJSON(year, yearData));
             setLineChartData({data: [...lineChartDataRef.current.data]}); // Update state once all data is processed
             setRibbonChartData([...ribbonChartDataRef.current]); // Update state for Ribbon Chart
           } catch (error) {
@@ -198,6 +220,9 @@ export default function BudgetSimulation() {
       </div>
       <div className="mb-8">
         <YearlyRibbonChart data={ribbonChartData} />
+      </div>
+      <div className="mb-8">
+        <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
       </div>
 
       {/* Footer Component */}

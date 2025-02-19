@@ -1,3 +1,8 @@
+export interface FlattenedData {
+  year: number;
+  [key: string]: number; // Dynamic keys for income, expenses, debt, investments
+}
+
 export type TableData = {
   category: string;
   type: string;

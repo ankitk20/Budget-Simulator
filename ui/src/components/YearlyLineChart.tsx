@@ -14,7 +14,7 @@ const formatYAxis = (value: number) => {
 const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
   return (
     <div className="p-4 bg-gray-800 rounded-lg shadow">
-      <h2 className="text-lg font-semibold text-gray-200 mb-2">Net Worth Over Time</h2>
+      <h2 className="text-lg font-semibold text-gray-200 mb-2">Net Worth</h2>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={data}>
           <XAxis 
