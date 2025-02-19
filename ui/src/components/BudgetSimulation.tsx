@@ -11,6 +11,7 @@ import { RibbonChartData } from "./YearlyRibbonChart";
 import SimulationForm from "./SimulationForm";
 import Footer from "./Footer";
 import StackedBarChart from "./Yearly100%StackedBarChart";
+import NavBar from "./NavBar";
 
 export default function BudgetSimulation() {
   const [tableData, setTableData] = useState<TableData[]>(initialData);
@@ -196,6 +197,8 @@ export default function BudgetSimulation() {
 
   return (
     <div className="p-4">
+      <NavBar />
+
       {/* User Input Form */}
       <SimulationForm
         countryRef={countryRef}

@@ -9,14 +9,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
+    async jwt({ token, user, account }) {
+      if (account?.provider === "google") {
+        token.picture = user?.image || user?.picture || "";
       }
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
+      session.user.image = token.picture;
       return session;
     },
   },
