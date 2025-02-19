@@ -1,11 +1,11 @@
-"use client";
-
-import BudgetSimulation from "../components/BudgetSimulation";
+import GoogleSignIn from "@/components/GoogleSignIn";
+import UserSession from "@/components/UserSession";
 
 export default function Home() {
   return (
     <main>
-      <BudgetSimulation />
+      <GoogleSignIn />
+      <UserSession />
     </main>
   );
 }

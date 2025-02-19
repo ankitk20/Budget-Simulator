@@ -1,16 +1,15 @@
-// app/layout.tsx
-import type { Metadata } from "next";
-import "./globals.css"; // Ensure you have global styles (optional)
+"use client";
 
-export const metadata: Metadata = {
-  title: "Budget Simulation",
-  description: "A tool to simulate budget and investments over years.",
-};
+import { SessionProvider } from "next-auth/react";
+import type { ReactNode } from "react";
+import "../app/globals.css";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <SessionProvider>
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    </SessionProvider>
   );
 }
