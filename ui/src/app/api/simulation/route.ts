@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const response = await fetch("http://0.0.0.0:8000/simulate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
+      "Authorization": authHeader || "", // Pass token to backend API
     },
     body: JSON.stringify(await req.json())
   });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 import { initialData, SimulationInput, TableData, EntryType, FlattenedData } from "../app/utils/data";
 import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
@@ -14,6 +15,7 @@ import StackedBarChart from "./Yearly100%StackedBarChart";
 import NavBar from "./NavBar";
 
 export default function BudgetSimulation() {
+  const { data: session } = useSession(); // Get user session data
   const [tableData, setTableData] = useState<TableData[]>(initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
@@ -106,11 +108,14 @@ export default function BudgetSimulation() {
 
     setLoading(true);
 
+    const token = session?.accessToken; // ⬅️ Extract token
+
     const response = await fetch("/api/simulation", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        "Authorization": token ? `Bearer ${token}` : "",
+        "Accept": "application/json"
       },
       body: JSON.stringify(simulationInput),
     });

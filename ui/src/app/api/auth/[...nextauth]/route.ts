@@ -1,4 +1,5 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions = {
@@ -9,13 +10,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account?.provider === "google") {
+    async jwt({ token, user, account }: { token: JWT; user: any; account?: any }) {
+      if (account) {
+        token.accessToken = account.access_token; // Store access token
+        token.idToken = account.id_token; // Store ID token
         token.picture = user?.image || user?.picture || "";
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       session.accessToken = token.accessToken;
       session.user.image = token.picture;
       return session;
