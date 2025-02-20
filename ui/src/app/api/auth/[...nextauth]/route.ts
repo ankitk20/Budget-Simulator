@@ -23,7 +23,7 @@ export const authOptions = {
     async jwt({ token, user, account }: { token: JWT; user: any; account?: any }) {
       if (account) {
         if (!user?.email || !allowedUsers.includes(user.email)) {
-          return false; // ❌ Reject login if email is not in allowedUsers
+          throw new Error("Unauthorized");
         }
         token.accessToken = account.access_token; // Store access token
         token.idToken = account.id_token; // Store ID token
