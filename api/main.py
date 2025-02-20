@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 import json
-import jwt
+import os
 from country_mapping import get_country_data
 from fastapi.security import OAuth2PasswordBearer
 from slowapi import Limiter
@@ -9,24 +9,38 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from models import SimulationInput, SimulationOutput
 from typing import Dict, Any
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 # Initialize FastAPI App with Rate Limiting
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
 
-# Security Setup
-SECRET_KEY = "mysecretkey"  # Replace with a secure key
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+# ✅ Load Google Client ID from environment variable
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+if not GOOGLE_CLIENT_ID:
+    raise ValueError("GOOGLE_CLIENT_ID is not set in environment variables")
 
-# Authentication
-async def verify_token(token: str = Depends(oauth2_scheme)):
+async def verify_google_token(request: Request):
+    """Verify the Google ID Token from Authorization header."""
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Unauthorized: No token provided")
+
+    token = auth_header.split("Bearer ")[1]  # Extract token
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        return payload
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.InvalidTokenError:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        # Verify the token using Google's public keys
+        payload = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+
+        # Check if the token is valid
+        if not payload or "email" not in payload:
+            raise HTTPException(status_code=403, detail="Invalid token: No email found")
+
+        return payload  # Token is valid, return user info
+
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+
 
 async def simulate_years(data: SimulationInput):
     sim_years = data["simYr"]
@@ -198,7 +212,7 @@ limiter = Limiter(key_func=get_remote_address)
 # TODO: Downpayment adjust is pending
 @app.post("/simulate")
 @limiter.limit("50/minute")  # Limit requests per minute
-async def simulate_financials(request: Request, payload: SimulationInput):
+async def simulate_financials(request: Request, payload: SimulationInput, user: dict = Depends(verify_google_token)):
     """
     Processes financial simulation input while enforcing rate limits and authentication.
     
