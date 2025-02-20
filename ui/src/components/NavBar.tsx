@@ -11,7 +11,7 @@ export default function Navbar() {
       {/* User Profile & Logout */}
       {session?.user ? (
         <div className="flex items-center space-x-3">
-          <img /*{src={session?.user?.image!}}*/ alt="User" className="w-10 h-10 rounded-full border border-gray-600" />
+          <img src={session.user?.image || "../../icon_user.png"} alt="User" className="w-10 h-10 rounded-full border border-gray-600" />
           <span className="text-sm font-medium">{session.user.name}</span>
           <button
             onClick={() => signOut()}

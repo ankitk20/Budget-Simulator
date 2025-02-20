@@ -14,7 +14,7 @@ export default function AuthSection() {
             Welcome, {session.user?.name}!
           </p>
           <img
-            src={session.user?.image || "/default-avatar.png"}
+            src={session.user?.image || "../../icon_user.png"}
             alt="User"
             className="w-16 h-16 rounded-full border border-gray-600 mx-auto mt-3"
           />
