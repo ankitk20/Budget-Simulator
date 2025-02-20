@@ -1,6 +1,16 @@
+import { serialize } from "cookie";
 import NextAuth, { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
+import { NextResponse } from "next/server";
+
+const allowedUsers = [
+  "kesharwaniankit80@gmail.com",
+  "kesharwaniankit.com@gmail.com",
+  "kmamaniya@gmail.com",
+  "parthpanchal417@gmail.com",
+  "vaibhav.kanojia.1996@gmail.com"
+];
 
 export const authOptions = {
   providers: [
@@ -12,6 +22,9 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user, account }: { token: JWT; user: any; account?: any }) {
       if (account) {
+        if (!user?.email || !allowedUsers.includes(user.email)) {
+          return false; // ❌ Reject login if email is not in allowedUsers
+        }
         token.accessToken = account.access_token; // Store access token
         token.idToken = account.id_token; // Store ID token
         token.picture = user?.image || user?.picture || "";
