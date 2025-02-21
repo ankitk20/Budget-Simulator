@@ -1,19 +1,26 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import Auth from "./Auth";
 
-export default function UserSession() {
-  const { data: session, status } = useSession();
+export default function UserSession({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState(null);
 
-  console.log("Session Info:", session); // Logs in the browser console
+  useEffect(() => {
+    // Mock function to check user session - Replace this with actual auth logic
+    const checkSession = async () => {
+      const storedUser = localStorage.getItem("user"); // Example method (Use proper auth)
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    };
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (!session) return <p>Not signed in</p>;
+    checkSession();
+  }, []);
 
-  return (
-    <div>
-      <h2>Session Data:</h2>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-    </div>
-  );
+  if (!user) {
+    return <Auth />; // Show login/signup if no session exists
+  }
+
+  return <>{children}</>;
 }

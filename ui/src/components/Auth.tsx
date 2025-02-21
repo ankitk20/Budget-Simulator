@@ -27,7 +27,7 @@ export default function AuthSection() {
         </>
       ) : (
         <button
-          onClick={() => signIn("google", { callbackUrl: "/protected" })}
+          onClick={() => signIn("google", { callbackUrl: "/simulate" })}
           className="flex items-center gap-3 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-500 transition"
         >
           <FaGoogle className="text-2xl" />
