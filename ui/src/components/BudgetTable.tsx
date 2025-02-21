@@ -72,13 +72,13 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
           {editDataRef.current[row.index]?.category ?? ""}
           {hoveredRow === row.index && (
           <div className="absolute top-0 right-0 flex space-x-2">
-            {/* Add Row Button */}
-            <AddRowButton
-              onAddRow={() => addRowAt(row.index)}
-            />
             {/* Delete Row Button */}
             <DelRowButton
               onDelRow={() => delRowAt(row.index)}
+            />
+            {/* Add Row Button */}
+            <AddRowButton
+              onAddRow={() => addRowAt(row.index)}
             />
           </div>
           )}

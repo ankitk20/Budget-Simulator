@@ -12,7 +12,10 @@ interface DelRowButtonProps {
           -
         </button>
         {/* Tooltip */}
-        <span className="absolute left-1/2 top-full transform -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 bg-gray-700 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left transition-opacity">
+        <span className="absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
           Delete the current row
         </span>
       </div>
