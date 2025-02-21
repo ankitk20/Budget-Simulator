@@ -31,7 +31,7 @@ export default function Hero() {
         className="max-w-3xl"
       >
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-          FinSim - <span className="text-blue-500"> Plan Your Finances with Confidence</span>
+          FiSim - <span className="text-blue-500"> Plan Your Finances with Confidence</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-300 mb-6">
           Simulate your income, expenses, debt, and investments over time. 

@@ -1,8 +1,8 @@
 export const metadata = {
-  title: "FinSim - Plan with Confidence",
-  description: "Simulate your finances with FinSim. Plan your future with confidence by inputting your income, expenses, debt, and investments.",
+  title: "FiSim - Plan with Confidence",
+  description: "Simulate your finances with FiSim. Plan your future with confidence by inputting your income, expenses, debt, and investments.",
   openGraph: {
-    title: "FinSim - Plan with Confidence",
+    title: "FiSim - Plan with Confidence",
     description: "A budget simulation tool to help individuals gain insights into their financial future.",
     url: "https://fisim.com",
     siteName: "FiSim",
@@ -11,7 +11,7 @@ export const metadata = {
         url: "/og-image.jpg", // Replace with your actual OG image
         width: 1200,
         height: 630,
-        alt: "FinSim Budget Simulation Tool",
+        alt: "FiSim Budget Simulation Tool",
       },
     ],
     type: "website",
