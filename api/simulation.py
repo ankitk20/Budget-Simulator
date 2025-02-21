@@ -1,7 +1,5 @@
-from fastapi.responses import StreamingResponse
 from country_mapping import get_country_data
-from models import SimulationInput, SimulationOutput
-from typing import Dict, Any
+from models import SimulationInput
 
 async def simulate_years(data: SimulationInput):
     sim_years = data["simYr"]
