@@ -4,23 +4,19 @@ from fastapi.responses import StreamingResponse
 import json
 from pydantic import ValidationError
 from utils import get_country_data
-from slowapi import Limiter
+from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from models.models import SimulationInput
 from auth.auth import verify_google_token
 from services.simulation import simulate_years
+from middleware import limiter
 
 # Initialize FastAPI App with Rate Limiting
-limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
 
-# Setup rate limiter (limits requests per user based on IP)
-limiter = Limiter(key_func=get_remote_address)
-
-# TODO: currently all inv types are mandatory due to bal eat hardcoding
-# TODO: handle api response where things are -ve
-# TODO: Downpayment adjust is pending
+app.add_middleware(SlowAPIMiddleware)
+app.state.limiter = limiter
 @app.post("/simulate")
 @limiter.limit("10/minute")  # Limit requests per minute
 async def simulate_financials(request: Request, payload: SimulationInput, user: dict = Depends(verify_google_token)) -> StreamingResponse:
@@ -64,3 +60,7 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+
+# TODO: currently all inv types are mandatory due to bal eat hardcoding
+# TODO: handle api response where things are -ve
+# TODO: Downpayment adjust is pending
