@@ -63,27 +63,30 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     {
       accessorKey: "category",
       header: "Category",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <div
-          className="relative"
-          onMouseEnter={() => setHoveredRow(row.index)}
-          onMouseLeave={() => setHoveredRow(null)}
-        >
-          {editDataRef.current[row.index]?.category ?? ""}
-          {hoveredRow === row.index && (
-          <div className="absolute top-0 right-0 flex space-x-2">
-            {/* Delete Row Button */}
-            <DelRowButton
-              onDelRow={() => delRowAt(row.index)}
-            />
-            {/* Add Row Button */}
-            <AddRowButton
-              onAddRow={() => addRowAt(row.index)}
-            />
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const isDisabled = ["summary", "ratio"].includes(row.original.category);
+        return (
+          <div
+            className="relative"
+            onMouseEnter={() => !isDisabled && setHoveredRow(row.index)}
+            onMouseLeave={() => !isDisabled && setHoveredRow(null)}
+          >
+            {editDataRef.current[row.index]?.category ?? ""}
+            {hoveredRow === row.index && !isDisabled && (
+            <div className="absolute top-0 right-0 flex space-x-2">
+              {/* Delete Row Button */}
+              <DelRowButton
+                onDelRow={() => delRowAt(row.index)}
+              />
+              {/* Add Row Button */}
+              <AddRowButton
+                onAddRow={() => addRowAt(row.index)}
+              />
+            </div>
+            )}
           </div>
-          )}
-        </div>
-      ),
+        );
+      }
     },
     {
       accessorKey: "type",
