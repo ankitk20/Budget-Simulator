@@ -8,6 +8,7 @@ import {
   flexRender,
   Row,
 } from "@tanstack/react-table";
+
 interface BudgetTableProps {
   tableData: any[];
   setTableData: (data: any[]) => void;
@@ -91,22 +92,26 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     {
       accessorKey: "type",
       header: "Type",
-      cell: ({ row }: { row: Row<TableData> }) => (
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio || row.original?.category === catInv;
+        return (
         <input
           type="text"
           defaultValue={editDataRef.current[row.index]?.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
           onFocus={(e) => e.target.select()}
           className="text-inherit bg-transparent border-none outline-none w-full"
-
+          readOnly={isNonEditableRow}
         />
-      ),
+      );
+    }
     },
     {
       accessorKey: "currAmt",
       header: "Current Amount",
       cell: ({ row }: { row: Row<TableData> }) => {
         const rawValue = editDataRef.current[row.index]?.currAmt || "";
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         
         // Format value with currency (rounded to zero decimals)
         const formattedValue = rawValue
@@ -128,6 +133,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
             }}
             onFocus={(e) => e.target.select()}
             className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+            readOnly={isNonEditableRow}
           />
         );
       }
@@ -137,7 +143,8 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
       header: "Monthly Amount",
       cell: ({ row }: { row: Row<TableData> }) => {
         const rawValue = editDataRef.current[row.index]?.monthlyAmt || "";
-        
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
+
         // Format value with currency (rounded to zero decimals)
         const formattedValue = rawValue
         ? rawValue.toLocaleString(locale.locale || "en-US", {
@@ -158,6 +165,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
             }}
             onFocus={(e) => e.target.select()}
             className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+            readOnly={isNonEditableRow}
           />
         );
       },
@@ -165,56 +173,68 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
     {
       accessorKey: "stYr",
       header: "Start Year",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.stYr || ""}
-          onChange={(e) => updateCell(row.index, "stYr", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
+        return (
+          <input
+            type="number"
+            defaultValue={editDataRef.current[row.index]?.stYr || ""}
+            onChange={(e) => updateCell(row.index, "stYr", Number(e.target.value))}
+            onFocus={(e) => e.target.select()}
+            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            readOnly={isNonEditableRow}
+          />
+        );
+      }
     },
     {
       accessorKey: "numOfYears",
       header: "Number of Years",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.numOfYears || ""}
-          onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
-          onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
+        return (
+          <input
+            type="number"
+            defaultValue={editDataRef.current[row.index]?.numOfYears || ""}
+            onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
+            onFocus={(e) => e.target.select()}
+            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            readOnly={isNonEditableRow}
+          />
+        );
+      }
     },
     {
       accessorKey: "rateOfInterest",
       header: "Rate of Interest (%)",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.rateOfInterest || ""}
-          onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+      const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
+        return (
+          <input
+            type="number"
+            defaultValue={editDataRef.current[row.index]?.rateOfInterest || ""}
+            onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
+            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            readOnly={isNonEditableRow}
+          />
+        );
+      }
     },
     {
       accessorKey: "rateOfIncrement",
       header: "Rate of Increment (%)",
-      cell: ({ row }: { row: Row<TableData> }) => (
-        <input
-          type="number"
-          defaultValue={editDataRef.current[row.index]?.rateOfIncrement || ""}
-          onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
-          className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-
-        />
-      ),
+      cell: ({ row }: { row: Row<TableData> }) => {
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
+        return (
+          <input
+            type="number"
+            defaultValue={editDataRef.current[row.index]?.rateOfIncrement || ""}
+            onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
+            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            readOnly={isNonEditableRow}
+          />
+        );
+      }
     },
     ...years.map((year) => ({
       accessorKey: year,
