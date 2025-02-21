@@ -1,9 +1,10 @@
+from datetime import datetime
 from utils import get_country_data
 from models import SimulationInput
 
 async def simulate_years(data: SimulationInput):
     sim_years = data["simYr"]
-    start_year = 2025
+    start_year = datetime.now().year
     inflRate = data["inflRate"]
 
     # Initialize investment corpus
