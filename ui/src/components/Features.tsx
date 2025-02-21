@@ -25,15 +25,18 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="py-16 bg-gray-800 text-white">
-      <div className="container mx-auto text-center">
-        <h2 className="text-3xl font-bold mb-8">Why Choose FinSim?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section id="features" className="py-20 px-6 bg-gray-800 text-white">
+      <div className="container mx-auto text-center max-w-6xl">
+        <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Why Choose FinSim?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {features.map((feature, index) => (
-            <div key={index} className="p-6 bg-gray-900 rounded-xl shadow-lg text-center">
-              <div className="mb-4 flex justify-center">{feature.icon}</div>
+            <div
+              key={index}
+              className="p-8 bg-gray-900 rounded-2xl shadow-lg text-center border border-gray-700"
+            >
+              <div className="mb-5 flex justify-center">{feature.icon}</div>
               <h3 className="text-xl font-semibold">{feature.title}</h3>
-              <p className="text-gray-400 mt-2">{feature.description}</p>
+              <p className="text-gray-400 mt-3">{feature.description}</p>
             </div>
           ))}
         </div>

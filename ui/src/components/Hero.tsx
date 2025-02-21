@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 export default function Hero() {
   const { data: session } = useSession();
@@ -12,7 +13,7 @@ export default function Hero() {
   const [loading, setLoading] = useState(false);
 
   const handleStartSimulating = async () => {
-    setLoading(true); // Show loading state to prevent flickering
+    setLoading(true);
     if (session) {
       router.push("/simulate");
     } else {
@@ -30,12 +31,14 @@ export default function Hero() {
         className="max-w-3xl"
       >
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-          FinSim - <span className="text-blue-500">Plan with Confidence</span>
+          FinSim - <span className="text-blue-500"> Plan Your Finances with Confidence</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-300 mb-6">
-          Take control of your financial future. Simulate your income, expenses, 
-          debt, and investments across multiple years and gain clarity over your finances.
+          Simulate your income, expenses, debt, and investments over time. 
+          Gain clarity and make informed financial decisions.
         </p>
+
+        {/* Start Simulating Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -48,6 +51,13 @@ export default function Hero() {
           {loading ? "Redirecting..." : "Start Simulating"}
         </motion.button>
       </motion.div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-10 animate-bounce">
+        <Link href="#features">
+          <ChevronDown className="h-10 w-10 text-gray-400 cursor-pointer" />
+        </Link>
+      </div>
     </section>
   );
 }
