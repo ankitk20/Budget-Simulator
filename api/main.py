@@ -60,16 +60,6 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-@app.get("/test")
-@limiter.limit("3/minute")  # Allow max 10 requests per minute
-async def test(request: Request):
-    return {
-        "message": "Hello, World!",
-        "status": "success",
-        "data": {"key": "value"}
-    }
-
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
