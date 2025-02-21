@@ -23,10 +23,10 @@ class SimulationInput(BaseModel):
     stcg_tax_rate: float | None = Field(None, alias="stcgTaxRate", description="Short-term capital gains tax rate")
     country: str = Field(..., alias="country", description="Country name")
     currency: str | None = Field(None, alias="currency", description="Currency symbol")
-    income: Dict[str, FinancialEntry] | None = Field(None, alias="income", description="Income sources (dynamic keys)")
-    expense: Dict[str, FinancialEntry] | None = Field(None, alias="expense", description="Expense categories (dynamic keys)")
-    debt: Dict[str, FinancialEntry] | None = Field(None, alias="debt", description="Debt categories (dynamic keys)")
-    investment: Dict[str, FinancialEntry] | None = Field(None, alias="inv", description="Investment categories (dynamic keys)")
+    income: Dict[str, FinancialEntry] | None = Field(None, alias="Income", description="Income sources (dynamic keys)")
+    expense: Dict[str, FinancialEntry] | None = Field(None, alias="Expense", description="Expense categories (dynamic keys)")
+    debt: Dict[str, FinancialEntry] | None = Field(None, alias="Debt", description="Debt categories (dynamic keys)")
+    investment: Dict[str, FinancialEntry] | None = Field(None, alias="Investment", description="Investment categories (dynamic keys)")
 
     class Config:
         populate_by_name = True  # Enables JSON aliasing

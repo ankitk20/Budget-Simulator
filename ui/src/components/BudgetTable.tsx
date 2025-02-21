@@ -64,7 +64,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
       accessorKey: "category",
       header: "Category",
       cell: ({ row }: { row: Row<TableData> }) => {
-        const isDisabled = ["summary", "ratio"].includes(row.original.category);
+        const isDisabled = ["Investment", "Summary", "Ratio"].includes(row.original.category);
         return (
           <div
             className="relative"
@@ -225,7 +225,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         const rawValue = row.getValue(year) || 0;
 
         // Check if the category column has "ratio" value
-        const isRatioRow = row.original?.category === "ratio";
+        const isRatioRow = row.original?.category === "Eaten Ratio";
 
         // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
         const formattedValue = rawValue && !isRatioRow

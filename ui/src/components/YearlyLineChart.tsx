@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export interface LineChartData {
-  data: { year: number; inflAdjNtWrth: number; ntWrth: number }[];
+  data: { "Year": number; "Infl Adj Net Worth": number; "Net Worth": number }[];
 }
 
 const formatYAxis = (value: number) => {
@@ -18,7 +18,7 @@ const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={data}>
           <XAxis 
-            dataKey="year" 
+            dataKey="Year" 
             tick={{ fill: "#ddd" }} 
             tickLine={{ stroke: "#555" }} 
             axisLine={{ stroke: "#555" }} 
@@ -37,10 +37,10 @@ const YearlyLineChart: React.FC<LineChartData> = ({ data }) => {
           <Legend wrapperStyle={{ color: "#ddd" }} />
 
           {/* Line for inflAdjNtWrth */}
-          <Line type="monotone" dataKey="inflAdjNtWrth" stroke="#8884d8" strokeWidth={2} dot={{ fill: "#8884d8" }} />
+          <Line type="monotone" dataKey="Infl Adj Net Worth" stroke="#8884d8" strokeWidth={2} dot={{ fill: "#8884d8" }} />
 
           {/* Line for ntWrth */}
-          <Line type="monotone" dataKey="ntWrth" stroke="#82ca9d" strokeWidth={2} dot={{ fill: "#82ca9d" }} />
+          <Line type="monotone" dataKey="Net Worth" stroke="#82ca9d" strokeWidth={2} dot={{ fill: "#82ca9d" }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

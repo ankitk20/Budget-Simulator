@@ -79,11 +79,7 @@ export default function BudgetSimulation() {
       fortuneAmt: fortuneAmt,
       inflRate: 7,
       ltcgTaxRate: 12.5,
-      stcgTaxRate: 20.0,
-      income: {},
-      expense: {},  
-      debt: {},
-      inv: {}
+      stcgTaxRate: 20.0
     };
     
     editDataRef.current.forEach((row) => {
@@ -146,16 +142,17 @@ export default function BudgetSimulation() {
             }
 
             // Extract net worth data
-            const netWorth = yearData.summary?.ntWrth || 0;
-            const inflAdjNetWorth = yearData.summary?.inflAdjNtWrth || 0;
+            const netWorth = yearData["Summary"]?.["Net Worth"] || 0;
+            const inflAdjNetWorth = yearData["Summary"]?.["Infl Adj Net Worth"] || 0;
             locale.current = {"locale": columnData["locale"], "currency": columnData["currency"]};
 
             // Update chart data
             lineChartDataRef.current.data.push({
-              year: Number(year),
-              ntWrth: netWorth,
-              inflAdjNtWrth: inflAdjNetWorth
+              "Year": Number(year),
+              "Net Worth": netWorth,
+              "Infl Adj Net Worth": inflAdjNetWorth
             });
+            console.log(lineChartDataRef.current.data);
 
             // Process Ribbon Chart Data
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };

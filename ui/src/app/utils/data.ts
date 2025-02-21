@@ -23,54 +23,53 @@ export type TableData = {
 }
 
 export const initialData: TableData[] = [
-  { category: "income", currAmt: 0, type: "active", monthlyAmt: 120000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "income", currAmt: 0, type: "passive", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Income", currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Income", currAmt: 0, type: "Passive", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
 
-  { category: "expense", currAmt: 0, type: "grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "clothing", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "houseMaintenance", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "selfDevelopment", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "expense", currAmt: 0, type: "childrenEducation", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 20 },
-  { category: "expense", currAmt: 0, type: "childrenExpense", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "parentsExpense", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "wifeExpense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "healthInsurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "lifeInsurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "expense", currAmt: 0, type: "vehicleInsurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "houseInsurance", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "charity", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "expense", currAmt: 0, type: "trip", monthlyAmt: 20000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "finOps", monthlyAmt: 500, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "servant", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "expense", currAmt: 0, type: "medicine", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "expense", currAmt: 0, type: "entertainment", monthlyAmt: 500, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "expense", currAmt: 0, type: "emergency", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "expense", currAmt: 0, type: "gift", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "expense", currAmt: 0, type: "investmentHighRisk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "expense", currAmt: 0, type: "investmentModerateRisk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "expense", currAmt: 0, type: "investmentLowRisk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "expense", currAmt: 0, type: "others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Clothing", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "House Maintenance", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Self Development", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Children's Education", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 20 },
+  { category: "Expense", currAmt: 0, type: "Children's Expense", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Wife's Expense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Health Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Life Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: "Expense", currAmt: 0, type: "Vehicle Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "House Insurance", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Charity", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: "Expense", currAmt: 0, type: "Trip", monthlyAmt: 20000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Servant", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Medicine", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Entertainment", monthlyAmt: 500, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Emergency", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: "Expense", currAmt: 0, type: "Gift", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: "Expense", currAmt: 0, type: "Investment High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: "Expense", currAmt: 0, type: "Investment Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: "Expense", currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: "Expense", currAmt: 0, type: "Others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
 
-  { category: "debt", currAmt: 300000, type: "house", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
-  { category: "debt", currAmt: 50000, type: "vehicle", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 11 },
-  { category: "debt", currAmt: 80000, type: "education", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 5 },
-  { category: "debt", currAmt: 0, type: "others", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 10 },
+  { category: "Debt", currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
+  { category: "Debt", currAmt: 50000, type: "Vehicle", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 11 },
+  { category: "Debt", currAmt: 80000, type: "Education", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 5 },
+  { category: "Debt", currAmt: 0, type: "Others", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 10 },
 
-  { category: "inv", currAmt: 1000000, type: "highRisk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfInterest: 12, rateOfIncrement: 0 },
-  { category: "inv", currAmt: 700000, type: "moderateRisk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfInterest: 9, rateOfIncrement: 0 },
-  { category: "inv", currAmt: 500000, type: "lowRisk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
-  { category: "inv", currAmt: 0, type: "savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
+  { category: "Investment", currAmt: 1000000, type: "High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfInterest: 12, rateOfIncrement: 0 },
+  { category: "Investment", currAmt: 700000, type: "Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfInterest: 9, rateOfIncrement: 0 },
+  { category: "Investment", currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
+  { category: "Investment", currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
 
-  { category: "summary", type: "eatenInv" },
-  { category: "summary", type: "ntWrth" },
-  { category: "summary", type: "inflAdjNtWrth" },
+  { category: "Summary", type: "Eaten Investment" },
+  { category: "Summary", type: "Net Worth" },
+  { category: "Summary", type: "Infl Adj Net Worth" },
 
-  { category: "ratio", type: "highRiskEat" },
-  { category: "ratio", type: "moderateRiskEat" },
-  { category: "ratio", type: "lowRiskEat" },
+  { category: "Eaten Ratio", type: "High Risk Eaten" },
+  { category: "Eaten Ratio", type: "Moderate Risk Eaten" },
+  { category: "Eaten Ratio", type: "Low Risk Eaten" },
 ];
 
 export type EntryType = {
@@ -92,10 +91,6 @@ export type SimulationInput = {
   fortuneAmt: number;
   currentAge: number;
   lifeExpectancy: number;
-  income: Record<string, EntryType>;
-  expense: Record<string, EntryType>;
-  debt: Record<string, EntryType>;
-  inv: Record<string, EntryType>;
   [key: string]: Record<string, EntryType> | number | string; // Allow dynamic categories
 }; 
 
