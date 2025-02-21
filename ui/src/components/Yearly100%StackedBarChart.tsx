@@ -24,8 +24,6 @@ const formatYAxisLabel = (value: number) => {
 };
 
 export const StackedBarChart: React.FC<StackedBarChartProps> = ({ data, categories }) => {
-  const allowedCategories = [catIncome, catExpense, catInv, catDebt];
-
   return (
     <div className="p-4 bg-gray-800 rounded-lg shadow">
       <h2 className="text-lg font-semibold text-gray-200 mb-2">Category Breakdown</h2>
@@ -50,7 +48,6 @@ export const StackedBarChart: React.FC<StackedBarChartProps> = ({ data, categori
           />
           <Legend wrapperStyle={{ color: "#ddd" }} />
           {categories
-            .filter((category) => allowedCategories.includes(category)) // Filter only allowed categories
             .map((category, index) => (
               <Bar
                 key={category}
