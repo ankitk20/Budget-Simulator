@@ -152,7 +152,6 @@ export default function BudgetSimulation() {
               "Net Worth": netWorth,
               "Infl Adj Net Worth": inflAdjNetWorth
             });
-            console.log(lineChartDataRef.current.data);
 
             // Process Ribbon Chart Data
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
