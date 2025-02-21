@@ -1,36 +1,28 @@
 import asyncio
-from fastapi import FastAPI, Request, Depends, HTTPException
-from fastapi.responses import StreamingResponse
 import json
+from fastapi import APIRouter, Request, Depends, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import ValidationError
-from utils import get_country_data
-from slowapi import Limiter
-from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from models.models import SimulationInput
-from auth.auth import verify_google_token
+from middleware import limiter
 from services.simulation import simulate_years
-from routes import router
+from models.models import SimulationInput
+from utils import get_country_data
+from auth.auth import verify_google_token
 
-@app.post("/simulate")
-@limiter.limit("10/minute")  # Limit requests per minute
+# Initialize Router
+router = APIRouter()
+
+@router.post("/simulate")
+@limiter.limit("10/minute")  # Rate limiting per IP
 async def simulate_financials(request: Request, payload: SimulationInput, user: dict = Depends(verify_google_token)) -> StreamingResponse:
     """
     Processes financial simulation input while enforcing rate limits and authentication.
-    
-    Args:
-        request (Request): The FastAPI request object (used for headers, rate limit).
-        payload (SimulationInput): The request body containing financial data.
-        user (dict): The authenticated user object.
-
-    Returns:
-        dict: Processed financial simulation response.
     """
     try:
         parsed_payload = SimulationInput.model_validate(payload)  # Validate using Pydantic
         parsed_payload = parsed_payload.model_dump(by_alias=True)  # Convert to dict with camelCase keys
 
-        # Call your processing function
         async def result_generator():
             async for result in simulate_years(parsed_payload):
                 result.update({
@@ -44,10 +36,10 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
         return StreamingResponse(result_generator(), media_type="application/json")
 
     except ValidationError as e:
-        raise HTTPException(status_code=400, detail=e.errors())  # Return validation errors
-    
+        raise HTTPException(status_code=400, detail=e.errors())
+
     except RateLimitExceeded:
         raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")

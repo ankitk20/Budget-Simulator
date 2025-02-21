@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
-  const response = await fetch("http://0.0.0.0:8000/simulate", {
+  const response = await fetch("http://0.0.0.0:8000/api/simulate", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
