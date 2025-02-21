@@ -1,4 +1,4 @@
-import { FlattenedData } from "@/app/utils/data";
+import { catDebt, catExpense, catIncome, catInv, FlattenedData } from "@/app/utils/data";
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
@@ -9,7 +9,7 @@ interface SimulationData {
 
 interface StackedBarChartProps {
   data: FlattenedData[];  // Data for each year and category amounts
-  categories: string[];     // Categories like "Income", "Expense", etc.
+  categories: string[];     // Categories like "Income", "Expense", "Investment", "Debt"
 }
 
 const formatYAxis = (value: number) => {
@@ -24,7 +24,7 @@ const formatYAxisLabel = (value: number) => {
 };
 
 export const StackedBarChart: React.FC<StackedBarChartProps> = ({ data, categories }) => {
-  const allowedCategories = ["Income", "Expense", "Investment", "Debt"];
+  const allowedCategories = [catIncome, catExpense, catInv, catDebt];
 
   return (
     <div className="p-4 bg-gray-800 rounded-lg shadow">

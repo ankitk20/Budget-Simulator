@@ -22,56 +22,6 @@ export type TableData = {
   [year: string]: number | string | undefined;
 }
 
-export const initialData: TableData[] = [
-  { category: "Income", currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Income", currAmt: 0, type: "Passive", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-
-  { category: "Expense", currAmt: 0, type: "Grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Clothing", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "House Maintenance", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Self Development", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "Expense", currAmt: 0, type: "Children's Education", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 20 },
-  { category: "Expense", currAmt: 0, type: "Children's Expense", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Wife's Expense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Health Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Life Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "Expense", currAmt: 0, type: "Vehicle Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "House Insurance", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Charity", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: "Expense", currAmt: 0, type: "Trip", monthlyAmt: 20000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Servant", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "Expense", currAmt: 0, type: "Medicine", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "Expense", currAmt: 0, type: "Entertainment", monthlyAmt: 500, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "Expense", currAmt: 0, type: "Emergency", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
-  { category: "Expense", currAmt: 0, type: "Gift", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-  { category: "Expense", currAmt: 0, type: "Investment High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "Expense", currAmt: 0, type: "Investment Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "Expense", currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: "Expense", currAmt: 0, type: "Others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
-
-  { category: "Debt", currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
-  { category: "Debt", currAmt: 50000, type: "Vehicle", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 11 },
-  { category: "Debt", currAmt: 80000, type: "Education", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 5 },
-  { category: "Debt", currAmt: 0, type: "Others", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 10 },
-
-  { category: "Investment", currAmt: 1000000, type: "High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfInterest: 12, rateOfIncrement: 0 },
-  { category: "Investment", currAmt: 700000, type: "Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfInterest: 9, rateOfIncrement: 0 },
-  { category: "Investment", currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
-  { category: "Investment", currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
-
-  { category: "Summary", type: "Eaten Investment" },
-  { category: "Summary", type: "Net Worth" },
-  { category: "Summary", type: "Infl Adj Net Worth" },
-
-  { category: "Eaten Ratio", type: "High Risk Eaten" },
-  { category: "Eaten Ratio", type: "Moderate Risk Eaten" },
-  { category: "Eaten Ratio", type: "Low Risk Eaten" },
-];
-
 export type EntryType = {
   currAmt: number;       // Current amount
   monthlyAmt: number;    // Monthly contribution
@@ -101,4 +51,67 @@ export const isInputColumnKeys = [
   "numOfYears",
   "rateOfInterest",
   "rateOfIncrement",
+];
+
+export const catIncome = "Income";
+export const catExpense = "Expense";
+export const catDebt = "Debt";
+export const catInv = "Investment";
+export const summary = "Summary";
+export const eatRatio = "Eaten Ratio";
+export const typeEatInv = "Eaten Investment";
+export const typeNetWorth = "Net Worth";
+export const typeInflAdjNetWorth = "Infl Adj Net Worth";
+export const typeHighRiskEat = "High Risk Eaten";
+export const typeModRiskEat = "Moderate Risk Eaten";
+export const typeLowRiskEat = "Low Risk Eaten";
+
+export const initialData: TableData[] = [
+  { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catIncome, currAmt: 0, type: "Passive", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+
+  { category: catExpense, currAmt: 0, type: "Grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Clothing", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "House Maintenance", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Self Development", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: catExpense, currAmt: 0, type: "Children's Education", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 20 },
+  { category: catExpense, currAmt: 0, type: "Children's Expense", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Wife's Expense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Health Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Life Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: catExpense, currAmt: 0, type: "Vehicle Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "House Insurance", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Charity", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Trip", monthlyAmt: 20000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Servant", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: catExpense, currAmt: 0, type: "Medicine", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: catExpense, currAmt: 0, type: "Entertainment", monthlyAmt: 500, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: catExpense, currAmt: 0, type: "Emergency", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Gift", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+  { category: catExpense, currAmt: 0, type: "Investment High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: catExpense, currAmt: 0, type: "Investment Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: catExpense, currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: catExpense, currAmt: 0, type: "Others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+
+  { category: catDebt, currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
+  { category: catDebt, currAmt: 50000, type: "Vehicle", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 11 },
+  { category: catDebt, currAmt: 80000, type: "Education", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 5 },
+  { category: catDebt, currAmt: 0, type: "Others", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 10 },
+
+  { category: catInv, currAmt: 1000000, type: "High Risk", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfInterest: 12, rateOfIncrement: 0 },
+  { category: catInv, currAmt: 700000, type: "Moderate Risk", monthlyAmt: 1500, stYr: 2025, numOfYears: 5, rateOfInterest: 9, rateOfIncrement: 0 },
+  { category: catInv, currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
+  { category: catInv, currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
+
+  { category: summary, type: typeEatInv },
+  { category: summary, type: typeNetWorth },
+  { category: summary, type: typeInflAdjNetWorth },
+
+  { category: eatRatio, type: typeHighRiskEat },
+  { category: eatRatio, type: typeModRiskEat },
+  { category: eatRatio, type: typeLowRiskEat },
 ];

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TableData, isInputColumnKeys } from "../app/utils/data";
+import { TableData, catInv, eatRatio, isInputColumnKeys, summary } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
 import {
@@ -64,7 +64,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
       accessorKey: "category",
       header: "Category",
       cell: ({ row }: { row: Row<TableData> }) => {
-        const isDisabled = ["Investment", "Summary", "Ratio"].includes(row.original.category);
+        const isDisabled = [catInv, summary, eatRatio].includes(row.original.category);
         return (
           <div
             className="relative"
@@ -225,7 +225,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         const rawValue = row.getValue(year) || 0;
 
         // Check if the category column has "ratio" value
-        const isRatioRow = row.original?.category === "Eaten Ratio";
+        const isRatioRow = row.original?.category === eatRatio;
 
         // Format the value as currency with zero decimals (if rawValue is 0, it will show "0")
         const formattedValue = rawValue && !isRatioRow
@@ -301,7 +301,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         {/* Table Body */}
         <tbody>
           {table.getRowModel().rows.map((row, rowIndex) => {
-            const isSummaryRow = row.original?.category === "summary";
+            const isSummaryRow = row.original?.category === summary;
             const isRatioRow = row.original?.category === "ratio";
   
             return (

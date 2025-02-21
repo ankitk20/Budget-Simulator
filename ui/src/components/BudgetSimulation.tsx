@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth } from "../app/utils/data";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -148,21 +148,21 @@ export default function BudgetSimulation() {
             }
 
             // Extract net worth data
-            const netWorth = yearData["Summary"]?.["Net Worth"] || 0;
-            const inflAdjNetWorth = yearData["Summary"]?.["Infl Adj Net Worth"] || 0;
+            const netWorth = yearData[summary]?.[typeNetWorth] || 0;
+            const inflAdjNetWorth = yearData[summary]?.[typeInflAdjNetWorth] || 0;
             localeRef.current = {"locale": columnData["locale"], "currency": columnData["currency"]};
 
             // Update chart data
             lineChartDataRef.current.data.push({
-              "Year": Number(year),
-              "Net Worth": netWorth,
-              "Infl Adj Net Worth": inflAdjNetWorth
+              "year": Number(year),
+              [typeNetWorth]: netWorth,
+              [typeInflAdjNetWorth]: inflAdjNetWorth
             });
 
             // Process Ribbon Chart Data
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
             Object.keys(yearData).forEach((categoryKey) => {
-              if (categoryKey !== "summary" && categoryKey !== "ratio") {
+              if (categoryKey !== summary && categoryKey !== eatRatio) {
                 categoriesRef.current.add(categoryKey);
                 ribbonEntry[categoryKey] = 0
                 Object.keys(yearData[categoryKey]).forEach((typeKey) => {
