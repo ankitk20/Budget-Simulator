@@ -21,7 +21,7 @@ limiter = Limiter(key_func=get_remote_address)
 # TODO: handle api response where things are -ve
 # TODO: Downpayment adjust is pending
 @app.post("/simulate")
-@limiter.limit("50/minute")  # Limit requests per minute
+@limiter.limit("10/minute")  # Limit requests per minute
 async def simulate_financials(request: Request, payload: SimulationInput, user: dict = Depends(verify_google_token)) -> StreamingResponse:
     """
     Processes financial simulation input while enforcing rate limits and authentication.
