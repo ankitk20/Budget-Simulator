@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { initialData, SimulationInput, TableData, EntryType, FlattenedData } from "../app/utils/data";
-import SimulationButton from "./SimulationButton";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -13,6 +12,7 @@ import SimulationForm from "./SimulationForm";
 import Footer from "./Footer";
 import StackedBarChart from "./Yearly100%StackedBarChart";
 import NavBar from "./NavBar";
+import Button from "./Button";
 
 export default function BudgetSimulation() {
   const { data: session } = useSession(); // Get user session data
@@ -31,10 +31,16 @@ export default function BudgetSimulation() {
   const fortuneAmtRef = useRef<HTMLInputElement>(null!);
   const currentAgeRef = useRef<HTMLInputElement>(null!);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
-  const locale = useRef<{ locale: string; currency: string }>({
+  const insightsRef = useRef<HTMLDivElement>(null);
+
+  const localeRef = useRef<{ locale: string; currency: string }>({
     locale: 'en-US',  // Default locale
     currency: 'USD'   // Default currency
   });
+
+  const scrollToInsights = () => {
+    insightsRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const categoriesRef = useRef<Set<string>>(new Set());
   const simulationDataRef = useRef<FlattenedData[]>([]);
@@ -144,7 +150,7 @@ export default function BudgetSimulation() {
             // Extract net worth data
             const netWorth = yearData["Summary"]?.["Net Worth"] || 0;
             const inflAdjNetWorth = yearData["Summary"]?.["Infl Adj Net Worth"] || 0;
-            locale.current = {"locale": columnData["locale"], "currency": columnData["currency"]};
+            localeRef.current = {"locale": columnData["locale"], "currency": columnData["currency"]};
 
             // Update chart data
             lineChartDataRef.current.data.push({
@@ -207,18 +213,21 @@ export default function BudgetSimulation() {
         currentAgeRef={currentAgeRef}
         lifeExpectancyRef={lifeExpectancyRef}
       />
-      <SimulationButton fetchStream={fetchStream} loading={loading} />
+      <div className="flex justify-between items-center my-2">
+        <Button label={loading ? "Simulating..." : "Run Simulation"} onClick={fetchStream} loading={loading} />
+        <Button label="View Insights" onClick={scrollToInsights} loading={loading} />
+      </div>
       <div className="mb-8">
       <BudgetTable
         tableData={tableData}
         setTableData={setTableData}
         editDataRef={editDataRef}
         simYr={simYr}
-        locale={locale.current}
+        locale={localeRef.current}
         showInput={showInput}
       />
       </div>
-      <div className="mb-8">
+      <div ref={insightsRef} className="mb-8">
         <YearlyLineChart  data={ lineChartData.data } />
       </div>
       <div className="mb-8">
