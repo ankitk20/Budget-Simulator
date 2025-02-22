@@ -99,18 +99,15 @@ async def simulate_years(data: SimulationInput):
                 investment_corpus[inv_type] = new_corpus
                 yearly_data["Investment"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
-                total_inv_expense += inv_data["monthlyAmt"] * 12
             elif data["Investment"][inv_type]["stYr"] < year < data["Investment"][inv_type]["stYr"] + data["Investment"][inv_type]["numOfYr"]:
                 new_corpus = yearly_data["Investment"][inv_type] * increase_factor + data["Investment"][inv_type]["monthlyAmt"] * 12
                 investment_corpus[inv_type] = new_corpus
                 yearly_data["Investment"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
-                total_inv_expense += data["Investment"][inv_type]["monthlyAmt"] * 12
             else:
                 new_corpus = int(max(data["Investment"][inv_type]["currAmt"], yearly_data["Investment"][inv_type]) * increase_factor)
                 total_inv += new_corpus
                 yearly_data["Investment"][inv_type] = int(new_corpus)
-        total_expense += total_inv_expense
 
         bal = int(total_income - total_debt - total_expense)
         init_bal = int(abs(bal))
