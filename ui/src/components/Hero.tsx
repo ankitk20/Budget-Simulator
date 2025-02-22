@@ -30,7 +30,7 @@ export default function Hero() {
         transition={{ duration: 0.8 }}
         className="max-w-3xl"
       >
-        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
           FiSim - <span className="text-blue-500"> Plan Your Finances with Confidence</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-300 mb-6">
