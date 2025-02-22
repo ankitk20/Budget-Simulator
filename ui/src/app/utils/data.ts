@@ -65,6 +65,7 @@ export const typeInflAdjNetWorth = "Infl Adj Net Worth";
 export const typeHighRiskEat = "High Risk Eaten";
 export const typeModRiskEat = "Moderate Risk Eaten";
 export const typeLowRiskEat = "Low Risk Eaten";
+export const defaultSimYr = 5;
 
 export const initialData: TableData[] = [
   { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
@@ -127,7 +128,6 @@ export const demoData: TableData[] = [
   { category: catExpense, currAmt: 0, type: "Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
   { category: catExpense, currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
   { category: catExpense, currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
-  { category: catExpense, currAmt: 0, type: "Others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
 
   { category: catDebt, currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
 

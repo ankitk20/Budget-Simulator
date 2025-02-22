@@ -35,7 +35,7 @@ export default function Home() {
 
         {/* Right Side - Demo Section */}
         <div className="lg:w-[60%] flex items-center justify-center">
-          <div className="w-full h-[550px] max-w-[800px] bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className="w-full h-[550px] max-w-[800px] bg-gray-800 rounded-xl shadow-lg overflow-y-auto">
             <BudgetSimulation />
           </div>
         </div>
