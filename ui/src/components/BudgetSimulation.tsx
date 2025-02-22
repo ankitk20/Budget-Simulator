@@ -133,7 +133,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
     while (true) {
       const { done, value } = await reader.read();
-      console.log(done, value);
       if (done) break;
 
       accumulated += decoder.decode(value, { stream: true });
