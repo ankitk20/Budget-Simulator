@@ -127,7 +127,6 @@ export const demoData: TableData[] = [
   { category: catExpense, currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
   { category: catExpense, currAmt: 0, type: "Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
   { category: catExpense, currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
 
   { category: catDebt, currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
 
