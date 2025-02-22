@@ -94,7 +94,11 @@ async def simulate_years(data: SimulationInput):
         # Process Investments
         for inv_type, inv_data in data["Investment"].items():
             increase_factor = (1 + data["Investment"][inv_type]["rateOfInt"] / 100)
-            if data["Investment"][inv_type]["stYr"] == year:
+            if data["Investment"][inv_type]["stYr"] > year:
+                new_corpus = int(max(data["Investment"][inv_type]["currAmt"], yearly_data["Investment"][inv_type]) * increase_factor)
+                total_inv += new_corpus
+                yearly_data["Investment"][inv_type] = int(new_corpus)
+            elif data["Investment"][inv_type]["stYr"] == year:
                 new_corpus = max(data["Investment"][inv_type]["currAmt"], yearly_data["Investment"][inv_type]) * increase_factor + inv_data["monthlyAmt"] * 12
                 investment_corpus[inv_type] = new_corpus
                 yearly_data["Investment"][inv_type] = int(new_corpus)
@@ -105,7 +109,7 @@ async def simulate_years(data: SimulationInput):
                 yearly_data["Investment"][inv_type] = int(new_corpus)
                 total_inv += new_corpus
             else:
-                new_corpus = int(max(data["Investment"][inv_type]["currAmt"], yearly_data["Investment"][inv_type]) * increase_factor)
+                new_corpus = int(yearly_data["Investment"][inv_type] * increase_factor)
                 total_inv += new_corpus
                 yearly_data["Investment"][inv_type] = int(new_corpus)
 
@@ -129,25 +133,25 @@ async def simulate_years(data: SimulationInput):
                 yearly_data["Investment"]["Low Risk"] += bal
                 bal = 0
             else:
-                low_ratio = round (yearly_data["Investment"]["Low Risk"] / init_bal, 2)
+                low_ratio = yearly_data["Investment"]["Low Risk"] / init_bal
                 bal += yearly_data["Investment"]["Low Risk"]
                 yearly_data["Investment"]["Low Risk"] = 0
 
             if bal < 0 and abs(bal) <= moderateRiskCurrAmt:
-                moderate_ratio = round(1 - low_ratio, 2)
+                moderate_ratio = 1 - low_ratio
                 yearly_data["Investment"]["Moderate Risk"] += bal
                 bal = 0
             elif bal != 0:
-                moderate_ratio = round (yearly_data["Investment"]["Moderate Risk"] / init_bal, 2)
+                moderate_ratio = yearly_data["Investment"]["Moderate Risk"] / init_bal
                 bal += yearly_data["Investment"]["Moderate Risk"]
                 yearly_data["Investment"]["Moderate Risk"] = 0
 
             if bal < 0 and abs(bal) <= highRiskCurrAmt:
-                high_ratio = round(1 - moderate_ratio - low_ratio, 2)
+                high_ratio = 1 - moderate_ratio - low_ratio
                 yearly_data["Investment"]["High Risk"] += bal
                 bal = 0
             elif bal != 0:
-                high_ratio = round (yearly_data["Investment"]["High Risk"] / init_bal, 2)
+                high_ratio = yearly_data["Investment"]["High Risk"] / init_bal
                 bal += yearly_data["Investment"]["High Risk"]
                 yearly_data["Investment"]["High Risk"] = 0
 
@@ -155,7 +159,7 @@ async def simulate_years(data: SimulationInput):
         inflAdjNtWrth = int(ntWrth/((1+(inflRate/100))**(year-start_year)))
 
         summary = {"Eaten Investment": eaten_inv, "Net Worth": ntWrth, "Infl Adj Net Worth": inflAdjNtWrth}
-        ratio = {"High Risk Eaten": high_ratio, "Moderate Risk Eaten": moderate_ratio, "Low Risk Eaten": low_ratio}
+        ratio = {"High Risk Eaten": round(high_ratio, 2), "Moderate Risk Eaten": round(moderate_ratio, 2), "Low Risk Eaten": round(low_ratio, 2)}
         yearly_data["Summary"] = summary
         yearly_data["Eaten Ratio"] = ratio
 
