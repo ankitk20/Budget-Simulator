@@ -48,7 +48,7 @@ export default function Hero() {
           onClick={handleStartSimulating}
           disabled={loading}
         >
-          {loading ? "Redirecting..." : "Start Simulating"}
+          {loading ? "Redirecting..." : "Start Planning"}
         </motion.button>
       </motion.div>
 
