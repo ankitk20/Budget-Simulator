@@ -21,12 +21,15 @@ export const metadata = {
 import type { ReactNode } from "react";
 import "../app/globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
+import PlausibleProvider from "next-plausible";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        <PlausibleProvider domain="fisim.vercel.app"> 
+          <SessionProviderWrapper>{children}</SessionProviderWrapper>
+        </PlausibleProvider>
       </body>
     </html>
   );
