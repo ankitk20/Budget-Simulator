@@ -1,4 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -11,7 +12,13 @@ export default function Navbar() {
       {/* User Profile & Logout */}
       {session?.user ? (
         <div className="flex items-center space-x-3">
-          <img src={session.user?.image || "../../icon_user.png"} alt="User" className="w-10 h-10 rounded-full border border-gray-600" />
+          <Image
+            src={session.user?.image && session.user.image.startsWith("http") ? session.user.image : "/icon_user.png"}
+            alt="User"
+            width={40}
+            height={40}
+            className="rounded-full border border-gray-500 object-cover bg-gray-200"
+         />
           <span className="text-sm font-medium">{session.user.name}</span>
           <button
             onClick={() => signOut()}
