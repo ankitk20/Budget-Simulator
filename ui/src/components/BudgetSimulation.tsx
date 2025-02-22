@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr } from "../app/utils/data";
-import BudgetTable from "./BudgetTable";
+import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
 import YearlyRibbonChart from "./YearlyRibbonChart";
@@ -16,6 +16,10 @@ import Button from "./Button";
 
 interface BudgetSimulationProps {
   demo?: boolean;
+}
+
+interface HideInputButtonRef {
+  hideInput: () => void;
 }
 
 export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {  
@@ -35,6 +39,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const currentAgeRef = useRef<HTMLInputElement>(null!);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
   const insightsRef = useRef<HTMLDivElement>(null);
+  const hideInputBtnRef = useRef<HideInputButtonRef | null>(null);
 
   const localeRef = useRef<{ locale: string; currency: string }>({
     locale: 'en-US',  // Default locale
@@ -223,14 +228,21 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
       {/* Always show "Run Simulation" button */}
       <div className="flex justify-between items-center my-2">
-        <Button label={loading ? "Simulating..." : demo ? "Run Demo Simulation": "Run Simulation"} onClick={fetchStream} loading={loading} />
-        
+      <Button 
+        label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
+        onClick={() => {
+          fetchStream(); // Call the simulation function
+          hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
+        }} 
+        loading={loading} 
+      />        
         {/* Show "View Insights" button only if not in demo mode */}
         {!demo && <Button label="View Insights" onClick={scrollToInsights} loading={loading} />}
       </div>
 
       <div className="mb-8">
         <BudgetTable
+          ref={hideInputBtnRef}
           tableData={tableData}
           setTableData={setTableData}
           editDataRef={editDataRef}

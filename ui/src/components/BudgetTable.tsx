@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { TableData, catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
@@ -22,17 +22,18 @@ interface BudgetTableProps {
   demo: boolean;
 }
 
-export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale, showInput, demo }: BudgetTableProps) {
+export const BudgetTable = forwardRef(function BudgetTable(
+  { tableData, setTableData, editDataRef, simYr, locale, showInput, demo }: BudgetTableProps,
+  hideInputBtnRef
+) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(showInput);
   const years = Array.from({ length: Number(simYr || defaultSimYr) }, (_, i) => String(new Date().getFullYear() + i));
  
-  // Rerender only if input columns are visible
-  // useEffect(() => {
-  //   if (showInput !== showInputs) {
-  //     setShowInputs(showInput);
-  //   }
-  // }, [showInput]);
+  // Expose setShowInputs to parent
+  useImperativeHandle(hideInputBtnRef, () => ({
+    hideInput: () => setShowInputs((prev) => false),
+  }));
 
   const updateCell = (index: number, key: string, value: any) => {
     editDataRef.current[index] = {
@@ -355,5 +356,5 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
         </tbody>
       </table>
     </div>
-  );  
-}
+  );
+});
