@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth, OAuth2Client } from "google-auth-library";
+import { OAuth2Client } from "google-auth-library";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -33,8 +33,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
   }
+  const env = process.env.DEPLOYMENT_ENV;
+  const prodApiHost = process.env.PROD_API_HOST;
+  const devApiHost = process.env.LOCAL_API_HOST;
+  const apiBaseUrl =
+    env === "production"
+      ? prodApiHost
+      : devApiHost;
 
-  const api = demoMode ? "http://0.0.0.0:8000/api/demosimulate": "http://0.0.0.0:8000/api/simulate";
+  const api = demoMode ? `${apiBaseUrl}/demosimulate` : `${apiBaseUrl}/simulate`;
   const response = await fetch(api, {
     method: "POST",
     headers: {
