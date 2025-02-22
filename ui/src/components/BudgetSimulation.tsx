@@ -18,7 +18,7 @@ interface BudgetSimulationProps {
   demo?: boolean;
 }
 
-export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {
+export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {  
   const { data: session } = useSession(); // Get user session data
   const [tableData, setTableData] = useState<TableData[]>(demo ? demoData : initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
@@ -26,10 +26,9 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const [loading, setLoading] = useState(false);
   const [simYr, setSimYr] = useState(0);
   const [showInput, setShowInput] = useState(true);
-  const [demoState, setDemoState] = useState(demo);
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
-  const editDataRef = useRef<TableData[]>([...initialData]);
+  const editDataRef = useRef<TableData[]>([...tableData]);
   const countryRef = useRef<HTMLSelectElement>(null!);
   const yearsRef = useRef<HTMLInputElement>(null!);
   const fortuneAmtRef = useRef<HTMLInputElement>(null!);
@@ -134,6 +133,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
     while (true) {
       const { done, value } = await reader.read();
+      console.log(done, value);
       if (done) break;
 
       accumulated += decoder.decode(value, { stream: true });
@@ -230,7 +230,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         {!demo && <Button label="View Insights" onClick={scrollToInsights} loading={loading} />}
       </div>
 
-      {/* Show only Run Simulation button and table in demo mode */}
       <div className="mb-8">
         <BudgetTable
           tableData={tableData}

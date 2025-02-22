@@ -55,7 +55,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             ref={yearsRef}
             type="number"
             className="w-full p-2 rounded bg-gray-700 text-white"
-            placeholder="30"
+            placeholder="10"
             defaultValue={10}
             onChange={(e) => {
               let value = Number(e.target.value);
