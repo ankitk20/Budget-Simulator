@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { TableData, catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
@@ -32,7 +32,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
  
   // Expose setShowInputs to parent
   useImperativeHandle(hideInputBtnRef, () => ({
-    hideInput: () => setShowInputs((prev) => false),
+    hideInput: () => setShowInputs(false),
   }));
 
   const updateCell = (index: number, key: string, value: any) => {

@@ -1,11 +1,6 @@
-import { catDebt, catExpense, catIncome, catInv, FlattenedData } from "@/app/utils/data";
+import { FlattenedData } from "@/app/utils/data";
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-
-interface SimulationData {
-  year: number;
-  [category: string]: number;  // Dynamic category with amounts
-}
 
 interface StackedBarChartProps {
   data: FlattenedData[];  // Data for each year and category amounts

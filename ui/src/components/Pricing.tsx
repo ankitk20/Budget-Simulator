@@ -27,8 +27,8 @@ export default function Pricing() {
     const fetchCurrencyAndExchangeRate = async () => {
       try {
         // Fetch user location via geolocation API
-        const res = await fetch("https://ipapi.co/json/");
-        const data = await res.json();
+        // const res = await fetch("https://ipapi.co/json/");
+        // const data = await res.json();
         const countryCode = "US"; // Default to "US" if unknown
         const currency = currencyMap[countryCode] || "USD";
 

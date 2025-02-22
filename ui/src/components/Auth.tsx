@@ -2,8 +2,9 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
+import Image from 'next/image';
 
-export default function AuthSection() {
+export default function Auth() {
   const { data: session } = useSession();
 
   return (
@@ -13,10 +14,12 @@ export default function AuthSection() {
           <p className="text-xl font-semibold text-gray-200">
             Welcome, {session.user?.name}!
           </p>
-          <img
+          <Image
             src={session.user?.image || "../../icon_user.png"}
             alt="User"
-            className="w-16 h-16 rounded-full border border-gray-600 mx-auto mt-3"
+            className="rounded-full border border-gray-600 mx-auto mt-3"
+            width={64}   // Equivalent to w-16
+            height={64}  // Equivalent to h-16
           />
           <button
             onClick={() => signOut()}

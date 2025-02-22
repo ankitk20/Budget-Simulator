@@ -1,8 +1,6 @@
-import { serialize } from "cookie";
 import NextAuth, { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
-import { NextResponse } from "next/server";
 
 const allowedUsers = [
   "kesharwaniankit80@gmail.com",

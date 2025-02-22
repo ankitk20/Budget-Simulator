@@ -175,7 +175,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
                 categoriesRef.current.add(categoryKey);
                 ribbonEntry[categoryKey] = 0
                 Object.keys(yearData[categoryKey]).forEach((typeKey) => {
-                  const key = `${categoryKey}_${typeKey}`;
                   ribbonEntry[categoryKey] += yearData[categoryKey][typeKey] || 0;
                 });
               }
