@@ -18,7 +18,7 @@ export default function Pricing() {
   const [exchangeRate, setExchangeRate] = useState(1);
 
   const plans = [
-    { name: "Pay As You Go", priceUSD: 5, unit: "/simulation", buttonColor: "bg-gray-600 hover:bg-gray-500" },
+    { name: "Pay As You Go", priceUSD: 4.99, unit: "/simulation", buttonColor: "bg-gray-600 hover:bg-gray-500" },
     { name: "Monthly", priceUSD: 29.99, unit: "/month", buttonColor: "bg-blue-600 hover:bg-blue-500" },
     { name: "Yearly", priceUSD: 299.99, unit: "/year", buttonColor: "bg-green-600 hover:bg-green-500" },
   ];

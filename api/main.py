@@ -17,6 +17,5 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
 
-# TODO: currently all inv types are mandatory due to bal eat hardcoding
 # TODO: handle api response where things are -ve
 # TODO: Downpayment adjust is pending
