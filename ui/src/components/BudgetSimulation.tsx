@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr } from "../app/utils/data";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -72,7 +72,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
     // Read user inputs only when Simulate button is clicked
     const country = countryRef.current?.value ? countryRef.current.value : "us";
-    const years = yearsRef.current?.value ? Number(yearsRef.current.value): 1;
+    const years = yearsRef.current?.value ? Number(yearsRef.current.value): defaultSimYr;
     const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : 1;
     const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : 1;
     const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : 1;
@@ -223,7 +223,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
       {/* Always show "Run Simulation" button */}
       <div className="flex justify-between items-center my-2">
-        <Button label={loading ? "Simulating..." : "Run Simulation"} onClick={fetchStream} loading={loading} />
+        <Button label={loading ? "Simulating..." : demo ? "Run Demo Simulation": "Run Simulation"} onClick={fetchStream} loading={loading} />
         
         {/* Show "View Insights" button only if not in demo mode */}
         {!demo && <Button label="View Insights" onClick={scrollToInsights} loading={loading} />}
