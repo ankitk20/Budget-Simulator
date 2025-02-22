@@ -4,8 +4,14 @@ const allowedUsers = [
   "kesharwaniankit80@gmail.com",
   "kesharwaniankit.com@gmail.com",
   "kmamaniya@gmail.com",
-  "parthpanchal417@gmail.com",
-  "vaibhav.kanojia.1996@gmail.com"
+  "panchalparth417@gmail.com",
+  "vaibhav.kanojia1996@gmail.com",
+  "mpoojamore07@gmail.com",
+  "tejalmamaniya@gmail.com",
+  "23lalita@gmail.com",
+  "kesharwanikartik80@gmail.com",
+  "kesherwanisimran8@gmail.com",
+  "bhavik.dand007@gmail.com"
 ];
 
 export const authOptions = {
