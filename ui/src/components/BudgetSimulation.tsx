@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData } from "../app/utils/data";
 import BudgetTable from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -14,15 +14,19 @@ import StackedBarChart from "./Yearly100%StackedBarChart";
 import NavBar from "./NavBar";
 import Button from "./Button";
 
-export default function BudgetSimulation() {
+interface BudgetSimulationProps {
+  demo?: boolean;
+}
+
+export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {
   const { data: session } = useSession(); // Get user session data
-  const [tableData, setTableData] = useState<TableData[]>(initialData);
+  const [tableData, setTableData] = useState<TableData[]>(demo ? demoData : initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
   const [loading, setLoading] = useState(false);
   const [simYr, setSimYr] = useState(0);
   const [showInput, setShowInput] = useState(true);
-  
+  const [demoState, setDemoState] = useState(demo);
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
   const editDataRef = useRef<TableData[]>([...initialData]);
@@ -116,7 +120,8 @@ export default function BudgetSimulation() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": token ? `Bearer ${token}` : "",
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "X-Demo-Mode": String(demo),
       },
       body: JSON.stringify(simulationInput),
     });
@@ -203,42 +208,55 @@ export default function BudgetSimulation() {
 
   return (
     <div className="p-4">
-      <NavBar />
+      {!demo && <NavBar />}
 
-      {/* User Input Form */}
-      <SimulationForm
-        countryRef={countryRef}
-        yearsRef={yearsRef}
-        fortuneAmtRef={fortuneAmtRef}
-        currentAgeRef={currentAgeRef}
-        lifeExpectancyRef={lifeExpectancyRef}
-      />
+      {!demo && (
+        <>
+          <SimulationForm
+            countryRef={countryRef}
+            yearsRef={yearsRef}
+            fortuneAmtRef={fortuneAmtRef}
+            currentAgeRef={currentAgeRef}
+            lifeExpectancyRef={lifeExpectancyRef}
+          />
+        </>
+      )}
+
+      {/* Always show "Run Simulation" button */}
       <div className="flex justify-between items-center my-2">
         <Button label={loading ? "Simulating..." : "Run Simulation"} onClick={fetchStream} loading={loading} />
-        <Button label="View Insights" onClick={scrollToInsights} loading={loading} />
-      </div>
-      <div className="mb-8">
-      <BudgetTable
-        tableData={tableData}
-        setTableData={setTableData}
-        editDataRef={editDataRef}
-        simYr={simYr}
-        locale={localeRef.current}
-        showInput={showInput}
-      />
-      </div>
-      <div ref={insightsRef} className="mb-8">
-        <YearlyLineChart  data={ lineChartData.data } />
-      </div>
-      <div className="mb-8">
-        <YearlyRibbonChart data={ribbonChartData} />
-      </div>
-      <div className="mb-8">
-        <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
+        
+        {/* Show "View Insights" button only if not in demo mode */}
+        {!demo && <Button label="View Insights" onClick={scrollToInsights} loading={loading} />}
       </div>
 
-      {/* Footer Component */}
-      <Footer />
+      {/* Show only Run Simulation button and table in demo mode */}
+      <div className="mb-8">
+        <BudgetTable
+          tableData={tableData}
+          setTableData={setTableData}
+          editDataRef={editDataRef}
+          simYr={simYr}
+          locale={localeRef.current}
+          showInput={showInput}
+        />
+      </div>
+
+      {!demo && (
+        <>
+          <div ref={insightsRef} className="mb-8">
+            <YearlyLineChart data={lineChartData.data} />
+          </div>
+          <div className="mb-8">
+            <YearlyRibbonChart data={ribbonChartData} />
+          </div>
+          <div className="mb-8">
+            <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
+          </div>
+        </>
+      )}
+
+      {!demo && <Footer />}
     </div>
   );
 }

@@ -19,23 +19,28 @@ async function verifyToken(token: string) {
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const demoMode = JSON.parse(req.headers.get("X-Demo-Mode") || "");
+
+  if (!demoMode) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  
+    const token = authHeader.split(" ")[1];
+    const user = await verifyToken(token);
+  
+    if (!user) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
   }
 
-  const token = authHeader.split(" ")[1];
-  const user = await verifyToken(token);
-
-  if (!user) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-  }
-
-  const response = await fetch("http://0.0.0.0:8000/api/simulate", {
+  const api = demoMode ? "http://0.0.0.0:8000/api/demosimulate": "http://0.0.0.0:8000/api/simulate";
+  const response = await fetch(api, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization": authHeader || "", // Pass token to backend API
+      ...(!demoMode ? { "Authorization": authHeader || "" } : {})
     },
     body: JSON.stringify(await req.json())
   });

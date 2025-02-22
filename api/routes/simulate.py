@@ -43,3 +43,35 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
+@router.post("/demosimulate")
+@limiter.limit("15/minute")  # Rate limiting per IP
+async def simulate_financials(request: Request, payload: SimulationInput) -> StreamingResponse:
+    """
+    Processes financial simulation input while enforcing rate limits and authentication.
+    """
+    try:
+        parsed_payload = SimulationInput.model_validate(payload)  # Validate using Pydantic
+        parsed_payload = parsed_payload.model_dump(by_alias=True)  # Convert to dict with camelCase keys
+
+        async def result_generator():
+            async for result in simulate_years(parsed_payload):
+                result.update({
+                    "locale": get_country_data(parsed_payload["country"], "locale"),
+                    "currency": get_country_data(parsed_payload["country"], "currency"),
+                    "symbol": get_country_data(parsed_payload["country"], "symbol"),
+                })
+                yield json.dumps(result) + "\n"
+                await asyncio.sleep(0.1)
+
+        return StreamingResponse(result_generator(), media_type="application/json")
+
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=e.errors())
+
+    except RateLimitExceeded:
+        raise HTTPException(status_code=429, detail="Too many requests. Please slow down.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")

@@ -115,3 +115,30 @@ export const initialData: TableData[] = [
   { category: eatRatio, type: typeModRiskEat },
   { category: eatRatio, type: typeLowRiskEat },
 ];
+
+export const demoData: TableData[] = [
+  { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+
+  { category: catExpense, currAmt: 0, type: "Grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Children's Education", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Investment Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
+  { category: catExpense, currAmt: 0, type: "Others", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfIncrement: 10 },
+
+  { category: catDebt, currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
+
+  { category: catInv, currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
+  { category: catInv, currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
+
+  { category: summary, type: typeEatInv },
+  { category: summary, type: typeNetWorth },
+  { category: summary, type: typeInflAdjNetWorth },
+
+  { category: eatRatio, type: typeHighRiskEat },
+  { category: eatRatio, type: typeModRiskEat },
+  { category: eatRatio, type: typeLowRiskEat },
+];
