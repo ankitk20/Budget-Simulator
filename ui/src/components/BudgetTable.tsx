@@ -19,9 +19,10 @@ interface BudgetTableProps {
     currency: string;  // Currency like 'USD'
   };
   showInput: boolean;
+  demo: boolean;
 }
 
-export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale, showInput }: BudgetTableProps) {
+export default function BudgetTable({ tableData, setTableData, editDataRef, simYr, locale, showInput, demo }: BudgetTableProps) {
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(showInput);
   const years = Array.from({ length: Number(simYr || defaultSimYr) }, (_, i) => String(new Date().getFullYear() + i));
@@ -73,7 +74,7 @@ export default function BudgetTable({ tableData, setTableData, editDataRef, simY
             onMouseLeave={() => !isDisabled && setHoveredRow(null)}
           >
             {editDataRef.current[row.index]?.category ?? ""}
-            {hoveredRow === row.index && !isDisabled && (
+            {!demo && hoveredRow === row.index && !isDisabled && (
             <div className="absolute top-0 right-0 flex space-x-2">
               {/* Delete Row Button */}
               <DelRowButton

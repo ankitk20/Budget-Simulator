@@ -237,6 +237,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
           simYr={simYr}
           locale={localeRef.current}
           showInput={showInput}
+          demo={demo}
         />
       </div>
 
