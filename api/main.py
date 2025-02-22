@@ -11,15 +11,16 @@ app = FastAPI()
 # Attach rate limiter to app state
 app.state.limiter = limiter
 
+app.add_middleware(SlowAPIMiddleware)
 # CORS configuration with stricter settings
-app.add_middleware(
-    SlowAPIMiddleware,
-    CORSMiddleware,
-    allow_origins=["*"],  # Allow specific origin
-    allow_credentials=True,
-    allow_methods=["GET", "POST"],  # Allow only POST requests
-    allow_headers=["*"],  # Allow specific headers
-)
+# app.add_middleware(
+#     SlowAPIMiddleware,
+#     CORSMiddleware,
+#     allow_origins=["*"],  # Allow specific origin
+#     allow_credentials=True,
+#     allow_methods=["GET", "POST"],  # Allow only POST requests
+#     allow_headers=["*"],  # Allow specific headers
+# )
 
 # Register Routes
 app.include_router(simulate_router, prefix="/api")
