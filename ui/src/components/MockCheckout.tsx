@@ -38,7 +38,7 @@ export default function MockCheckout() {
         onClick={handleCheckout}
         className="mt-4 px-6 py-3 w-full text-lg font-semibold rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition"
       >
-        Proceed to Checkout
+        Get Started
       </button>
 
       {/* Payment Modal */}
