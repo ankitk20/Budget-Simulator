@@ -130,11 +130,11 @@ export const demoData: TableData[] = [
   { category: catInv, currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
   { category: catInv, currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
 
-  { category: summary, type: typeEatInv },
   { category: summary, type: typeNetWorth },
   { category: summary, type: typeInflAdjNetWorth },
+  { category: summary, type: typeEatInv },
 
-  { category: eatRatio, type: typeHighRiskEat },
-  { category: eatRatio, type: typeModRiskEat },
   { category: eatRatio, type: typeLowRiskEat },
+  { category: eatRatio, type: typeModRiskEat },
+  { category: eatRatio, type: typeHighRiskEat },
 ];
