@@ -42,7 +42,7 @@ export default function Pricing() {
       unit: "/year",
       buttonColor: "bg-green-600 hover:bg-green-500",
       event: "YearlyPlanClicked",
-      features: ["Best value (2 months free)", "All monthly features", "Exclusive insights"],
+      features: ["Best value (2 months free)",  "Exclusive insights", "Unlimited simulations"],
     },
   ];
 

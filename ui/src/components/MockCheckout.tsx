@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePlausible } from "next-plausible";
+import { signIn } from "next-auth/react";
 
 export default function MockCheckout() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function MockCheckout() {
     setIsOpen(true);
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (cardNumber.length < 16 || expiry.length < 4 || cvc.length < 3) {
       alert("Please enter valid payment details.");
       return;
@@ -25,9 +26,10 @@ export default function MockCheckout() {
 
     plausible("PaymentSuccess");
     setIsPaid(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsOpen(false);
-    }, 2000);
+      await signIn("google", { callbackUrl: "/simulate" }); // 🚀 Trigger sign-in after payment
+    }, 3000);
   };
 
   return (
@@ -47,8 +49,8 @@ export default function MockCheckout() {
 
             {isPaid ? (
               <div className="text-center">
-                <p className="text-green-400 font-semibold">✅ Payment Successful!</p>
-                <p className="text-gray-400 mt-2">Thank you for your purchase.</p>
+                <p className="text-green-400 font-semibold">✅ Thank you for showing interest!</p>
+                <p className="text-gray-400 mt-2">Redirecting to sign in...</p>
               </div>
             ) : (
               <>
