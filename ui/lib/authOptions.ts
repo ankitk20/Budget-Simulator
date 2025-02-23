@@ -24,7 +24,7 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user, account }: { token: any; user: any; account?: any }) {
       if (account) {
-        if (false && !user?.email || !allowedUsers.includes(user.email)) {
+        if (!user?.email) {
           throw new Error("Unauthorized");
         }
         token.accessToken = account.access_token;
@@ -37,7 +37,7 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;
       session.user.image = token.picture;
-      return session;
+      return session; 
     },
   },
 };
