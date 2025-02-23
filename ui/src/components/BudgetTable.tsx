@@ -286,31 +286,31 @@ export const BudgetTable = forwardRef(function BudgetTable(
   });
 
   return (
-    <div className="overflow-x-auto overflow-y-auto max-h-[750px] shadow-lg rounded-lg border border-gray-700">
+    <div className="overflow-x-auto overflow-y-auto max-h-[750px] shadow-xl rounded-lg border border-gray-700 bg-gray-950">
       {/* Toggle Button */}
-      <div className="flex justify-start p-2">
+      <div className="flex justify-start p-3 bg-gray-900 border-b border-gray-700">
         <button
-          className="px-3 py-1 text-sm font-semibold bg-gray-700 text-gray-300 rounded hover:bg-gray-600 transition"
+          className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-md 
+                    hover:bg-blue-500 transition duration-200 focus:outline-none focus:ring focus:ring-blue-400"
           onClick={() => setShowInputs((prev) => !prev)}
         >
           {showInputs ? "Hide Inputs" : "Show Inputs"}
         </button>
       </div>
   
-      <table className="w-full border-collapse text-white bg-gray-900">
+      <table className="w-full border-collapse text-gray-300 bg-gray-900">
         {/* Table Header */}
-        <thead className="sticky top-0 z-10 shadow-md bg-gray-800 text-gray-200">
+        <thead className="sticky top-0 z-10 shadow-md bg-gray-800 text-gray-100">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-              const isInputColumn = isInputColumnKeys.includes(header.column.id);
-  
+                const isInputColumn = isInputColumnKeys.includes(header.column.id);
                 return (
                   <th
                     key={header.id}
-                    className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left font-semibold uppercase 
-                      ${!showInputs && isInputColumn ? "hidden" : ""}
-                    `}
+                    className={`border border-gray-700 p-3 text-left font-semibold uppercase text-sm tracking-wider
+                      ${!showInputs && isInputColumn ? "hidden" : ""} 
+                      bg-gray-900`}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
@@ -324,15 +324,15 @@ export const BudgetTable = forwardRef(function BudgetTable(
         <tbody>
           {table.getRowModel().rows.map((row, rowIndex) => {
             const isSummaryRow = row.original?.category === summary;
-            const isRatioRow = row.original?.category === "ratio";
+            const isRatioRow = row.original?.category === eatRatio;
   
             return (
               <tr
                 key={row.id}
-                className={`transition-all duration-200 
-                  ${rowIndex % 2 === 0 ? "bg-gray-800" : "bg-gray-900"}
+                className={`transition-all duration-200 border-b border-gray-800
+                  ${rowIndex % 2 === 0 ? "bg-gray-850" : "bg-gray-900"} 
                   ${!isSummaryRow && !isRatioRow ? "hover:bg-gray-700" : ""}
-                  ${isSummaryRow || isRatioRow ? "font-bold" : ""}
+                  ${isSummaryRow || isRatioRow ? "text-blue-400 font-bold" : ""}
                 `}
               >
                 {row.getVisibleCells().map((cell) => {
@@ -342,7 +342,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
                   return (
                     <td
                       key={cell.id}
-                      className={`border border-gray-700 p-2 min-w-[150px] w-[200px] text-left 
+                      className={`border border-gray-700 p-3 min-w-[150px] w-[200px] text-left 
                         ${!showInputs && isInputColumn ? "hidden" : ""}
                       `}
                     >
