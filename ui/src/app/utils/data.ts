@@ -80,7 +80,7 @@ export const initialData: TableData[] = [
   { category: catExpense, currAmt: 0, type: "Children's Education", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 20 },
   { category: catExpense, currAmt: 0, type: "Children's Expense", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
   { category: catExpense, currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Wife's Expense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
+  { category: catExpense, currAmt: 0, type: "Spouse's Expense", monthlyAmt: 5000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
   { category: catExpense, currAmt: 0, type: "Health Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
   { category: catExpense, currAmt: 0, type: "Life Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 0 },
   { category: catExpense, currAmt: 0, type: "Vehicle Insurance", monthlyAmt: 3000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
@@ -120,15 +120,12 @@ export const initialData: TableData[] = [
 export const demoData: TableData[] = [
   { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 60000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
 
-  { category: catExpense, currAmt: 0, type: "Grocery", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Utility", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Rent", monthlyAmt: 2000, stYr: 2025, numOfYears: 3, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Children's Education", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
-  { category: catExpense, currAmt: 0, type: "Parents' Support", monthlyAmt: 10000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Household", monthlyAmt: 1000, stYr: 2025, numOfYears: 50, rateOfIncrement: 7 },
+  { category: catExpense, currAmt: 0, type: "Children's Education", monthlyAmt: 1000, stYr: 2027, numOfYears: 5, rateOfIncrement: 7 },
   { category: catExpense, currAmt: 0, type: "Insurance", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfIncrement: 5 },
   { category: catExpense, currAmt: 0, type: "Travel", monthlyAmt: 2000, stYr: 2025, numOfYears: 5, rateOfIncrement: 7 },
 
-  { category: catDebt, currAmt: 300000, type: "House", downPayment: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 9 },
+  { category: catDebt, currAmt: 300000, type: "Vehicle", downPayment: 0, stYr: 2027, numOfYears: 5, rateOfInterest: 9 },
 
   { category: catInv, currAmt: 500000, type: "Low Risk", monthlyAmt: 1000, stYr: 2025, numOfYears: 5, rateOfInterest: 7, rateOfIncrement: 0 },
   { category: catInv, currAmt: 0, type: "Savings", monthlyAmt: 0, stYr: 2025, numOfYears: 5, rateOfInterest: 3.5, rateOfIncrement: 0 },
