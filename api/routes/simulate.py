@@ -1,17 +1,64 @@
 import asyncio
 import json
-from fastapi import APIRouter, Request, Depends, HTTPException
-from fastapi.responses import StreamingResponse
+from typing import Dict
+from fastapi import APIRouter, Request, Depends, HTTPException, status
+from fastapi.responses import JSONResponse, StreamingResponse
+import pandas as pd
 from pydantic import ValidationError
 from slowapi.errors import RateLimitExceeded
 from middleware import limiter
 from services.simulation import simulate_years
-from models.models import SimulationInput
+from services.analysis import analyze_trend
+from models.models import AnalysisModel, SimulationInput
 from utils import get_country_data
 from auth.auth import verify_google_token
 
 # Initialize Router
 router = APIRouter()
+
+# API route to get insights
+@router.post("/analyze")
+@limiter.limit("5/minute")  # Rate limiting per IP
+async def trend_analysis(request: Request, payload: AnalysisModel, user: dict = Depends(verify_google_token)) -> JSONResponse:
+    """
+    Endpoint to analyze trends from the provided data.
+    - Includes error handling to return appropriate status codes and messages.
+    """
+
+    parsed_payload = AnalysisModel.model_validate(payload)  # Validate using Pydantic
+    parsed_payload = parsed_payload.model_dump()  # Convert to dict with camelCase keys
+
+    try:
+        # Example of payload validation (ensure it has required data)
+        if not parsed_payload:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid payload format.")
+
+        # Check the cache or generate new report
+        summary = analyze_trend(payload)
+
+        # Return the trend analysis summary as a response
+        return  JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=summary
+        )
+
+    except ValueError as ve:
+        # Custom error for specific issues like missing or invalid data
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid data: {str(ve)}"
+        )
+
+    except HTTPException as he:
+        # If an HTTPException was raised manually, return it
+        raise he
+
+    except Exception as e:
+        # Generic catch for unexpected errors
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"message": f"An unexpected error occurred: {str(e)}"}
+        )
 
 @router.post("/simulate")
 @limiter.limit("10/minute")  # Rate limiting per IP

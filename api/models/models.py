@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, List
 from pydantic import BaseModel, Field
 
 # Common Model for Financial Entries (Income, Expense, Debt, Investment)
@@ -70,3 +70,21 @@ class SimulationOutput(BaseModel):
 
     class Config:
         populate_by_name = True
+
+class AnalysisModel(BaseModel):
+    # Use Field with alias to map to space-separated names
+    Income: List[int] = Field(..., alias="Income")
+    Expense: List[int] = Field(..., alias="Expense")
+    Debt: List[int] = Field(..., alias="Debt")
+    Investment: List[int] = Field(..., alias="Investment")
+    Net_Worth: List[int] = Field(..., alias="Net Worth")
+    
+    country: str
+    targetAmt: int
+    age: int
+    simYr: int
+
+    class Config:
+        # Allow aliasing and trimming spaces from field names
+        populate_by_name = True
+        str_strip_whitespace = True

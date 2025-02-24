@@ -39,7 +39,7 @@ export default function Hero() {
         </p>
 
         {/* Start Simulating Button */}
-        {/* <motion.button
+        <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className={`mt-6 px-6 py-3 text-lg font-semibold rounded-lg shadow-md transition ${
@@ -49,7 +49,7 @@ export default function Hero() {
           disabled={loading}
         >
           {loading ? "Redirecting..." : "Start Planning"}
-        </motion.button> */}
+        </motion.button>
       </motion.div>
 
       {/* Scroll Indicator */}
