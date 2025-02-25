@@ -203,7 +203,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
                   catTotal += yearData[categoryKey][typeKey] || 0;
                   ribbonEntry[categoryKey] += yearData[categoryKey][typeKey] || 0;
                 });
-                financialDataRef?.current[categoryKey]?.push(catTotal);
+                (financialDataRef.current[categoryKey as keyof SimulationSummary] as number[])?.push(catTotal);
               }
 
               if (categoryKey === summary) {
