@@ -42,15 +42,15 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const insightsRef = useRef<HTMLDivElement>(null);
   const hideInputBtnRef = useRef<HideInputButtonRef | null>(null);
   const financialDataRef = useRef<SimulationSummary>({
-    Income: [50000, 55000, 60000, 65000, 70000],
-    Expense: [30000, 32000, 35000, 38000, 40000],
-    Debt: [20000, 22000, 24000, 26000, 28000],
-    Investment: [20000, 18000, 15000, 12000, 10000],
-    "Net Worth": [20000, 18000, 15000, 12000, 10000],
-    country: "us",
-    simYr: 5,
-    age: 29,
-    targetAmt: 1000000,
+    Income: [],
+    Expense: [],
+    Debt: [],
+    Investment: [],
+    "Net Worth": [],
+    country: "",
+    simYr: 0,
+    age: 0,
+    targetAmt: 0,
   });
 
   const localeRef = useRef<{ locale: string; currency: string }>({
@@ -148,6 +148,18 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     const decoder = new TextDecoder();
     let accumulated = "";
 
+    financialDataRef.current = {
+      Income: [],
+      Expense: [],
+      Debt: [],
+      Investment: [],
+      "Net Worth": [],
+      country: "",
+      simYr: 0,
+      age: 0,
+      targetAmt: 0,
+    };
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -184,13 +196,29 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
             const ribbonEntry: { year: number; [key: string]: number } = { year: Number(year) };
             Object.keys(yearData).forEach((categoryKey) => {
               if (categoryKey !== summary && categoryKey !== eatRatio) {
+                let catTotal = 0;
                 categoriesRef.current.add(categoryKey);
                 ribbonEntry[categoryKey] = 0
                 Object.keys(yearData[categoryKey]).forEach((typeKey) => {
+                  catTotal += yearData[categoryKey][typeKey] || 0;
                   ribbonEntry[categoryKey] += yearData[categoryKey][typeKey] || 0;
+                });
+                financialDataRef?.current[categoryKey]?.push(catTotal);
+              }
+
+              if (categoryKey === summary) {
+                Object.keys(yearData[categoryKey]).forEach((typeKey) => {
+                  if (typeKey === typeInflAdjNetWorth) {
+                    financialDataRef?.current[typeNetWorth]?.push(yearData[categoryKey][typeKey] || 0);
+                  }
                 });
               }
             });
+
+            Object.assign(financialDataRef.current, { simYr: Number(yearsRef.current?.value) || 0 });
+            Object.assign(financialDataRef.current, { age: Number(currentAgeRef.current.value) || 0 });
+            Object.assign(financialDataRef.current, { targetAmt: Number(fortuneAmtRef.current.value) || 0 });
+            Object.assign(financialDataRef.current, { country: String(countryRef.current.value) || 0 });
 
             ribbonChartDataRef.current.push(ribbonEntry);
             setTableData((prevData) =>
@@ -248,7 +276,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         loading={loading} 
       />        
         {/* Show "View Insights" button only if not in demo mode */}
-        {!demo && <Button label="View Insights" onClick={scrollToInsights} loading={loading} />}
+        <Button label="View Insights" onClick={scrollToInsights} loading={loading} />
       </div>
 
       <div className="mb-8">
@@ -264,11 +292,15 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         />
       </div>
 
-      {/* <div ref={insightsRef} className="mb-8">
-        <FinancialAnalysis simulationSummaryRef={financialDataRef} />
-      </div> */}
+      { !loading && financialDataRef.current.simYr !== 0 && (
+        <>
+          <div ref={insightsRef} className="mb-8">
+            <FinancialAnalysis simulationSummaryRef={financialDataRef} />
+          </div>
+        </> 
+      )}
 
-      {!demo && (
+      {!demo && !loading && financialDataRef.current.simYr !== 0 && (
         <>
           <div className="mb-8">
             <YearlyLineChart data={lineChartData.data} />

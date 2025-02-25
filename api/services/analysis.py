@@ -1,19 +1,15 @@
 
-import pandas as pd
 from scipy.stats import linregress
 from typing import Dict
+from utils import format_large_currency
 from models.models import AnalysisModel
+import pandas as pd
 
-
-def analyze_trend(payload: AnalysisModel):
+async def analyze_trend(payload: AnalysisModel):
     
     # Initialize list for insights
     insights = {
-        "Income": "",
-        "Expense": "",
-        "Debt": "",
-        "Investment": "",
-        "Net Worth": "",
+        "Trend": [],
         "Summary": []
     }
 
@@ -27,6 +23,7 @@ def analyze_trend(payload: AnalysisModel):
     
     # Extract relevant columns (financial metrics) from the model data
     years = list(range(0, payload.simYr))
+    country = payload.country
     
     # Create a DataFrame from the extracted data
     df = pd.DataFrame(data)
@@ -41,15 +38,18 @@ def analyze_trend(payload: AnalysisModel):
         elif slope < 0:
             trend = "decrease"
 
-        strength = "strong" if abs(r_value) > 0.9 else "moderate" if abs(r_value) > 0.7 else "weak"
-        
+        # strength = "strong" if abs(r_value) > 0.9 else "moderate" if abs(r_value) > 0.7 else "weak"
+
         # Generate text-based insights for each column (financial metric)
-        if trend == "increase":
-            insights[col] = f"🔼 {col.capitalize()} will {trend} at an average rate of {int(slope)} per year. This is a {strength} trend."
-        elif trend == "decrease":
-            insights[col] = f"🔽 {col.capitalize()} will {trend} at an average rate of {int(-slope)} per year. This is a {strength} trend."
-        else:
-            insights[col] = f"⚠️ {col.capitalize()} will {trend} at an average rate of {int(slope)} per year. This is a {strength} trend."
+        try:
+            if trend == "increase":
+                insights["Trend"].append(f"🔼 {col.capitalize()} will {trend} at an average rate of {await format_large_currency(slope, country)} per year.")
+            elif trend == "decrease":
+                insights["Trend"].append(f"🔽 {col.capitalize()} will {trend} at an average rate of {await format_large_currency(slope, country)} per year.")
+            else:
+                insights["Trend"].append(f"⚠️ {col.capitalize()} will be {trend}.")
+        except Exception as e:
+            raise e
 
     
     # Compare trends for income vs expenses, debt management, and investments
@@ -59,19 +59,19 @@ def analyze_trend(payload: AnalysisModel):
         insights["Summary"].append("⚠️ Your expenses will rise faster than your income. Consider adjusting your budget.")
     
     if df["Debt"].iloc[-1] < df["Debt"].iloc[0]:
-        insights["Summary"].append("💰 Your debt will decrease, which indicates good financial management.")
+        insights["Summary"].append("✅ Your debt will decrease, which indicates good financial management.")
     else:
         insights["Summary"].append("⚠️ Your debt will increase. Consider reducing liabilities.")
 
     if df["Investment"].iloc[-1] > df["Investment"].iloc[0]:
-        insights["Summary"].append("📈 Your investments will grow, which is great for long-term wealth!")
+        insights["Summary"].append("✅ Your investments will grow, which is great for long-term wealth!")
     else:
         insights["Summary"].append("⚠️ Your investments are not growing. Consider revisiting your investment strategy.")
 
     if df["Net Worth"].iloc[-1] < df["Net Worth"].iloc[0]:
         insights["Summary"].append("⚠️ Your net worth will decrease, which puts early retirement at risk.")
     else:
-        insights["Summary"].append("💰 Your net worth will increase, which indicates good financial management!")
+        insights["Summary"].append("✅ Your net worth will increase, which indicates good financial management!")
 
     return insights
 

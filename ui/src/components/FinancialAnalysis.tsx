@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function FinancialAnalysis({ simulationSummaryRef }: { simulationSummaryRef: React.RefObject<SimulationSummary> }) {
   const { data: session } = useSession(); // Get user session data
-  const [data, setData] = useState<Record<string, string | string[]>>({});
+  const [data, setData] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -50,44 +50,62 @@ export default function FinancialAnalysis({ simulationSummaryRef }: { simulation
 
         {/* Summary Section */}
         <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📝 Summary</h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {data.Summary.map((item: string, index: number) => (
-            <li
-              key={index}
-              className="flex items-center p-6 rounded-2xl bg-gray-800 border border-gray-700 text-gray-300 shadow-md"
-            >
-              {item.includes("✅") ? (
-                <CheckCircle className="mr-4 text-green-400 w-8 h-8" />
-              ) : (
-                <AlertTriangle className="mr-4 text-yellow-400 w-8 h-8" />
-              )}
-              <span className="text-lg">{item}</span>
-            </li>
-          ))}
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {data.Summary?.map((item: string, index: number) => {
+            const text = item as string;
+            const isPositive = text.includes("✅");
+
+            return (
+              <div
+                key={index}
+                className={`flex items-center p-6 rounded-2xl border border-gray-700 shadow-lg`}
+                // ${isPositive ? "text-green-300" : "text-red-300"}`}
+              >
+                {item.includes("✅") ? (
+                  <CheckCircle className="mr-4 text-green-400 w-8 h-8" />
+                ) : (
+                  <AlertTriangle className="mr-4 text-yellow-400 w-8 h-8" />
+                )}
+                <span className="text-lg font-medium">
+                    {text.slice(2)}
+                </span>
+              </div>
+            );
+          })}
         </ul>
 
         {/* Trend Section */}
-        <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📊 Financial Trend Analysis</h3>
+        <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📊 Financial Trend</h3>
         <div className="grid grid-cols-1 mb-16 md:grid-cols-2 gap-6">
-          {Object.entries(data)
-            .filter(([key]) => key !== "Summary")
-            .map(([key, value]) => {
-              const text = value as string; // Explicitly cast value to string
-              const isPositive = text.includes("🔼");
+          {data.Trend?.map((item: string, index: number) => {
+            const text = item as string;
+            const isPositive = text.includes("🔼");
+            const isDebt = text.includes("Debt");
+            const isExpense = text.includes("Expense");
 
-              return (
-                <div
-                  key={key}
-                  className={`flex items-center p-6 rounded-2xl border border-gray-700 shadow-lg 
-                  ${isPositive ? "bg-green-900/30 text-green-300" : "bg-red-900/30 text-red-300"}`}
-                >
-                  {isPositive ? <TrendingUp className="mr-4 text-green-400 w-8 h-8" /> : <TrendingDown className="mr-4 text-red-400 w-8 h-8" />}
-                  <span className="text-lg font-medium">
-                    <strong>{key}:</strong> {text}
-                  </span>
-                </div>
-              );
-            })}
+            return (
+              <div
+                key={item}
+                className={`flex items-center p-6 rounded-2xl border border-gray-700 shadow-lg`}
+              >
+                {isDebt || isExpense ? (
+                  isPositive ? (
+                    <TrendingUp className="mr-4 text-red-400 w-8 h-8" />
+                  ) : (
+                    <TrendingDown className="mr-4 text-green-400 w-8 h-8" />
+                  )
+                ) : isPositive ? (
+                  <TrendingUp className="mr-4 text-green-400 w-8 h-8" />
+                ) : (
+                  <TrendingDown className="mr-4 text-red-400 w-8 h-8" />
+                )}
+                <span className="text-lg font-medium">
+                  {text.slice(2)}
+                </span>
+              </div>
+            );
+          })
+        }
         </div>
       </div>
     </section>

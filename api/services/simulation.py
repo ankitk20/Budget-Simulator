@@ -1,5 +1,4 @@
 from datetime import datetime
-from utils import get_country_data
 from models import SimulationInput
 
 async def simulate_years(data: SimulationInput):
