@@ -18,7 +18,7 @@ router = APIRouter()
 
 # API route to get insights
 @router.post("/analyze")
-@limiter.limit("5/minute")  # Rate limiting per IP
+@limiter.limit("10/minute")  # Rate limiting per IP
 async def trend_analysis(request: Request, payload: AnalysisModel, user: dict = Depends(verify_google_token)) -> JSONResponse:
     """
     Endpoint to analyze trends from the provided data.
@@ -90,7 +90,6 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
-
 
 @router.post("/demosimulate")
 @limiter.limit("15/minute")  # Rate limiting per IP

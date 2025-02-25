@@ -2,42 +2,8 @@
 import pandas as pd
 from scipy.stats import linregress
 from typing import Dict
-
 from models.models import AnalysisModel
 
-def aggregate_yearly_data(payload: AnalysisModel) -> Dict[str, Dict[str, float]]:
-    """
-    Aggregates nested data (e.g., Income, Expense, Debt, Investment) by summing relevant components for each year.
-    Returns a simplified structure for trend analysis.
-    """
-    aggregated_data = {}
-
-    for year, data in payload.root.items():
-        # Skip metadata (locale, currency, symbol)
-        if year in ["locale", "currency", "symbol"]:
-            continue
-        
-        # Aggregate income: Sum of all income components (e.g., Active)
-        income_total = sum(data.get("Income", {}).values())
-
-        # Aggregate expenses: Sum of all expense components (e.g., Grocery, Utility, Rent)
-        expense_total = sum(data.get("Expense", {}).values())
-
-        # Aggregate debt: Sum of all debt components (e.g., House)
-        debt_total = sum(data.get("Debt", {}).values())
-
-        # Aggregate investments: Sum of all investment components (e.g., Low Risk, Savings)
-        investment_total = sum(data.get("Investment", {}).values())
-
-        # Create summary data for each year
-        aggregated_data[year] = {
-            "Income": income_total,
-            "Expense": expense_total,
-            "Debt": debt_total,
-            "Investment": investment_total,
-        }
-    
-    return aggregated_data
 
 def analyze_trend(payload: AnalysisModel):
     
@@ -50,7 +16,7 @@ def analyze_trend(payload: AnalysisModel):
         "Net Worth": "",
         "Summary": []
     }
-    
+
     data = {
         "Income": payload.Income,
         "Expense": payload.Expense,
