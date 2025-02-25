@@ -1,3 +1,15 @@
+export type SimulationSummary = {
+  Income?: number[],
+  Expense?: number[],
+  Debt?: number[],
+  Investment?: number[],
+  "Net Worth"?: number[],
+  country?: string,
+  simYr?: number,
+  age?: number,
+  targetAmt?: number
+}
+
 export interface FlattenedData {
   year: number;
   [key: string]: number; // Dynamic keys for income, expenses, debt, investments

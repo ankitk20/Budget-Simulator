@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, SimulationSummary } from "../app/utils/data";
 import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -13,6 +13,7 @@ import Footer from "./Footer";
 import StackedBarChart from "./Yearly100%StackedBarChart";
 import NavBar from "./NavBar";
 import Button from "./Button";
+import FinancialAnalysis from "./FinancialAnalysis";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -40,6 +41,17 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
   const insightsRef = useRef<HTMLDivElement>(null);
   const hideInputBtnRef = useRef<HideInputButtonRef | null>(null);
+  const financialDataRef = useRef<SimulationSummary>({
+    Income: [50000, 55000, 60000, 65000, 70000],
+    Expense: [30000, 32000, 35000, 38000, 40000],
+    Debt: [20000, 22000, 24000, 26000, 28000],
+    Investment: [20000, 18000, 15000, 12000, 10000],
+    "Net Worth": [20000, 18000, 15000, 12000, 10000],
+    country: "us",
+    simYr: 5,
+    age: 29,
+    targetAmt: 1000000,
+  });
 
   const localeRef = useRef<{ locale: string; currency: string }>({
     locale: 'en-US',  // Default locale
@@ -252,9 +264,13 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         />
       </div>
 
+      {/* <div ref={insightsRef} className="mb-8">
+        <FinancialAnalysis simulationSummaryRef={financialDataRef} />
+      </div> */}
+
       {!demo && (
         <>
-          <div ref={insightsRef} className="mb-8">
+          <div className="mb-8">
             <YearlyLineChart data={lineChartData.data} />
           </div>
           <div className="mb-8">
