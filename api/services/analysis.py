@@ -24,6 +24,8 @@ async def analyze_trend(payload: AnalysisModel):
     # Extract relevant columns (financial metrics) from the model data
     years = list(range(0, payload.simYr))
     country = payload.country
+    targetAmt = payload.targetAmt
+    age = payload.age
     
     # Create a DataFrame from the extracted data
     df = pd.DataFrame(data)
@@ -51,6 +53,16 @@ async def analyze_trend(payload: AnalysisModel):
         except Exception as e:
             raise e
 
+    max_net_worth = max(data["Net Worth"])
+    for year in years:
+        if data["Net Worth"][year] >= targetAmt:
+            insights["Summary"].append(f"✅ You will reach your desired amount by the age of {age + year + 1}!")
+            max_net_worth = None
+            break
+
+    if max_net_worth is not None:
+        max_pct = int(max_net_worth * 100 / targetAmt)
+        insights["Summary"].append(f"⚠️ You will be able to achieve only {max_pct}% of your desired amount.")
     
     # Compare trends for income vs expenses, debt management, and investments
     if df["Income"].iloc[-1] > df["Expense"].iloc[-1]:
