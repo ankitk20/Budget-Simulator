@@ -70,7 +70,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
         const isDisabled = [catInv, summary, eatRatio].includes(row.original.category);
         return (
           <div
-            className="relative"
+            className="relative min-w-[150px]"
             onMouseEnter={() => !isDisabled && setHoveredRow(row.index)}
             onMouseLeave={() => !isDisabled && setHoveredRow(null)}
           >
@@ -102,7 +102,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           defaultValue={editDataRef.current[row.index]?.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
           onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full"
+          className="text-inherit bg-transparent border-none outline-none w-full min-w-[200px]"
           readOnly={isNonEditableRow}
         />
       );
