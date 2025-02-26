@@ -52,6 +52,11 @@ async def analyze_trend(payload: AnalysisModel):
                 insights["Trend"].append(f"⚠️ {col.capitalize()} will be {trend}.")
         except Exception as e:
             raise e
+    
+    for year in years:
+        if data["Net Worth"][year] >= 25 * data["Expense"][year]:
+            insights["Summary"].append(f"✅ You can retire at age of {age + year + 1}! This is assuming 4% FIRE rule.")
+            break
 
     max_net_worth = max(data["Net Worth"])
     for year in years:
