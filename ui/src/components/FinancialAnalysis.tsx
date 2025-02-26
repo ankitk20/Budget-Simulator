@@ -62,9 +62,9 @@ export default function FinancialAnalysis({ simulationSummaryRef }: { simulation
                 // ${isPositive ? "text-green-300" : "text-red-300"}`}
               >
                 {item.includes("✅") ? (
-                  <CheckCircle className="mr-4 text-green-400 w-8 h-8" />
+                  <CheckCircle className="mr-4 text-green-400 w-8 h-8 flex-shrink-0" />
                 ) : (
-                  <AlertTriangle className="mr-4 text-yellow-400 w-8 h-8" />
+                  <AlertTriangle className="mr-4 text-yellow-400 w-8 h-8 flex-shrink-0" />
                 )}
                 <span className="text-lg font-medium">
                     {text.slice(2)}
