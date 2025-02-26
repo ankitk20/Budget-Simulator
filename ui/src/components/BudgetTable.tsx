@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { TableData, catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary } from "../app/utils/data";
+import { TableData, catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary, typeEatInv } from "../app/utils/data";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
 import {
@@ -346,6 +346,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
                   // Get the cell value and check if it's a negative number
                   const cellValue = cell.getValue();
                   const isNegative = typeof cellValue === "number" && cellValue < 0;
+                  const isPositive = typeof cellValue === "number" && cellValue > 0;
 
                   return (
                     <td
@@ -355,6 +356,11 @@ export const BudgetTable = forwardRef(function BudgetTable(
                         ${
                           isNegative
                             ? "bg-red-700/60 dark:bg-red-800/80 text-white font-semibold"
+                            : ""
+                        }
+                        ${
+                          row.original.category === summary && row.original.type === typeEatInv && isPositive
+                            ? "bg-amber-400/60 dark:bg-amber-500/60 text-white font-semibold"
                             : ""
                         }
                       `}
