@@ -342,12 +342,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
                 {row.getVisibleCells().map((cell) => {
                   const cellKey = cell.column.id;
                   const isInputColumn = isInputColumnKeys.includes(cellKey);
-  
+
+                  // Get the cell value and check if it's a negative number
+                  const cellValue = cell.getValue();
+                  const isNegative = typeof cellValue === "number" && cellValue < 0;
+
                   return (
                     <td
                       key={cell.id}
                       className={`border border-gray-700 p-3 min-w-[150px] w-[200px] text-left 
                         ${!showInputs && isInputColumn ? "hidden" : ""}
+                        ${
+                          isNegative
+                            ? "bg-red-700/60 dark:bg-red-800/80 text-white font-semibold"
+                            : ""
+                        }
                       `}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
