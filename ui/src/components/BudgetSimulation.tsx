@@ -90,7 +90,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     // Read user inputs only when Simulate button is clicked
     const country = countryRef.current?.value ? countryRef.current.value : "us";
     const years = yearsRef.current?.value ? Number(yearsRef.current.value): defaultSimYr;
-    const fortuneAmt = fortuneAmtRef.current?.value ? Number(fortuneAmtRef.current.value) : 1;
+    const fortuneAmt = parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0;
     const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : 1;
     const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : 1;
 
@@ -217,7 +217,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
             Object.assign(financialDataRef.current, { simYr: Number(yearsRef.current?.value) || 0 });
             Object.assign(financialDataRef.current, { age: Number(currentAgeRef.current.value) || 0 });
-            Object.assign(financialDataRef.current, { targetAmt: Number(fortuneAmtRef.current.value) || 0 });
+            Object.assign(financialDataRef.current, { targetAmt: parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0 });
             Object.assign(financialDataRef.current, { country: String(countryRef.current.value) || 0 });
 
             ribbonChartDataRef.current.push(ribbonEntry);
