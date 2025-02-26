@@ -8,6 +8,7 @@ import {
   flexRender,
   Row,
 } from "@tanstack/react-table";
+import { categoryColorMap } from "@/app/utils/theme";
 
 interface BudgetTableProps {
   tableData: any[];
@@ -26,6 +27,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
   { tableData, setTableData, editDataRef, simYr, locale, showInput, demo }: BudgetTableProps,
   hideInputBtnRef
 ) {
+ 
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [showInputs, setShowInputs] = useState(showInput);
   const years = Array.from({ length: Number(simYr || defaultSimYr) }, (_, i) => String(new Date().getFullYear() + i));
@@ -330,9 +332,11 @@ export const BudgetTable = forwardRef(function BudgetTable(
               <tr
                 key={row.id}
                 className={`transition-all duration-200 border-b border-gray-800
+                  ${categoryColorMap[row.original.category] || "bg-gray-900"} 
+                  hover:bg-gray-700 transition-all duration-200 border-b border-gray-800
                   ${rowIndex % 2 === 0 ? "bg-gray-850" : "bg-gray-900"} 
                   ${!isSummaryRow && !isRatioRow ? "hover:bg-gray-700" : ""}
-                  ${isSummaryRow || isRatioRow ? "text-blue-400 font-bold" : ""}
+                  ${isSummaryRow || isRatioRow ? "font-bold" : ""}
                 `}
               >
                 {row.getVisibleCells().map((cell) => {
