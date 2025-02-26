@@ -9,6 +9,7 @@ import {
   Row,
 } from "@tanstack/react-table";
 import { categoryColorMap } from "@/app/utils/theme";
+import { Info } from "lucide-react";
 
 interface BudgetTableProps {
   tableData: any[];
@@ -67,7 +68,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
   const columns = [
     {
       accessorKey: "category",
-      header: "Category",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Category</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+              Hover over category column rows for more options
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const isDisabled = [catInv, summary, eatRatio].includes(row.original.category);
         return (
