@@ -78,6 +78,7 @@ export const typeHighRiskEat = "High Risk Eaten";
 export const typeModRiskEat = "Moderate Risk Eaten";
 export const typeLowRiskEat = "Low Risk Eaten";
 export const defaultSimYr = 0;
+export const inputColNum = 7;
 
 export const initialData: TableData[] = [
   { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 120000, stYr: 2025, numOfYears: 10, rateOfIncrement: 5 },

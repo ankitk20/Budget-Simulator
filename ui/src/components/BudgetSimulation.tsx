@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, SimulationSummary } from "../app/utils/data";
+import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, SimulationSummary, inputColNum } from "../app/utils/data";
 import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -275,8 +275,10 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         }} 
         loading={loading} 
       />        
-        {/* Show "View Insights" button only if not in demo mode */}
-        <Button label="View Insights" onClick={scrollToInsights} loading={loading} />
+        {/* Show "View Insights" button only if simulation is complete */}
+        { Object.keys(tableData[0]).length > inputColNum && (
+          <Button label="View Insights" onClick={scrollToInsights} loading={loading} />)
+        }
       </div>
 
       <div className="mb-8">
@@ -292,16 +294,12 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         />
       </div>
 
+        {/* Show Analysis only if simulation is complete */}
       { !loading && financialDataRef.current.simYr !== 0 && (
         <>
           <div ref={insightsRef} className="mb-8">
             <FinancialAnalysis simulationSummaryRef={financialDataRef} />
           </div>
-        </> 
-      )}
-
-      {!demo && !loading && financialDataRef.current.simYr !== 0 && (
-        <>
           <div className="mb-8">
             <YearlyLineChart data={lineChartData.data} />
           </div>
