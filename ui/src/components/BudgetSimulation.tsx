@@ -14,6 +14,7 @@ import StackedBarChart from "./Yearly100%StackedBarChart";
 import NavBar from "./NavBar";
 import Button from "./Button";
 import FinancialAnalysis from "./FinancialAnalysis";
+import Feedback from "./Feedback";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -311,6 +312,8 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
           </div>
         </>
       )}
+
+      <Feedback />
 
       {!demo && <Footer />}
     </div>

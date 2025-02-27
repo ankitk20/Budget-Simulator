@@ -12,7 +12,6 @@ async function verifyToken(token: string) {
     const payload = ticket.getPayload();
     return payload; // Contains user info if valid
   } catch (error) {
-    console.error("Token verification failed:", error);
     return null;
   }
 }
