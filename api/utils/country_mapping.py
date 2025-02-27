@@ -224,7 +224,22 @@ COUNTRY_MAPPING = {
     }
 }
 
-def get_country_data(country_code: str, attr_key: str):
+
+async def get_country_glossary(country_code: str):
+    """
+    Fetch country-specific default parameters.
+    
+    :param country_code: Country code (e.g., 'us', 'in', 'ca')
+    :return: Dictionary containing country financial parameters or error message if not found.
+    """
+    country_glossary = COUNTRY_MAPPING.get(country_code.lower())
+
+    if not country_glossary:
+        return country_code
+
+    return country_glossary
+
+async def get_country_data(country_code: str, attr_key: str):
     """
     Fetch country-specific financial parameters.
     

@@ -1,7 +1,7 @@
 import asyncio
 import json
 from typing import Dict
-from fastapi import APIRouter, Request, Depends, HTTPException, status
+from fastapi import APIRouter, Query, Request, Depends, HTTPException, status
 from fastapi.responses import JSONResponse, StreamingResponse
 import pandas as pd
 from pydantic import ValidationError
@@ -10,11 +10,48 @@ from middleware import limiter
 from services.simulation import simulate_years
 from services.analysis import analyze_trend
 from models.models import AnalysisModel, SimulationInput
-from utils.country_mapping import get_country_data
+from utils.country_mapping import get_country_data, get_country_glossary
 from auth.auth import verify_google_token
 
 # Initialize Router
 router = APIRouter()
+
+# API to get glossary
+@router.get("/glossary")
+@limiter.limit("20/minute")  # Rate limiting per IP
+async def glossary(request: Request, user: dict = Depends(verify_google_token), country: str = Query(...)):
+    """
+    Endpoint returns country specific default values.
+    - Includes error handling to return appropriate status codes and messages.
+    """
+
+    try:
+        # Check the cache or generate new report
+        glossary = await get_country_glossary(country)
+
+        # Return the trend analysis summary as a response
+        return  JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content=glossary
+        )
+
+    except ValueError as ve:
+        # Custom error for specific issues like missing or invalid data
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid data: {str(ve)}"
+        )
+
+    except HTTPException as he:
+        # If an HTTPException was raised manually, return it
+        raise he
+
+    except Exception as e:
+        # Generic catch for unexpected errors
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"message": f"An unexpected error occurred: {str(e)}"}
+        )
 
 # API route to get insights
 @router.post("/analyze")
@@ -73,9 +110,9 @@ async def simulate_financials(request: Request, payload: SimulationInput, user: 
         async def result_generator():
             async for result in simulate_years(parsed_payload):
                 result.update({
-                    "locale": get_country_data(parsed_payload["country"], "locale"),
-                    "currency": get_country_data(parsed_payload["country"], "currency"),
-                    "symbol": get_country_data(parsed_payload["country"], "symbol"),
+                    "locale": await get_country_data(parsed_payload["country"], "locale"),
+                    "currency": await get_country_data(parsed_payload["country"], "currency"),
+                    "symbol": await get_country_data(parsed_payload["country"], "symbol"),
                 })
                 yield json.dumps(result) + "\n"
                 await asyncio.sleep(0.1)
@@ -104,9 +141,9 @@ async def simulate_financials(request: Request, payload: SimulationInput) -> Str
         async def result_generator():
             async for result in simulate_years(parsed_payload):
                 result.update({
-                    "locale": get_country_data(parsed_payload["country"], "locale"),
-                    "currency": get_country_data(parsed_payload["country"], "currency"),
-                    "symbol": get_country_data(parsed_payload["country"], "symbol"),
+                    "locale": await get_country_data(parsed_payload["country"], "locale"),
+                    "currency": await get_country_data(parsed_payload["country"], "currency"),
+                    "symbol": await get_country_data(parsed_payload["country"], "symbol"),
                 })
                 yield json.dumps(result) + "\n"
                 await asyncio.sleep(0.1)
