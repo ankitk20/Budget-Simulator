@@ -7,7 +7,7 @@ export default function Navbar() {
   return (
     <nav className="rounded-lg mb-4 bg-gray-900 dark:bg-gray-800 text-gray-200 shadow-lg border-b border-gray-700 p-4 flex justify-between items-center">
       {/* Logo / Title */}
-      <h1 className="text-xl font-semibold">Budget Simulator</h1>
+      <h1 className="text-xl font-semibold">FiSim - Finance Simulation</h1>
 
       {/* User Profile & Logout */}
       {session?.user ? (
