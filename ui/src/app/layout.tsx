@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.className} scroll-smooth`}>
       <head>
-        <meta name="google-site-verification" content="OiZjYpulWnhbzTF5DFmrHplvuNJzg6RpcdZceVQ0K14" />
+        <meta name="google-site-verification" content="G9mnnm5obM7NRkbfQ4CVdx_SqLfNjfAqjH0WFp8HuAY" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
