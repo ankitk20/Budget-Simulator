@@ -1,6 +1,6 @@
 export const metadata = {
   title: "FiSim - Plan with Confidence",
-  description: "Take control of your financial future with FiSim. Simulate income, expenses, debt, and investments to make informed decisions.",
+  description: "Take control of your financial future with FiSim. Simulate or calculate income, expenses, debt, and investments to make informed decisions.",
   openGraph: {
     title: "FiSim - Plan with Confidence",
     description: "FiSim helps individuals project their financial future with powerful budget simulations and insights.",
@@ -11,16 +11,16 @@ export const metadata = {
         url: "https://fisim.vercel.app/logo_fisim.png",
         width: 1200,
         height: 630,
-        alt: "FiSim - Budget Simulation Tool",
-      },
+        alt: "FiSim - Budget Simulation Tool"
+      }
     ],
-    type: "website",
+    type: "website"
   },
   other: {
     "og:image:secure_url": "https://fisim.vercel.app/logo_fisim.png",
     "og:image:type": "image/png",
     "og:image:width": "1024",
-    "og:image:height": "1024",
+    "og:image:height": "1024"
   },
 };
 
@@ -49,17 +49,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://fisim.vercel.app",
-    },
+      "@id": "https://fisim.vercel.app"
+    }
   };
 
   return (
     <html lang="en" className={`${inter.className} scroll-smooth`}>
-      <body>
+      <head>
         <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-          />
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
+      <body>
         <PlausibleProvider domain="fisim.vercel.app"> 
           <SessionProviderWrapper>{children}</SessionProviderWrapper>
         </PlausibleProvider>
