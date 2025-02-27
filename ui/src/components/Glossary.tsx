@@ -1,0 +1,70 @@
+import { count } from "console";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+
+// Mock column definitions (same for all countries)
+const columnDefinitions = [
+  { key: "inflRt", name: "Inflation Rate", description: "" },
+  { key: "capGnTaxRate", name: "Capital Gain Tax Rate", description: "" },
+  { key: "homeLoanRtOfInt", name: "Home Loan Rate of Interest", description: "" },
+  { key: "vehicleLoanRtOfInt", name: "Vehicle Loan Rate of Interest", description: "" },
+  { key: "eduLoanRtOfInt", name: "Education Loan Rate of Interest", description: "" }, 
+  { key: "highRiskRtOfRet", name: "High Risk Investment Rate of Return", description: "" },
+  { key: "moderateRiskRtOfRet", name: "Moderate Risk Investment Rate of Return", description: "" },
+  { key: "lowRiskRtOfRet", name: "Low Risk Investment Rate of Return", description: "" },
+  { key: "savingsRtOfRet", name: "Savings Rate of Return", description: "" }, 
+];
+
+export default function Glossary({ country, open, onClose }: { country: string; open: boolean; onClose: () => void }) {
+  const { data: session } = useSession(); // Get user session data
+  const [countryValues, setCountryValues] = useState<Record<string, string> | null>(null);
+  console.log(country, open);
+  useEffect(() => {
+    async function fetchCountryData() {
+      try {
+        const token = session?.idToken; // Extract token
+        console.log(country);
+        const response = await fetch(`/api/glossary?country=${country}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token ? `Bearer ${token}` : "",
+                "Accept": "application/json",
+            },
+        });
+        const data = await response.json();
+        setCountryValues(data); // Store all country-specific values
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching country data:", error);
+      }
+    }
+    if (open) {
+      fetchCountryData();
+    }
+  }, [country, open]);
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 pointer-events-auto">
+      <div className="bg-gray-900 text-white p-8 rounded-lg shadow-2xl w-full max-w-2xl">
+        <h2 className="text-xl font-bold mb-4">Glossary of Terms</h2>
+        <div className="mt-4 grid grid-cols-2 gap-4">
+          {columnDefinitions.map((col) => (
+            <div key={col.key} className="border-b border-gray-700 pb-2">
+              {countryValues && countryValues[col.key] && (
+                <p className="font-bold text-white-400">{countryValues[col.key]}%</p>
+              )}
+              <p className="text-sm font-bold text-gray-400">{col.name}</p>
+              <p className="text-xs text-gray-500">{col.description}</p>
+            </div>
+          ))}
+        </div>
+        <button onClick={onClose} className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg">
+          Close
+        </button>
+      </div>
+    </div>
+  );  
+}
