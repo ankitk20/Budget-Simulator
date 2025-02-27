@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
     });
 
     if (response.ok) {
-        return NextResponse.json("Feedback submitted successfully", { status: 200 });
+        return NextResponse.json(await response.json(), { status: 200 });
     } else {
         return NextResponse.json("Something went wrong", { status: 502 });
     }
