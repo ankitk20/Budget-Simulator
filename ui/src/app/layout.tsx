@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en" className={`${inter.className} scroll-smooth`}>
       <body>
         <script
             type="application/ld+json"
