@@ -15,6 +15,7 @@ import NavBar from "./NavBar";
 import Button from "./Button";
 import FinancialAnalysis from "./FinancialAnalysis";
 import Feedback from "./Feedback";
+import Glossary from "./Glossary";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -26,6 +27,7 @@ interface HideInputButtonRef {
 
 export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {  
   const { data: session } = useSession(); // Get user session data
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
   const [tableData, setTableData] = useState<TableData[]>(demo ? demoData : initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
@@ -266,20 +268,35 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         </>
       )}
 
-      {/* Always show "Run Simulation" button */}
-      <div className="flex justify-between items-center my-2">
-      <Button 
-        label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
-        onClick={() => {
-          fetchStream(); // Call the simulation function
-          hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
-        }} 
-        loading={loading} 
-      />        
-        {/* Show "View Insights" button only if simulation is complete */}
-        { Object.keys(tableData[0]).length > inputColNum && (
-          <Button label="View Insights" onClick={scrollToInsights} loading={loading} />)
-        }
+      <div className="flex items-center my-2 relative w-full">
+        {/* Always show "Run Simulation" button */}
+        <div className="flex space-x-4">
+          <Button 
+            label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
+            onClick={() => {
+              fetchStream(); // Call the simulation function
+              hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
+            }} 
+            loading={loading}
+            className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200"
+          />        
+            {/* Show "View Insights" button only if simulation is complete */}
+            { Object.keys(tableData[0]).length > inputColNum && (
+              <Button 
+                label="View Insights"
+                onClick={scrollToInsights}
+                loading={loading}
+                className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
+              )
+            }
+            <Button 
+              label={"View Glossary"} 
+              onClick={() => {
+                setGlossaryOpen(true); // Call the simulation function
+              }}
+              className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 absolute right-0"
+            />
+        </div>
       </div>
 
       <div className="mb-8">
@@ -316,6 +333,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
       <Feedback />
 
       {!demo && <Footer />}
+      <Glossary country={countryRef.current?.value} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />;
     </div>
   );
 }
