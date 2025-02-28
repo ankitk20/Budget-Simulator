@@ -18,12 +18,11 @@ const columnDefinitions = [
 export default function Glossary({ country, open, onClose }: { country: string; open: boolean; onClose: () => void }) {
   const { data: session } = useSession(); // Get user session data
   const [countryValues, setCountryValues] = useState<Record<string, string> | null>(null);
-  console.log(country, open);
+
   useEffect(() => {
     async function fetchCountryData() {
       try {
         const token = session?.idToken; // Extract token
-        console.log(country);
         const response = await fetch(`/api/glossary?country=${country}`, {
             method: "GET",
             headers: {
@@ -34,7 +33,6 @@ export default function Glossary({ country, open, onClose }: { country: string; 
         });
         const data = await response.json();
         setCountryValues(data); // Store all country-specific values
-        console.log(data);
       } catch (error) {
         console.error("Error fetching country data:", error);
       }
