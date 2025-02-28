@@ -39,9 +39,17 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const editDataRef = useRef<TableData[]>([...tableData]);
   const countryRef = useRef<HTMLSelectElement>(null!);
   const yearsRef = useRef<HTMLInputElement>(null!);
+  const currentAmtRef = useRef<HTMLInputElement>(null!);
   const fortuneAmtRef = useRef<HTMLInputElement>(null!);
+  const monthlyIncAmtRef = useRef<HTMLInputElement>(null!);
+  const monthlyExpAmtRef = useRef<HTMLInputElement>(null!);
+  const monthlyInvAmtRef = useRef<HTMLInputElement>(null!);
+  const homeLoanAmtRef = useRef<HTMLInputElement>(null!);
+  const vehLoanAmtRef = useRef<HTMLInputElement>(null!);
+  const eduLoanAmtRef = useRef<HTMLInputElement>(null!);
   const currentAgeRef = useRef<HTMLInputElement>(null!);
   const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
+  const retireAgeRef = useRef<HTMLInputElement>(null!);
   const insightsRef = useRef<HTMLDivElement>(null);
   const hideInputBtnRef = useRef<HideInputButtonRef | null>(null);
   const financialDataRef = useRef<SimulationSummary>({
@@ -85,7 +93,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   };
 
   const fetchStream = async () => {
-    
+
     setShowInput(false);
     setSimYr(Number(yearsRef.current?.value) || 0);
     setTableData(editDataRef.current);
@@ -260,10 +268,17 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         <>
           <SimulationForm
             countryRef={countryRef}
-            yearsRef={yearsRef}
+            currentAmtRef={currentAmtRef}
             fortuneAmtRef={fortuneAmtRef}
+            monthlyIncAmtRef={monthlyIncAmtRef}
+            monthlyExpAmtRef={monthlyExpAmtRef}
+            monthlyInvAmtRef={monthlyInvAmtRef}
+            homeLoanAmtRef={homeLoanAmtRef}
+            vehLoanAmtRef={vehLoanAmtRef}
+            eduLoanAmtRef={eduLoanAmtRef}
             currentAgeRef={currentAgeRef}
             lifeExpectancyRef={lifeExpectancyRef}
+            retireAgeRef={retireAgeRef}
           />
         </>
       )}

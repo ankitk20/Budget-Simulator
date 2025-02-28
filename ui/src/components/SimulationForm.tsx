@@ -1,48 +1,43 @@
+import { COUNTRY_MAPPING } from "@/app/utils/data";
 import React, { RefObject, useState, useEffect } from "react";
 
 interface SimulationFormProps {
-  countryRef: RefObject<HTMLSelectElement | null>;
-  yearsRef: RefObject<HTMLInputElement | null>;
+  countryRef : RefObject<HTMLSelectElement | null>;
+  currentAmtRef : RefObject<HTMLInputElement | null>;
   fortuneAmtRef: RefObject<HTMLInputElement | null>;
-  currentAgeRef: RefObject<HTMLInputElement | null>;
-  lifeExpectancyRef: RefObject<HTMLInputElement | null>;
+  monthlyIncAmtRef : RefObject<HTMLInputElement | null>;
+  monthlyExpAmtRef : RefObject<HTMLInputElement | null>;
+  monthlyInvAmtRef : RefObject<HTMLInputElement | null>;
+  homeLoanAmtRef : RefObject<HTMLInputElement | null>;
+  vehLoanAmtRef : RefObject<HTMLInputElement | null>;
+  eduLoanAmtRef : RefObject<HTMLInputElement | null>;
+  currentAgeRef : RefObject<HTMLInputElement | null>;
+  lifeExpectancyRef : RefObject<HTMLInputElement | null>;
+  retireAgeRef : RefObject<HTMLInputElement | null>;
 }
 
-const COUNTRY_MAPPING: Record<
-  string,
-  { name: string; locale: string; currency: string }
-> = {
-  au: { name: "Australia", locale: "en-AU", currency: "AUD" },
-  br: { name: "Brazil", locale: "pt-BR", currency: "BRL" },
-  ca: { name: "Canada", locale: "en-CA", currency: "CAD" },
-  cn: { name: "China", locale: "zh-CN", currency: "CNY" },
-  fr: { name: "France", locale: "fr-FR", currency: "EUR" },
-  de: { name: "Germany", locale: "de-DE", currency: "EUR" },
-  in: { name: "India", locale: "en-IN", currency: "INR" },
-  id: { name: "Indonesia", locale: "id-ID", currency: "IDR" },
-  it: { name: "Italy", locale: "it-IT", currency: "EUR" },
-  jp: { name: "Japan", locale: "ja-JP", currency: "JPY" },
-  mx: { name: "Mexico", locale: "es-MX", currency: "MXN" },
-  ru: { name: "Russia", locale: "ru-RU", currency: "RUB" },
-  sa: { name: "Saudi Arabia", locale: "ar-SA", currency: "SAR" },
-  sg: { name: "Singapore", locale: "en-SG", currency: "SGD" },
-  za: { name: "South Africa", locale: "en-ZA", currency: "ZAR" },
-  kr: { name: "South Korea", locale: "ko-KR", currency: "KRW" },
-  es: { name: "Spain", locale: "es-ES", currency: "EUR" },
-  tr: { name: "Turkey", locale: "tr-TR", currency: "TRY" },
-  ae: { name: "United Arab Emirates", locale: "ar-AE", currency: "AED" },
-  gb: { name: "United Kingdom", locale: "en-GB", currency: "GBP" },
-  us: { name: "United States", locale: "en-US", currency: "USD" },
-};
-
 const SimulationForm: React.FC<SimulationFormProps> = ({
-  yearsRef,
+  countryRef,
+  currentAmtRef,
   fortuneAmtRef,
+  monthlyIncAmtRef,
+  monthlyExpAmtRef,
+  monthlyInvAmtRef,
+  homeLoanAmtRef,
+  vehLoanAmtRef,
+  eduLoanAmtRef,
   currentAgeRef,
   lifeExpectancyRef,
-  countryRef,
+  retireAgeRef,
 }) => {
-  const [amount, setAmount] = useState(1000000);
+  const [currentAmt, setCurrentAmt] = useState(0);
+  const [fortuneAmt, setFortuneAmt] = useState(0);
+  const [monthlyInc, setMonthlyInc] = useState(0);
+  const [monthlyExp, setMonthlyExp] = useState(0);
+  const [monthlyInv, setMonthlyInv] = useState(0);
+  const [homeLoanAmt, setHomeLoanAmt] = useState(0);
+  const [vehLoanAmt, setVehLoanAmt] = useState(0);
+  const [eduLoanAmt, setEduLoanAmt] = useState(0);
   const [locale, setLocale] = useState("en-US");
   const [currency, setCurrency] = useState("USD");
 
@@ -71,6 +66,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
         Start Your Financial Plan
       </h2>
       <div className="grid grid-cols-3 gap-4">
+
         {/* Country */}
         <div>
           <label className="block text-gray-300 text-sm mb-1">Country</label>
@@ -96,29 +92,27 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
           </select>
         </div>
 
-        {/* Number of Years Input */}
+        {/* Current Corpus Amount */}
         <div>
           <label className="block text-gray-300 text-sm mb-1">
-            Simulation Years
+            Current Corpus Amount
           </label>
           <input
-            ref={yearsRef}
-            type="number"
+            ref={currentAmtRef}
+            type="text"
             className="w-full p-2 rounded bg-gray-700 text-white"
-            placeholder="10"
-            defaultValue={10}
+            value={formatCurrency(currentAmt)}
             onChange={(e) => {
-              let value = Number(e.target.value);
-              if (value < 1) value = 1;
-              if (value > 100) value = 100;
-              e.target.value = value.toString();
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setCurrentAmt(numValue);
             }}
             onFocus={(e) => e.target.select()}
           />
         </div>
 
-        {/* Target Fortune Amount */}
-        <div>
+         {/* Target Fortune Amount */}
+         <div>
           <label className="block text-gray-300 text-sm mb-1">
             Desired Amount
           </label>
@@ -126,15 +120,130 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             ref={fortuneAmtRef}
             type="text"
             className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(amount)}
+            value={formatCurrency(fortuneAmt)}
             onChange={(e) => {
               const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
               const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setAmount(numValue);
+              setFortuneAmt(numValue);
             }}
             onFocus={(e) => e.target.select()}
           />
         </div>
+
+        {/* Monthly Income Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Monthly Income
+          </label>
+          <input
+            ref={monthlyIncAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(monthlyInc)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setMonthlyInc(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Monthly Expense Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Monthly Expense
+          </label>
+          <input
+            ref={monthlyExpAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(monthlyExp)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setMonthlyExp(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Monthly Investment Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Monthly Investment Amount
+          </label>
+          <input
+            ref={monthlyInvAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(monthlyInv)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setMonthlyInv(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Home Loan Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Home Loan Amount
+          </label>
+          <input
+            ref={homeLoanAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(homeLoanAmt)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setHomeLoanAmt(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Vehicle Loan Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Vehicle Loan Amount
+          </label>
+          <input
+            ref={vehLoanAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(vehLoanAmt)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setVehLoanAmt(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Education Loan Amount */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Education Loan Amount
+          </label>
+          <input
+            ref={eduLoanAmtRef}
+            type="text"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            value={formatCurrency(eduLoanAmt)}
+            onChange={(e) => {
+              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
+              setEduLoanAmt(numValue);
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
 
         {/* Current Age */}
         <div>
@@ -168,6 +277,28 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
             type="number"
             className="w-full p-2 rounded bg-gray-700 text-white"
             defaultValue={85}
+            min={1}
+            max={120}
+            onChange={(e) => {
+              let value = Number(e.target.value);
+              if (value < 1) value = 1;
+              if (value > 120) value = 120;
+              e.target.value = value.toString();
+            }}
+            onFocus={(e) => e.target.select()}
+          />
+        </div>
+
+        {/* Target Retirement Age */}
+        <div>
+          <label className="block text-gray-300 text-sm mb-1">
+            Target Retirement Age (Years)
+          </label>
+          <input
+            ref={retireAgeRef}
+            type="number"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+            defaultValue={50}
             min={1}
             max={120}
             onChange={(e) => {

@@ -131,3 +131,30 @@ export const demoData: TableData[] = [
   { category: eatRatio, type: typeModRiskEat },
   { category: eatRatio, type: typeHighRiskEat },
 ];
+
+export const COUNTRY_MAPPING: Record<
+  string,
+  { name: string; locale: string; currency: string }
+> = {
+  au: { name: "Australia", locale: "en-AU", currency: "AUD" },
+  br: { name: "Brazil", locale: "pt-BR", currency: "BRL" },
+  ca: { name: "Canada", locale: "en-CA", currency: "CAD" },
+  cn: { name: "China", locale: "zh-CN", currency: "CNY" },
+  fr: { name: "France", locale: "fr-FR", currency: "EUR" },
+  de: { name: "Germany", locale: "de-DE", currency: "EUR" },
+  in: { name: "India", locale: "en-IN", currency: "INR" },
+  id: { name: "Indonesia", locale: "id-ID", currency: "IDR" },
+  it: { name: "Italy", locale: "it-IT", currency: "EUR" },
+  jp: { name: "Japan", locale: "ja-JP", currency: "JPY" },
+  mx: { name: "Mexico", locale: "es-MX", currency: "MXN" },
+  ru: { name: "Russia", locale: "ru-RU", currency: "RUB" },
+  sa: { name: "Saudi Arabia", locale: "ar-SA", currency: "SAR" },
+  sg: { name: "Singapore", locale: "en-SG", currency: "SGD" },
+  za: { name: "South Africa", locale: "en-ZA", currency: "ZAR" },
+  kr: { name: "South Korea", locale: "ko-KR", currency: "KRW" },
+  es: { name: "Spain", locale: "es-ES", currency: "EUR" },
+  tr: { name: "Turkey", locale: "tr-TR", currency: "TRY" },
+  ae: { name: "United Arab Emirates", locale: "ar-AE", currency: "AED" },
+  gb: { name: "United Kingdom", locale: "en-GB", currency: "GBP" },
+  us: { name: "United States", locale: "en-US", currency: "USD" },
+};
