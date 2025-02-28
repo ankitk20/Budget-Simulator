@@ -333,7 +333,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
       <Feedback />
 
       {!demo && <Footer />}
-      <Glossary country={countryRef.current?.value} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />;
+      <Glossary country={countryRef.current?.value} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
     </div>
   );
 }
