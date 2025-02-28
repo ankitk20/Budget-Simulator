@@ -78,7 +78,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
-              Hover over category column rows for more options
+                  Hover over category rows to access more options.
             </span>
           </div>
         </div>
@@ -110,7 +110,22 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "type",
-      header: "Type",
+      // header: "Type",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Type</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+                  Specific sub-category within the main category.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio || row.original?.category === catInv;
         return (
@@ -127,7 +142,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "currAmt",
-      header: "Current Amount",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Current Amount</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+                  Starting amount accounted for in debt and investment categories.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const rawValue = editDataRef.current[row.index]?.currAmt || "";
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
@@ -159,7 +188,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "monthlyAmt",
-      header: "Monthly Amount",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Monthly Amount</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+                  Monthly amount to be factored into the yearly calculation.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const rawValue = editDataRef.current[row.index]?.monthlyAmt || "";
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
@@ -191,7 +234,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "stYr",
-      header: "Start Year",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Start Year</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+                  The starting year from which the amount will be taken into account.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         return (
@@ -208,7 +265,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "numOfYears",
-      header: "Number of Years",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Number of Years</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+                  Duration (in years) for which the amount will be accounted for.
+              </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         return (
@@ -225,7 +296,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "rateOfInterest",
-      header: "Rate of Interest (%)",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Rate of Interest (%)</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+              The annual interest rate for debt and investment.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
       const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         return (
@@ -241,7 +326,21 @@ export const BudgetTable = forwardRef(function BudgetTable(
     },
     {
       accessorKey: "rateOfIncrement",
-      header: "Rate of Increment (%)",
+      header: () => (
+        <div className="flex items-center space-x-1">
+          <span>Rate of Increment (%)</span>
+          {/* Info Icon with Tooltip */}
+          <div className="relative group cursor-pointer">
+            <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
+            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+                 opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
+                 text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
+                 transition-opacity z-50 shadow-lg">
+              The annual growth rate for income and expense.
+            </span>
+          </div>
+        </div>
+      ),
       cell: ({ row }: { row: Row<TableData> }) => {
         const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         return (
