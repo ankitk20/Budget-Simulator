@@ -149,7 +149,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     });
 
     setLoading(true);
-    console.log(JSON.stringify(simulationInput));
+
     const token = session?.idToken; // Extract token
     const response = await fetch("/api/simulation", {
       method: "POST",

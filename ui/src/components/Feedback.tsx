@@ -8,6 +8,7 @@ export default function Feedback() {
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleSubmit = async () => {
     if (!feedback.trim()) return;
@@ -40,13 +41,24 @@ export default function Feedback() {
 
   return (
     <>
-      {/* Floating Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition dark:bg-blue-500 dark:hover:bg-blue-400"
+      {/* Floating Feedback Button */}
+      <div
+        className="fixed bottom-6 right-6 flex items-center gap-2"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <MessageCircle className="w-5 h-5" />
-      </button>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg hover:bg-blue-700 transition dark:bg-blue-500 dark:hover:bg-blue-400"
+        >
+          <MessageCircle className="w-5 h-5" />
+          {isHovered && (
+            <span className="opacity-100 transition-opacity duration-300 text-sm">
+              Feedback
+            </span>
+          )}
+        </button>
+      </div>
 
       {/* Modal */}
       {isOpen && (
@@ -54,7 +66,10 @@ export default function Feedback() {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">We value your feedback</h2>
-              <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -70,7 +85,11 @@ export default function Feedback() {
                 await handleSubmit();
                 setIsOpen(false);
               }}
-              className={`mt-4 w-full py-2 rounded-lg transition ${loading ? "bg-gray-400 cursor-not-allowed dark:bg-gray-600" : "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-400"}`}
+              className={`mt-4 w-full py-2 rounded-lg transition ${
+                loading
+                  ? "bg-gray-400 cursor-not-allowed dark:bg-gray-600"
+                  : "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-400"
+              }`}
               disabled={loading}
             >
               Submit
