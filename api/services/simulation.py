@@ -1,10 +1,12 @@
 from datetime import datetime
 from models import SimulationInput
+from utils.country_mapping import get_country_glossary
 
 async def simulate_years(data: SimulationInput):
+    country_glossary = await get_country_glossary(data["country"])
     sim_years = data["simYr"]
     start_year = datetime.now().year
-    inflRate = data["inflRate"]
+    inflRate = country_glossary["inflRt"]
 
     # Initialize investment corpus
     investment_corpus = {key: value["currAmt"] for key, value in data["Investment"].items()}

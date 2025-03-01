@@ -126,9 +126,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
       currentAge: Number(currentAge),
       lifeExpectancy: Number(lifeExpectancy),
       fortuneAmt: fortuneAmt,
-      inflRate: 7,
-      ltcgTaxRate: 12.5,
-      stcgTaxRate: 20.0
     };
 
     editDataRef.current.forEach((row) => {
@@ -152,7 +149,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     });
 
     setLoading(true);
-
+    console.log(JSON.stringify(simulationInput));
     const token = session?.idToken; // Extract token
     const response = await fetch("/api/simulation", {
       method: "POST",

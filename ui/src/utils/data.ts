@@ -46,12 +46,6 @@ export type EntryType = {
 
 export type SimulationInput = {
   simYr: number;
-  inflRate: number;
-  ltcgTaxRate: number;
-  stcgTaxRate: number;
   country: string;
-  fortuneAmt: number;
-  currentAge: number;
-  lifeExpectancy: number;
   [key: string]: Record<string, EntryType> | number | string; // Allow dynamic categories
 }; 
