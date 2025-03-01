@@ -75,7 +75,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -118,7 +118,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -149,7 +149,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -195,7 +195,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -241,7 +241,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -272,7 +272,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -303,7 +303,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
@@ -333,7 +333,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           {/* Info Icon with Tooltip */}
           <div className="relative group cursor-pointer">
             <Info className="w-4 h-4 text-gray-300 hover:text-gray-100" />
-            <span className="normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
+            <span className="hidden group-hover:block normal-case absolute left-1/8 top-full transform -translate-x-1/2 mt-2 
                  opacity-0 group-hover:opacity-100 bg-gray-700 bg-opacity-100 
                  text-white text-xs rounded py-1 px-3 min-w-[200px] text-left 
                  transition-opacity z-50 shadow-lg">
