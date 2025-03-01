@@ -23,6 +23,21 @@ export const isInputColumnKeys = [
   export const typeLowRiskEat = "Low Risk Eaten";
   export const defaultSimYr = 0;
   export const inputColNum = 7;
+
+  export const initialFormData = {
+    country: "us",
+    currentAmt: 0,
+    fortuneAmt: 0,
+    monthlyIncAmt: 0,
+    monthlyExpAmt: 0,
+    monthlyInvAmt: 0,
+    homeLoanAmt: 0,
+    vehLoanAmt: 0,
+    eduLoanAmt: 0,
+    currentAge: 25,
+    lifeExpectancy: 85,
+    retireAge: 50,
+  };
   
   export const initialData: TableData[] = [
     { category: catIncome, currAmt: 0, type: "Active", monthlyAmt: 120000, stYr: 2025, numOfYears: 10, rateOfIncrement: 5 },

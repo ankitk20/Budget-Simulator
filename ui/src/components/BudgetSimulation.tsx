@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { SimulationInput, TableData, EntryType, FlattenedData, SimulationSummary } from "@/utils/data";
-import { summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, inputColNum } from "@/utils/constant";
+import { summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, inputColNum, initialFormData } from "@/utils/constant";
 import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -17,7 +17,9 @@ import Button from "./Button";
 import FinancialAnalysis from "./FinancialAnalysis";
 import Feedback from "./Feedback";
 import Glossary from "./Glossary";
-import flattenJSON, { generateTableData } from "@/utils/helper";
+import flattenJSON from "@/utils/helper";
+import { generateTableData } from "@/utils/generateTableData";
+import { fetchCountryData } from "@/utils/fetchCountryData";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -31,20 +33,9 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const { data: session } = useSession(); // Get user session data
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [inputInProgress, setInputInProgress] = useState(true);
-  const [formData, setFormData] = useState({
-    country: "us",
-    currentAmt: 0,
-    fortuneAmt: 0,
-    monthlyIncAmt: 0,
-    monthlyExpAmt: 0,
-    monthlyInvAmt: 0,
-    homeLoanAmt: 0,
-    vehLoanAmt: 0,
-    eduLoanAmt: 0,
-    currentAge: 25,
-    lifeExpectancy: 85,
-    retireAge: 50,
-  });
+  const [formData, setFormData] = useState(initialFormData);
+  const [countryMap, setCountryMap] = useState({});
+
   const handleChange = (field: string, value: string | number) => {
     setInputInProgress(true);
     setFormData((prev) => ({
@@ -92,9 +83,26 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const simulationDataRef = useRef<FlattenedData[]>([]);
 
   useEffect(() => {
-    editDataRef.current = generateTableData(formData);
-    setTableData(editDataRef.current);
-  }, [formData]);
+    async function fetchUserInput() {
+      if (!formData.country) return;
+  
+      try {
+        const data = await fetchCountryData(formData.country, session?.idToken);
+        if (data) {
+          setCountryMap(data);
+          
+          // Ensure the updated countryMap is used
+          const updatedTableData = generateTableData(formData, data);
+          editDataRef.current = updatedTableData;
+          setTableData(updatedTableData);
+        }
+      } catch (error) {
+        console.error("Error fetching country data:", error);
+      }
+    }
+  
+    fetchUserInput();
+  }, [formData, session]); // Ensure dependencies are correctly listed
   
 
   const fetchStream = async () => {
@@ -367,7 +375,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
       <Feedback />
 
       {!demo && <Footer />}
-      <Glossary country={formData.country} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
+      <Glossary countryMap={countryMap} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
     </div>
   );
 }

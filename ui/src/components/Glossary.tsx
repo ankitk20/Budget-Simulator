@@ -1,7 +1,3 @@
-import { fetchCountryData } from "@/utils/fetchCountryData";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-
 // Mock column definitions (same for all countries)
 const columnDefinitions = [
   { key: "inflRt", name: "Inflation Rate", description: "" },
@@ -15,18 +11,9 @@ const columnDefinitions = [
   { key: "savingsRtOfRet", name: "Savings Rate of Return", description: "" }, 
 ];
 
-export default function Glossary({ country, open, onClose }: { country: string; open: boolean; onClose: () => void }) {
-  const { data: session } = useSession(); // Get user session data
-  const [countryValues, setCountryValues] = useState<Record<string, string> | null>(null);
-  
-  useEffect(() => {
-    (async () => {
-      const data = await fetchCountryData(country, session?.idToken);
-      if (data) setCountryValues(data);
-    })();
-  }, [country, open, session]);
+export default function Glossary({ countryMap, open, onClose }: { countryMap: Record<string, number>; open: boolean; onClose: () => void }) {
 
-  if (!open) return; // Avoid unnecessary API calls
+  if (!open) return; // Return if note opened
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 pointer-events-auto">
@@ -35,9 +22,7 @@ export default function Glossary({ country, open, onClose }: { country: string; 
         <div className="mt-4 grid grid-cols-2 gap-4">
           {columnDefinitions.map((col) => (
             <div key={col.key} className="border-b border-gray-700 pb-2">
-              {countryValues && countryValues[col.key] && (
-                <p className="font-bold text-white-400">{countryValues[col.key]}%</p>
-              )}
+                <p className="font-bold text-white-400">{countryMap[col.key]}%</p>
               <p className="text-sm font-bold text-gray-400">{col.name}</p>
               <p className="text-xs text-gray-500">{col.description}</p>
             </div>
