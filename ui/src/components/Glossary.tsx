@@ -1,4 +1,4 @@
-import { count } from "console";
+import { fetchCountryData } from "@/utils/fetchCountryData";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -18,31 +18,15 @@ const columnDefinitions = [
 export default function Glossary({ country, open, onClose }: { country: string; open: boolean; onClose: () => void }) {
   const { data: session } = useSession(); // Get user session data
   const [countryValues, setCountryValues] = useState<Record<string, string> | null>(null);
-
+  
   useEffect(() => {
-    async function fetchCountryData() {
-      try {
-        const token = session?.idToken; // Extract token
-        const response = await fetch(`/api/glossary?country=${country}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token ? `Bearer ${token}` : "",
-                "Accept": "application/json",
-            },
-        });
-        const data = await response.json();
-        setCountryValues(data); // Store all country-specific values
-      } catch (error) {
-        console.error("Error fetching country data:", error);
-      }
-    }
-    if (open) {
-      fetchCountryData();
-    }
-  }, [country, open]);
+    (async () => {
+      const data = await fetchCountryData(country, session?.idToken);
+      if (data) setCountryValues(data);
+    })();
+  }, [country, open, session]);
 
-  if (!open) return null;
+  if (!open) return; // Avoid unnecessary API calls
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 pointer-events-auto">
