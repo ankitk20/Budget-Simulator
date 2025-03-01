@@ -31,11 +31,20 @@ countryMap: Record<string, number>): TableData[] {
     {
       category: catExpense,
       currAmt: 0,
-      type: "Household",
+      type: "Essentials",
       monthlyAmt: formData.monthlyExpAmt || 0,
       stYr: currentYear,
       numOfYears: formData.lifeExpectancy - formData.currentAge + 1,
       rateOfIncrement: countryMap["inflRt"],
+    },
+    {
+      category: catExpense,
+      currAmt: 0,
+      type: "Investment Outflow",
+      monthlyAmt: formData.monthlyInvAmt || 0,
+      stYr: currentYear,
+      numOfYears: formData.retireAge - formData.currentAge,
+      rateOfIncrement: 0,
     },
     {
       category: catDebt,
@@ -110,24 +119,15 @@ countryMap: Record<string, number>): TableData[] {
     { category: eatRatio, type: typeLowRiskEat },
     { category: eatRatio, type: typeModRiskEat },
     { category: eatRatio, type: typeHighRiskEat },
-  ];
+  ].filter(
+    (item) =>
+      !(
+        // Remove income & expense if monthlyAmt is 0 or undefined
+        // ((item.category === catIncome || item.category === catExpense) &&
+        //   (!item.monthlyAmt || item.monthlyAmt === 0)) ||
+        // Remove debt if currAmt is 0 or undefined
+        (item.category === catDebt && (!item.currAmt || item.currAmt === 0)) ||
+        (item.category === catExpense && (!item.monthlyAmt || item.monthlyAmt === 0))
+      )
+  );
 }
-
-
-const flattenJSON = (year: string, data: any) => {
-  const flatData: any = { year: Number(year) };
-
-  Object.entries(data).forEach(([category, categoryData]: [string, any]) => {
-    if (typeof categoryData === "object") {
-      Object.entries(categoryData).forEach(([type, value]) => {
-        flatData[`${category}_${type}`] = value;
-      });
-    } else {
-      flatData[category] = categoryData;
-    }
-  });
-
-  return flatData;
-};
-
-export default flattenJSON;
