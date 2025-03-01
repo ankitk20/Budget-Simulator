@@ -18,11 +18,7 @@ class FinancialEntry(BaseModel):
 # Main Simulation Model
 class SimulationInput(BaseModel):
     sim_years: int = Field(..., alias="simYr", description="Total simulation years")
-    inflation_rate: float = Field(..., alias="inflRate", description="Inflation rate percentage")
-    ltcg_tax_rate: float | None = Field(None, alias="ltcgTaxRate", description="Long-term capital gains tax rate")
-    stcg_tax_rate: float | None = Field(None, alias="stcgTaxRate", description="Short-term capital gains tax rate")
     country: str = Field(..., alias="country", description="Country name")
-    currency: str | None = Field(None, alias="currency", description="Currency symbol")
     income: Dict[str, FinancialEntry] | None = Field(None, alias="Income", description="Income sources (dynamic keys)")
     expense: Dict[str, FinancialEntry] | None = Field(None, alias="Expense", description="Expense categories (dynamic keys)")
     debt: Dict[str, FinancialEntry] | None = Field(None, alias="Debt", description="Debt categories (dynamic keys)")

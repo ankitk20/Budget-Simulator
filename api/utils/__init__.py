@@ -1,6 +1,13 @@
 from utils.country_mapping import COUNTRY_MAPPING
 from babel.numbers import format_currency
 
+
+# Function to calculate CAGR
+async def calculate_cagr(initial, final, years):
+    if initial == 0 or years == 0:
+        return 0
+    return ((final / initial) ** (1 / years)) - 1
+
 async def format_large_currency(value, country):
     abs_value = abs(value)
     suffix = ""

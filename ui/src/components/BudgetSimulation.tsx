@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, SimulationSummary, inputColNum } from "../app/utils/data";
+import { SimulationInput, TableData, EntryType, FlattenedData, SimulationSummary } from "@/utils/data";
+import { summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, inputColNum, initialFormData } from "@/utils/constant";
 import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -16,6 +17,9 @@ import Button from "./Button";
 import FinancialAnalysis from "./FinancialAnalysis";
 import Feedback from "./Feedback";
 import Glossary from "./Glossary";
+import flattenJSON from "@/utils/helper";
+import { generateTableData } from "@/utils/generateTableData";
+import { fetchCountryData } from "@/utils/fetchCountryData";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -27,22 +31,28 @@ interface HideInputButtonRef {
 
 export default function BudgetSimulation({ demo = true }: BudgetSimulationProps) {  
   const { data: session } = useSession(); // Get user session data
+  const [tableData, setTableData] = useState<TableData[]>([]);
+  const [inputInProgress, setInputInProgress] = useState(true);
+  const [formData, setFormData] = useState(initialFormData);
+  const [countryMap, setCountryMap] = useState({});
+
+  const handleChange = (field: string, value: string | number) => {
+    setInputInProgress(true);
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
   const [glossaryOpen, setGlossaryOpen] = useState(false);
-  const [tableData, setTableData] = useState<TableData[]>(demo ? demoData : initialData);
   const [lineChartData, setLineChartData] = useState<LineChartData>({data: []});
   const [ribbonChartData, setRibbonChartData] = useState<RibbonChartData[]>([]);
   const [loading, setLoading] = useState(false);
-  const [simYr, setSimYr] = useState(0);
   const [showInput, setShowInput] = useState(true);
   const lineChartDataRef = useRef<LineChartData>({data: []});
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
-  const editDataRef = useRef<TableData[]>([...tableData]);
-  const countryRef = useRef<HTMLSelectElement>(null!);
-  const yearsRef = useRef<HTMLInputElement>(null!);
-  const fortuneAmtRef = useRef<HTMLInputElement>(null!);
-  const currentAgeRef = useRef<HTMLInputElement>(null!);
-  const lifeExpectancyRef = useRef<HTMLInputElement>(null!);
+  const editDataRef = useRef<TableData[]>([]); // Initialize as empty array
   const insightsRef = useRef<HTMLDivElement>(null);
+  const simTableRef = useRef<HTMLDivElement>(null);
   const hideInputBtnRef = useRef<HideInputButtonRef | null>(null);
   const financialDataRef = useRef<SimulationSummary>({
     Income: [],
@@ -62,40 +72,50 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   });
 
   const scrollToInsights = () => {
-    insightsRef.current?.scrollIntoView({ behavior: "smooth" });
+    insightsRef.current?.scrollIntoView();
+  };
+
+  const scrollToSimTable = () => {
+    simTableRef.current?.scrollIntoView();
   };
 
   const categoriesRef = useRef<Set<string>>(new Set());
   const simulationDataRef = useRef<FlattenedData[]>([]);
 
-  const flattenJSON = (year: string, data: any) => {
-    const flatData: any = { year: Number(year) };
-
-    Object.entries(data).forEach(([category, categoryData]: [string, any]) => {
-      if (typeof categoryData === "object") {
-        Object.entries(categoryData).forEach(([type, value]) => {
-          flatData[`${category}_${type}`] = value;
-        });
-      } else {
-        flatData[category] = categoryData;
+  useEffect(() => {
+    async function fetchUserInput() {
+      if (!formData.country) return;
+  
+      try {
+        const data = await fetchCountryData(formData.country, session?.idToken);
+        if (data) {
+          setCountryMap(data);
+          
+          // Ensure the updated countryMap is used
+          const updatedTableData = generateTableData(formData, data);
+          editDataRef.current = updatedTableData;
+          setTableData(updatedTableData);
+        }
+      } catch (error) {
+        console.error("Error fetching country data:", error);
       }
-    });
-
-    return flatData;
-  };
+    }
+  
+    fetchUserInput();
+  }, [formData, session]); // Ensure dependencies are correctly listed
+  
 
   const fetchStream = async () => {
-    
+    setInputInProgress(false);
     setShowInput(false);
-    setSimYr(Number(yearsRef.current?.value) || 0);
     setTableData(editDataRef.current);
 
     // Read user inputs only when Simulate button is clicked
-    const country = countryRef.current?.value ? countryRef.current.value : "us";
-    const years = yearsRef.current?.value ? Number(yearsRef.current.value): defaultSimYr;
-    const fortuneAmt = parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0;
-    const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : 1;
-    const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : 1;
+    const country = formData.country;
+    const years = formData?.lifeExpectancy - formData?.currentAge;
+    const fortuneAmt = formData.fortuneAmt;
+    const currentAge = formData.currentAge
+    const lifeExpectancy = formData.lifeExpectancy;
 
     lineChartDataRef.current = {data: []};
     ribbonChartDataRef.current = [];
@@ -103,14 +123,11 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     const simulationInput: SimulationInput = {
       simYr: years,
       country: country,
-      currentAge: currentAge,
-      lifeExpectancy: lifeExpectancy,
+      currentAge: Number(currentAge),
+      lifeExpectancy: Number(lifeExpectancy),
       fortuneAmt: fortuneAmt,
-      inflRate: 7,
-      ltcgTaxRate: 12.5,
-      stcgTaxRate: 20.0
     };
-    
+
     editDataRef.current.forEach((row) => {
       const category = row.category;
       const type = row.type;
@@ -132,7 +149,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     });
 
     setLoading(true);
-
+    console.log(JSON.stringify(simulationInput));
     const token = session?.idToken; // Extract token
     const response = await fetch("/api/simulation", {
       method: "POST",
@@ -218,10 +235,10 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
               }
             });
 
-            Object.assign(financialDataRef.current, { simYr: Number(yearsRef.current?.value) || 0 });
-            Object.assign(financialDataRef.current, { age: Number(currentAgeRef.current.value) || 0 });
-            Object.assign(financialDataRef.current, { targetAmt: parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0 });
-            Object.assign(financialDataRef.current, { country: String(countryRef.current.value) || 0 });
+            Object.assign(financialDataRef.current, { simYr: formData?.lifeExpectancy - formData?.currentAge });
+            Object.assign(financialDataRef.current, { age: formData.currentAge || 0 });
+            Object.assign(financialDataRef.current, { targetAmt: formData.fortuneAmt });
+            Object.assign(financialDataRef.current, { country: formData.country });
 
             ribbonChartDataRef.current.push(ribbonEntry);
             setTableData((prevData) =>
@@ -258,13 +275,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
       {!demo && (
         <>
-          <SimulationForm
-            countryRef={countryRef}
-            yearsRef={yearsRef}
-            fortuneAmtRef={fortuneAmtRef}
-            currentAgeRef={currentAgeRef}
-            lifeExpectancyRef={lifeExpectancyRef}
-          />
+          <SimulationForm formData={formData} onChange={handleChange} />
         </>
       )}
 
@@ -281,10 +292,10 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
             className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200"
           />        
             {/* Show "View Insights" button only if simulation is complete */}
-            { Object.keys(tableData[0]).length > inputColNum && (
-              <Button 
-                label="View Insights"
-                onClick={scrollToInsights}
+            { !inputInProgress && (
+              <Button
+                label="View Simulation Table"
+                onClick={scrollToSimTable}
                 loading={loading}
                 className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
               )
@@ -299,21 +310,8 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         </div>
       </div>
 
-      <div className="mb-8">
-        <BudgetTable
-          ref={hideInputBtnRef}
-          tableData={tableData}
-          setTableData={setTableData}
-          editDataRef={editDataRef}
-          simYr={simYr}
-          locale={localeRef.current}
-          showInput={showInput}
-          demo={demo}
-        />
-      </div>
-
         {/* Show Analysis only if simulation is complete */}
-      { !loading && financialDataRef.current.simYr !== 0 && (
+      { !inputInProgress && !loading && financialDataRef.current.simYr !== 0 && (
         <>
           <div ref={insightsRef} className="mb-8">
             <FinancialAnalysis simulationSummaryRef={financialDataRef} />
@@ -327,13 +325,54 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
           <div className="mb-8">
             <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
           </div>
+
+          <div ref={simTableRef} className="flex items-center my-2 relative w-full">
+            {/* Always show "Run Simulation" button */}
+            <div className="flex space-x-4">
+              <Button 
+                label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
+                onClick={() => {
+                  fetchStream(); // Call the simulation function
+                  hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
+                }} 
+                loading={loading}
+                className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200"
+              />        
+              {/* Show "View Insights" button */}
+                <Button
+                  label="View Summary"
+                  onClick={scrollToInsights}
+                  loading={loading}
+                  className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
+              <Button 
+                label={"View Glossary"} 
+                onClick={() => {
+                  setGlossaryOpen(true); // Call the simulation function
+                }}
+                className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 absolute right-0"
+              />
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <BudgetTable
+              ref={hideInputBtnRef}
+              tableData={tableData}
+              setTableData={setTableData}
+              editDataRef={editDataRef}
+              simYr={formData?.lifeExpectancy - formData?.currentAge}
+              locale={localeRef.current}
+              showInput={showInput}
+              demo={demo}
+            />
+          </div>
         </>
       )}
 
       <Feedback />
 
       {!demo && <Footer />}
-      <Glossary country={countryRef.current?.value} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
+      <Glossary countryMap={countryMap} open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
     </div>
   );
 }

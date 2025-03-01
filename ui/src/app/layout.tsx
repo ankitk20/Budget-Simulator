@@ -25,7 +25,7 @@ export const metadata = {
 };
 
 import type { ReactNode } from "react";
-import "../app/globals.css";
+import "@/app/globals.css";
 import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 import PlausibleProvider from "next-plausible";
 import { Inter } from "next/font/google";

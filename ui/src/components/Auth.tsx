@@ -15,7 +15,7 @@ export default function Auth() {
             Welcome, {session.user?.name}!
           </p>
           <Image
-            src={session.user?.image || "../../icon_user.png"}
+            src={session.user?.image || "/public/icon_user.png"}
             alt="User"
             className="rounded-full border border-gray-600 mx-auto mt-3"
             width={64}   // Equivalent to w-16

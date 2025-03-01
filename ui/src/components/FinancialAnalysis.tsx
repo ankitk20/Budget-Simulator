@@ -1,4 +1,4 @@
-import { SimulationSummary } from "@/app/utils/data";
+import { SimulationSummary } from "@/utils/data";
 import { TrendingUp, TrendingDown, CheckCircle, AlertTriangle, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
