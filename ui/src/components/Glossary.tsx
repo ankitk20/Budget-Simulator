@@ -1,7 +1,7 @@
 // Mock column definitions (same for all countries)
 const columnDefinitions = [
   { key: "inflRt", name: "Inflation Rate", description: "" },
-  { key: "capGnTaxRate", name: "Capital Gain Tax Rate", description: "" },
+  { key: "incomeRtOfInc", name: "Income Growth Rate", description: "" },
   { key: "homeLoanRtOfInt", name: "Home Loan Rate of Interest", description: "" },
   { key: "vehicleLoanRtOfInt", name: "Vehicle Loan Rate of Interest", description: "" },
   { key: "eduLoanRtOfInt", name: "Education Loan Rate of Interest", description: "" }, 
@@ -9,6 +9,7 @@ const columnDefinitions = [
   { key: "moderateRiskRtOfRet", name: "Moderate Risk Investment Rate of Return", description: "" },
   { key: "lowRiskRtOfRet", name: "Low Risk Investment Rate of Return", description: "" },
   { key: "savingsRtOfRet", name: "Savings Rate of Return", description: "" }, 
+  { key: "capGnTaxRate", name: "Capital Gain Tax Rate", description: "" },
 ];
 
 export default function Glossary({ countryMap, open, onClose }: { countryMap: Record<string, number>; open: boolean; onClose: () => void }) {
