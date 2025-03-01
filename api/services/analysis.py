@@ -1,9 +1,49 @@
 
 from scipy.stats import linregress
 from typing import Dict
-from utils import format_large_currency
+from utils import calculate_cagr, format_large_currency
 from models.models import AnalysisModel
 import pandas as pd
+
+async def get_income_expense_cagr(df):
+
+    # Find first non-zero income and expense values
+    first_income_row = df[df["Income"] > 0].index[0]
+    first_income = df["Income"][first_income_row]
+    first_income_year = first_income_row
+
+    first_expense_row = df[df["Expense"] > 0].index[0]
+    first_expense = df["Expense"][first_expense_row]
+    first_expense_year = first_expense_row
+
+    # Find last non-zero income
+    last_income_row = df[df["Income"] > 0].index[-1]
+    last_income = df["Income"][last_income_row]
+    last_income_year = last_income_row
+
+    # Find last non-zero expense
+    last_expense_row = df[df["Expense"] > 0].index[-1]
+    last_expense = df["Expense"][last_expense_row]
+    last_expense_year = last_expense_row
+
+    # Calculate years for CAGR
+    income_years = last_income_year - first_income_year
+    expense_years = last_expense_year - first_expense_year
+
+    # Calculate CAGR for income and expenses
+    income_cagr = await calculate_cagr(first_income, last_income, income_years)
+    expense_cagr = await calculate_cagr(first_expense, last_expense, expense_years)
+
+    # Calculate income-to-expense ratio (last recorded values)
+    income_expense_ratio = last_income / last_expense if last_expense > 0 else float("inf")
+
+    # Calculate savings trend
+    initial_savings = first_income - first_expense
+    final_savings = last_income - last_expense
+    savings_cagr = await calculate_cagr(initial_savings, final_savings, income_years)
+
+    return (income_cagr, expense_cagr, savings_cagr, income_expense_ratio)
+
 
 async def analyze_trend(payload: AnalysisModel):
     
@@ -69,13 +109,42 @@ async def analyze_trend(payload: AnalysisModel):
         max_pct = int(max_net_worth * 100 / targetAmt)
         insights["Summary"].append(f"⚠️ You will be able to achieve only {max_pct}% of your desired amount.")
     
-    # Compare trends for income vs expenses, debt management, and investments
-    if df["Income"].iloc[-1] > df["Expense"].iloc[-1]:
-        insights["Summary"].append("✅ Your income will grow faster than your expenses. Good financial balance!")
-    else:
-        insights["Summary"].append("⚠️ Your expenses will rise faster than your income. Consider adjusting your budget.")
-    
-    if df["Debt"].iloc[-1] < df["Debt"].iloc[0]:
+    income_cagr, expense_cagr, savings_cagr, income_expense_ratio = await get_income_expense_cagr(df)
+
+    if income_cagr > expense_cagr and income_expense_ratio >= 1:
+        insights["Summary"].append(
+            f"✅ Your income is growing at {income_cagr:.2%} per year, faster than your expenses ({expense_cagr:.2%}). "
+            f"Your income-to-expense ratio is {income_expense_ratio:.2f}, indicating a good financial balance."
+        )
+    elif income_cagr > expense_cagr and income_expense_ratio < 1:
+        insights["Summary"].append(
+            f"⚠️ Although your income growth ({income_cagr:.2%}) is higher than expense growth ({expense_cagr:.2%}), "
+            f"your income-to-expense ratio is {income_expense_ratio:.2f}, meaning expenses are still higher than income."
+        )
+    elif income_cagr < expense_cagr:
+        insights["Summary"].append(
+            f"⚠️ Your expenses are growing at {expense_cagr:.2%} per year, faster than your income ({income_cagr:.2%}). "
+            "Consider adjusting your budget."
+        )
+    if savings_cagr > 0:
+        insights["Summary"].append(
+            f"✅ Your savings are increasing at {savings_cagr:.2%} per year. Good financial discipline!"
+        )
+    elif savings_cagr < 0:
+        insights["Summary"].append(
+            f"⚠️ Your savings are shrinking at {abs(savings_cagr):.2%} per year. Consider increasing your savings rate."
+        )
+
+    # Find the first non-zero value and its index (year)
+    first_non_zero_idx = (df["Debt"] != 0).idxmax()  # Index of first non-zero debt
+    first_non_zero_value = df.loc[first_non_zero_idx, "Debt"]
+
+    # Get the last value and its index (year)
+    last_idx = df.index[-1]  # Last row index
+    last_value = df["Debt"].iloc[-1]
+
+    # Ensure first non-zero value and last value are from different years
+    if last_idx != first_non_zero_idx and last_value < first_non_zero_value:
         insights["Summary"].append("✅ Your debt will decrease, which indicates good financial management.")
     else:
         insights["Summary"].append("⚠️ Your debt will increase. Consider reducing liabilities.")
