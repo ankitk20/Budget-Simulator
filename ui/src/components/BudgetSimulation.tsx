@@ -81,21 +81,26 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
   const categoriesRef = useRef<Set<string>>(new Set());
   const simulationDataRef = useRef<FlattenedData[]>([]);
+  const previousCountryRef = useRef<string | null>(null);
 
   useEffect(() => {
     async function fetchUserInput() {
       if (!formData.country) return;
-  
+      let data = countryMap;
+
       try {
-        const data = await fetchCountryData(formData.country, session?.idToken);
-        if (data) {
-          setCountryMap(data);
-          
-          // Ensure the updated countryMap is used
-          const updatedTableData = generateTableData(formData, data);
-          editDataRef.current = updatedTableData;
-          setTableData(updatedTableData);
+        if (formData.country && formData.country !== previousCountryRef.current) {
+          data = await fetchCountryData(formData.country, session?.idToken);
+          if (data) {
+            setCountryMap(data);
+          }
         }
+          
+        // Ensure the updated countryMap is used
+        const updatedTableData = generateTableData(formData, data);
+        editDataRef.current = updatedTableData;
+        setTableData(updatedTableData);
+        previousCountryRef.current = formData.country;
       } catch (error) {
         console.error("Error fetching country data:", error);
       }
