@@ -1,47 +1,29 @@
 import { COUNTRY_MAPPING } from "@/utils/constant";
-import React, { RefObject, useState, useEffect } from "react";
+import React from "react";
 
 interface SimulationFormProps {
-  countryRef : RefObject<HTMLSelectElement | null>;
-  currentAmtRef : RefObject<HTMLInputElement | null>;
-  fortuneAmtRef: RefObject<HTMLInputElement | null>;
-  monthlyIncAmtRef : RefObject<HTMLInputElement | null>;
-  monthlyExpAmtRef : RefObject<HTMLInputElement | null>;
-  monthlyInvAmtRef : RefObject<HTMLInputElement | null>;
-  homeLoanAmtRef : RefObject<HTMLInputElement | null>;
-  vehLoanAmtRef : RefObject<HTMLInputElement | null>;
-  eduLoanAmtRef : RefObject<HTMLInputElement | null>;
-  currentAgeRef : RefObject<HTMLInputElement | null>;
-  lifeExpectancyRef : RefObject<HTMLInputElement | null>;
-  retireAgeRef : RefObject<HTMLInputElement | null>;
+  formData: {
+    country: string;
+    currentAmt: number;
+    fortuneAmt: number;
+    monthlyIncAmt: number;
+    monthlyExpAmt: number;
+    monthlyInvAmt: number;
+    homeLoanAmt: number;
+    vehLoanAmt: number;
+    eduLoanAmt: number;
+    currentAge: number;
+    lifeExpectancy: number;
+    retireAge: number;
+  };
+  onChange: (field: string, value: string | number) => void;
 }
 
-const SimulationForm: React.FC<SimulationFormProps> = ({
-  countryRef,
-  currentAmtRef,
-  fortuneAmtRef,
-  monthlyIncAmtRef,
-  monthlyExpAmtRef,
-  monthlyInvAmtRef,
-  homeLoanAmtRef,
-  vehLoanAmtRef,
-  eduLoanAmtRef,
-  currentAgeRef,
-  lifeExpectancyRef,
-  retireAgeRef,
-}) => {
-  const [currentAmt, setCurrentAmt] = useState(8000000);
-  const [fortuneAmt, setFortuneAmt] = useState(50000000);
-  const [monthlyInc, setMonthlyInc] = useState(350000);
-  const [monthlyExp, setMonthlyExp] = useState(100000);
-  const [monthlyInv, setMonthlyInv] = useState(200000);
-  const [homeLoanAmt, setHomeLoanAmt] = useState(20000000);
-  const [vehLoanAmt, setVehLoanAmt] = useState(1500000);
-  const [eduLoanAmt, setEduLoanAmt] = useState(0);
-  const [locale, setLocale] = useState("en-IN");
-  const [currency, setCurrency] = useState("INR");
+const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) => {
+  const { country, currentAmt, fortuneAmt, monthlyIncAmt, monthlyExpAmt, monthlyInvAmt, homeLoanAmt, vehLoanAmt, eduLoanAmt, currentAge, lifeExpectancy, retireAge } = formData;
 
-  // Format currency based on the selected locale & currency
+  const { locale, currency } = COUNTRY_MAPPING[country] || COUNTRY_MAPPING["us"];
+
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat(locale, {
       style: "currency",
@@ -49,40 +31,20 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
       maximumFractionDigits: 0,
     }).format(value);
 
-  // Update locale & currency when the country changes
-  useEffect(() => {
-    if (countryRef.current) {
-      const selectedCountry = countryRef.current.value;
-      const countrySettings =
-        COUNTRY_MAPPING[selectedCountry] || COUNTRY_MAPPING["us"];
-      setLocale(countrySettings.locale);
-      setCurrency(countrySettings.currency);
-    }
-  }, [countryRef?.current?.value]);
-
   return (
-    <div className="mb-4 p-4 bg-gray-800 rounded-lg shadow">
-      <h2 className="text-lg font-semibold text-gray-200 mb-2">
+    <div className="mb-6 p-6 bg-gray-900 rounded-xl shadow-lg border border-gray-800">
+      <h2 className="text-xl font-semibold text-gray-300 mb-4">
         Start Your Financial Plan
       </h2>
       <div className="grid grid-cols-3 gap-4">
 
-        {/* Country */}
+        {/* Country Selector */}
         <div>
-          <label className="block text-gray-300 text-sm mb-1">Country</label>
+          <label className="block text-gray-400 text-sm mb-2">Country</label>
           <select
-            ref={countryRef}
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            defaultValue="in"
-            onChange={() => {
-              if (countryRef.current) {
-                const selectedCountry = countryRef.current.value;
-                const countrySettings =
-                  COUNTRY_MAPPING[selectedCountry] || COUNTRY_MAPPING["us"];
-                setLocale(countrySettings.locale);
-                setCurrency(countrySettings.currency);
-              }
-            }}
+            className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+            value={country}
+            onChange={(e) => onChange("country", e.target.value)}
           >
             {Object.entries(COUNTRY_MAPPING).map(([code, { name }]) => (
               <option key={code} value={code}>
@@ -92,224 +54,51 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
           </select>
         </div>
 
-        {/* Current Corpus Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Current Corpus Amount
-          </label>
-          <input
-            ref={currentAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(currentAmt)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setCurrentAmt(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
+        {/* Input Fields */}
+        {[
+          { label: "Current Corpus Amount", field: "currentAmt", value: currentAmt },
+          { label: "Desired Amount", field: "fortuneAmt", value: fortuneAmt },
+          { label: "Monthly Income", field: "monthlyIncAmt", value: monthlyIncAmt },
+          { label: "Monthly Expense", field: "monthlyExpAmt", value: monthlyExpAmt },
+          { label: "Monthly Investment Amount", field: "monthlyInvAmt", value: monthlyInvAmt },
+          { label: "Home Loan Amount", field: "homeLoanAmt", value: homeLoanAmt },
+          { label: "Vehicle Loan Amount", field: "vehLoanAmt", value: vehLoanAmt },
+          { label: "Education Loan Amount", field: "eduLoanAmt", value: eduLoanAmt },
+        ].map(({ label, field, value }) => (
+          <div key={field}>
+            <label className="block text-gray-400 text-sm mb-2">{label}</label>
+            <input
+              type="text"
+              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+              value={formatCurrency(value)}
+              onChange={(e) => {
+                const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                onChange(field, Math.max(Number(rawValue), 0));
+              }}
+              onFocus={(e) => e.target.select()}
+            />
+          </div>
+        ))}
 
-         {/* Target Fortune Amount */}
-         <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Desired Amount
-          </label>
-          <input
-            ref={fortuneAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(fortuneAmt)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setFortuneAmt(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Monthly Income Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Monthly Income
-          </label>
-          <input
-            ref={monthlyIncAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(monthlyInc)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setMonthlyInc(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Monthly Expense Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Monthly Expense
-          </label>
-          <input
-            ref={monthlyExpAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(monthlyExp)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setMonthlyExp(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Monthly Investment Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Monthly Investment Amount
-          </label>
-          <input
-            ref={monthlyInvAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(monthlyInv)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setMonthlyInv(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Home Loan Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Home Loan Amount
-          </label>
-          <input
-            ref={homeLoanAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(homeLoanAmt)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setHomeLoanAmt(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Vehicle Loan Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Vehicle Loan Amount
-          </label>
-          <input
-            ref={vehLoanAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(vehLoanAmt)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setVehLoanAmt(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Education Loan Amount */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Education Loan Amount
-          </label>
-          <input
-            ref={eduLoanAmtRef}
-            type="text"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            value={formatCurrency(eduLoanAmt)}
-            onChange={(e) => {
-              const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
-              const numValue = Math.max(Number(rawValue), 0); // Ensure min value is 1
-              setEduLoanAmt(numValue);
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-
-        {/* Current Age */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Current Age (Years)
-          </label>
-          <input
-            ref={currentAgeRef}
-            type="number"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            defaultValue={25}
-            min={1}
-            max={120}
-            onChange={(e) => {
-              let value = Number(e.target.value);
-              if (value < 1) value = 1;
-              if (value > 120) value = 120;
-              e.target.value = value.toString();
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Life Expectancy */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Expected Life Age (Years)
-          </label>
-          <input
-            ref={lifeExpectancyRef}
-            type="number"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            defaultValue={85}
-            min={1}
-            max={120}
-            onChange={(e) => {
-              let value = Number(e.target.value);
-              if (value < 1) value = 1;
-              if (value > 120) value = 120;
-              e.target.value = value.toString();
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
-
-        {/* Target Retirement Age */}
-        <div>
-          <label className="block text-gray-300 text-sm mb-1">
-            Target Retirement Age (Years)
-          </label>
-          <input
-            ref={retireAgeRef}
-            type="number"
-            className="w-full p-2 rounded bg-gray-700 text-white"
-            defaultValue={50}
-            min={1}
-            max={120}
-            onChange={(e) => {
-              let value = Number(e.target.value);
-              if (value < 1) value = 1;
-              if (value > 120) value = 120;
-              e.target.value = value.toString();
-            }}
-            onFocus={(e) => e.target.select()}
-          />
-        </div>
+        {/* Age Inputs */}
+        {[
+          { label: "Current Age", field: "currentAge", value: currentAge },
+          { label: "Expected Life Age", field: "lifeExpectancy", value: lifeExpectancy },
+          { label: "Target Retirement Age", field: "retireAge", value: retireAge },
+        ].map(({ label, field, value }) => (
+          <div key={field}>
+            <label className="block text-gray-400 text-sm mb-2">{label}</label>
+            <input
+              type="number"
+              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+              value={value}
+              min={1}
+              max={120}
+              onChange={(e) => onChange(field, Math.min(Math.max(Number(e.target.value), 1), 120))}
+              onFocus={(e) => e.target.select()}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
