@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import BudgetSimulation from "../../components/BudgetSimulation";
+import BudgetSimulation from "@/components/BudgetSimulation";
 
 export default function Home() {
   const { status } = useSession();

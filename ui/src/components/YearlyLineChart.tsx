@@ -1,4 +1,4 @@
-import { typeInflAdjNetWorth, typeNetWorth } from "@/app/utils/data";
+import { typeInflAdjNetWorth, typeNetWorth } from "@/utils/constant";
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 export interface LineChartData {

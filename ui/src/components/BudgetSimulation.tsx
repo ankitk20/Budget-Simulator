@@ -2,7 +2,8 @@
 
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { initialData, SimulationInput, TableData, EntryType, FlattenedData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, SimulationSummary, inputColNum } from "../app/utils/data";
+import { SimulationInput, TableData, EntryType, FlattenedData, SimulationSummary } from "@/utils/data";
+import { initialData, summary, eatRatio, typeInflAdjNetWorth, typeNetWorth, demoData, defaultSimYr, inputColNum } from "@/utils/constant";
 import { BudgetTable } from "./BudgetTable";
 import YearlyLineChart from "./YearlyLineChart";
 import { LineChartData } from "./YearlyLineChart";
@@ -38,7 +39,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const ribbonChartDataRef = useRef<RibbonChartData[]>([]);
   const editDataRef = useRef<TableData[]>([...tableData]);
   const countryRef = useRef<HTMLSelectElement>(null!);
-  const yearsRef = useRef<HTMLInputElement>(null!);
   const currentAmtRef = useRef<HTMLInputElement>(null!);
   const fortuneAmtRef = useRef<HTMLInputElement>(null!);
   const monthlyIncAmtRef = useRef<HTMLInputElement>(null!);
@@ -95,15 +95,15 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
   const fetchStream = async () => {
 
     setShowInput(false);
-    setSimYr(Number(yearsRef.current?.value) || 0);
     setTableData(editDataRef.current);
+    setSimYr(Number(lifeExpectancyRef.current?.value) - Number(currentAgeRef.current?.value));
 
     // Read user inputs only when Simulate button is clicked
-    const country = countryRef.current?.value ? countryRef.current.value : "us";
-    const years = yearsRef.current?.value ? Number(yearsRef.current.value): defaultSimYr;
+    const country = countryRef.current?.value;
+    const years = Number(lifeExpectancyRef.current?.value) - Number(currentAgeRef.current?.value);
     const fortuneAmt = parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0;
-    const currentAge = currentAgeRef.current?.value ? Number(currentAgeRef.current.value) : 1;
-    const lifeExpectancy = lifeExpectancyRef.current?.value ? Number(lifeExpectancyRef.current.value) : 1;
+    const currentAge = currentAgeRef.current?.value;
+    const lifeExpectancy = lifeExpectancyRef.current?.value;
 
     lineChartDataRef.current = {data: []};
     ribbonChartDataRef.current = [];
@@ -111,8 +111,8 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     const simulationInput: SimulationInput = {
       simYr: years,
       country: country,
-      currentAge: currentAge,
-      lifeExpectancy: lifeExpectancy,
+      currentAge: Number(currentAge),
+      lifeExpectancy: Number(lifeExpectancy),
       fortuneAmt: fortuneAmt,
       inflRate: 7,
       ltcgTaxRate: 12.5,
@@ -226,7 +226,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
               }
             });
 
-            Object.assign(financialDataRef.current, { simYr: Number(yearsRef.current?.value) || 0 });
+            Object.assign(financialDataRef.current, { simYr: simYr || 0 });
             Object.assign(financialDataRef.current, { age: Number(currentAgeRef.current.value) || 0 });
             Object.assign(financialDataRef.current, { targetAmt: parseInt(fortuneAmtRef.current?.value.replace(/[^0-9]/g, ""), 10) || 0 });
             Object.assign(financialDataRef.current, { country: String(countryRef.current.value) || 0 });

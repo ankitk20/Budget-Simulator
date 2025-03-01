@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { TableData, catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary, typeEatInv } from "../app/utils/data";
+import { TableData } from "@/utils/data";
+import { catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary, typeEatInv } from "@/utils/constant";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
 import {
@@ -8,7 +9,7 @@ import {
   flexRender,
   Row,
 } from "@tanstack/react-table";
-import { categoryColorMap } from "@/app/utils/theme";
+import { categoryColorMap } from "@/utils/theme";
 import { Info } from "lucide-react";
 
 interface BudgetTableProps {

@@ -1,4 +1,4 @@
-import { COUNTRY_MAPPING } from "@/app/utils/data";
+import { COUNTRY_MAPPING } from "@/utils/constant";
 import React, { RefObject, useState, useEffect } from "react";
 
 interface SimulationFormProps {
@@ -30,16 +30,16 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
   lifeExpectancyRef,
   retireAgeRef,
 }) => {
-  const [currentAmt, setCurrentAmt] = useState(0);
-  const [fortuneAmt, setFortuneAmt] = useState(0);
-  const [monthlyInc, setMonthlyInc] = useState(0);
-  const [monthlyExp, setMonthlyExp] = useState(0);
-  const [monthlyInv, setMonthlyInv] = useState(0);
-  const [homeLoanAmt, setHomeLoanAmt] = useState(0);
-  const [vehLoanAmt, setVehLoanAmt] = useState(0);
+  const [currentAmt, setCurrentAmt] = useState(8000000);
+  const [fortuneAmt, setFortuneAmt] = useState(50000000);
+  const [monthlyInc, setMonthlyInc] = useState(350000);
+  const [monthlyExp, setMonthlyExp] = useState(100000);
+  const [monthlyInv, setMonthlyInv] = useState(200000);
+  const [homeLoanAmt, setHomeLoanAmt] = useState(20000000);
+  const [vehLoanAmt, setVehLoanAmt] = useState(1500000);
   const [eduLoanAmt, setEduLoanAmt] = useState(0);
-  const [locale, setLocale] = useState("en-US");
-  const [currency, setCurrency] = useState("USD");
+  const [locale, setLocale] = useState("en-IN");
+  const [currency, setCurrency] = useState("INR");
 
   // Format currency based on the selected locale & currency
   const formatCurrency = (value: number) =>
@@ -73,7 +73,7 @@ const SimulationForm: React.FC<SimulationFormProps> = ({
           <select
             ref={countryRef}
             className="w-full p-2 rounded bg-gray-700 text-white"
-            defaultValue="us"
+            defaultValue="in"
             onChange={() => {
               if (countryRef.current) {
                 const selectedCountry = countryRef.current.value;
