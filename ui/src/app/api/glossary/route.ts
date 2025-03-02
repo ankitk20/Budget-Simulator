@@ -17,14 +17,16 @@ async function verifyToken(token: string) {
 }
 
 export async function GET(req: NextRequest) {
+  const cookieToken = req.cookies.get("idToken")?.value;
+  console.log(cookieToken);
   const authHeader = req.headers.get("Authorization");
   
-  const token = authHeader?.split(" ")[1];
-  const user = await verifyToken(token || "");
+  // const token = authHeader?.split(" ")[1];
+  // const user = await verifyToken(token || "");
   
-  if (!user) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-  }
+  // if (!user) {
+  //   return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  // }
 
   const country = req.nextUrl.searchParams.get("country") || "us";
   const env = process.env.DEPLOYMENT_ENV;

@@ -1,19 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
 
-const allowedUsers = [
-  "kesharwaniankit80@gmail.com",
-  "kesharwaniankit.com@gmail.com",
-  "kmamaniya@gmail.com",
-  "panchalparth417@gmail.com",
-  "vaibhav.kanojia1996@gmail.com",
-  "mpoojamore07@gmail.com",
-  "tejalmamaniya@gmail.com",
-  "23lalita@gmail.com",
-  "kesharwanikartik80@gmail.com",
-  "kesherwanisimran8@gmail.com",
-  "bhavik.dand007@gmail.com"
-];
-
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -34,10 +20,26 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      session.accessToken = token.accessToken;
-      session.idToken = token.idToken;
-      session.user.image = token.picture;
-      return session; 
+      delete session.accessToken;
+      delete session.idToken;
+      return session;
+    },
+    events: {
+      async signIn({ token }: { token: any }) {
+        if (!token.idToken) return;
+        console.log(token.idToken);
+        await storeTokenAsHttpOnlyCookie(token.idToken);
+      },
     },
   },
 };
+
+// Function to set HttpOnly cookie
+async function storeTokenAsHttpOnlyCookie(idToken: string) {
+  const res = await fetch("/api/set-cookie", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ idToken }),
+    credentials: "include",
+  });
+}

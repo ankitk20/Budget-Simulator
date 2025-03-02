@@ -4,8 +4,9 @@ export async function fetchCountryData(country: string, token?: string) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": token ? `Bearer ${token}` : "",
+          // "Authorization": token ? `Bearer ${token}` : "",
           "Accept": "application/json",
+          credentials: "include",
         },
       });
   
