@@ -136,15 +136,22 @@ async def analyze_trend(payload: AnalysisModel):
         )
 
     # Find the first non-zero value and its index (year)
-    first_non_zero_idx = (df["Debt"] != 0).idxmax()  # Index of first non-zero debt
-    first_non_zero_value = df.loc[first_non_zero_idx, "Debt"]
+    first_non_zero_idx = None
+    first_non_zero_value = None
+
+
+    if (df["Debt"] != 0).any():
+        first_non_zero_idx = (df["Debt"] != 0).idxmax()
+
+    if first_non_zero_idx is not None:
+        first_non_zero_value = df.loc[first_non_zero_idx, "Debt"]
 
     # Get the last value and its index (year)
     last_idx = df.index[-1]  # Last row index
     last_value = df["Debt"].iloc[-1]
 
     # Ensure first non-zero value and last value are from different years
-    if last_idx == first_non_zero_idx:
+    if first_non_zero_idx is None:
         insights["Summary"].append("✅ Your have no or limited debts, which indicates good financial management.")
     elif last_idx != first_non_zero_idx and last_value < first_non_zero_value:
         insights["Summary"].append("✅ Your debt will decrease, which indicates good financial management.")
