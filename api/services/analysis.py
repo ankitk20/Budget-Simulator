@@ -126,14 +126,14 @@ async def analyze_trend(payload: AnalysisModel):
             f"⚠️ Your expenses are growing at {expense_cagr:.2%} per year, faster than your income ({income_cagr:.2%}). "
             "Consider adjusting your budget."
         )
-    if savings_cagr > 0:
-        insights["Summary"].append(
-            f"✅ Your savings are increasing at {savings_cagr:.2%} per year. Good financial discipline!"
-        )
-    elif savings_cagr < 0:
-        insights["Summary"].append(
-            f"⚠️ Your savings are shrinking at {abs(savings_cagr):.2%} per year. Consider increasing your savings rate."
-        )
+    # if savings_cagr > 0:
+    #     insights["Summary"].append(
+    #         f"✅ Your savings are increasing at {savings_cagr:.2%} per year. Good financial discipline!"
+    #     )
+    # elif savings_cagr < 0:
+    #     insights["Summary"].append(
+    #         f"⚠️ Your savings are shrinking at {abs(savings_cagr):.2%} per year. Consider increasing your savings rate."
+    #     )
 
     # Find the first non-zero value and its index (year)
     first_non_zero_idx = None
