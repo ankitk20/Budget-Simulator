@@ -12,15 +12,15 @@ async def simulate_years(data: SimulationInput):
     investment_corpus = {key: value["currAmt"] for key, value in data["Investment"].items()}
     
     yearly_data = {
-        "Income": {k: 0 for k in data["Income"]},  # Initialize all incomes to 0
-        "Expense": {k: 0 for k in data["Expense"]},  # Initialize all expenses to 0
-        "Debt": {k: 0 for k in data["Debt"]},  # Initialize all debts to 0
-        "Investment": {k: 0 for k in data["Investment"]},  # Initialize all investments to 0
+        "Income": {k: 0 for k in (data.get("Income") or {})},  # Handle None by defaulting to {}
+        "Expense": {k: 0 for k in (data.get("Expense") or {})},  # Handle None
+        "Debt": {k: 0 for k in (data.get("Debt") or {})},  # Handle None
+        "Investment": {k: 0 for k in (data.get("Investment") or {})},  # Handle None
         "Summary": {
             "Eaten Investment": 0,
             "Net Worth": 0,
             "Infl Adj Net Worth": 0
-            },
+        },
         "Eaten Ratio": {
             "High Risk Eaten": 0.00,
             "Moderate Risk Eaten": 0.00,
@@ -36,7 +36,7 @@ async def simulate_years(data: SimulationInput):
         total_expense = 0
         total_debt = 0
             # Process Income
-        for inc_type, inc_data in data["Income"].items():
+        for inc_type, inc_data in (data.get("Income") or {}).items():
             if data["Income"][inc_type]["stYr"] == year:
                 increase_factor = (1 + inc_data["rateOfInc"] / 100) ** (year - inc_data["stYr"])
                 yearly_income = int(inc_data["monthlyAmt"] * 12 * increase_factor)
@@ -51,7 +51,7 @@ async def simulate_years(data: SimulationInput):
                 yearly_data["Income"][inc_type] = 0
 
         # Process Expenses
-        for exp_type, exp_data in data["Expense"].items():
+        for exp_type, exp_data in (data.get("Expense") or {}).items():
             if data["Expense"][exp_type]["stYr"] == year:
                 increase_factor = (1 + exp_data["rateOfInc"] / 100) ** (year - exp_data["stYr"])
                 yearly_expense = exp_data["monthlyAmt"] * 12 * increase_factor
@@ -65,7 +65,7 @@ async def simulate_years(data: SimulationInput):
                 yearly_data["Expense"][exp_type] = 0
 
         # Process Debts
-        for debt_type, debt_data in data["Debt"].items():
+        for debt_type, debt_data in (data.get("Debt") or {}).items():
             if data["Debt"][debt_type]["stYr"] == year:
                 # Loan principal
                 principal = debt_data["currAmt"] - debt_data["downPay"]
@@ -93,7 +93,7 @@ async def simulate_years(data: SimulationInput):
         total_inv_expense = 0
 
         # Process Investments
-        for inv_type, inv_data in data["Investment"].items():
+        for inv_type, inv_data in (data.get("Investment") or {}).items():
             increase_factor = (1 + data["Investment"][inv_type]["rateOfInt"] / 100)
             if data["Investment"][inv_type]["stYr"] > year:
                 new_corpus = int(max(data["Investment"][inv_type]["currAmt"], yearly_data["Investment"][inv_type]) * increase_factor)

@@ -119,16 +119,18 @@ countryMap: Record<string, number>): TableData[] {
     { category: eatRatio, type: typeLowRiskEat },
     { category: eatRatio, type: typeModRiskEat },
     { category: eatRatio, type: typeHighRiskEat },
-  ];
-  // ].filter(
-  //   (item) =>
-  //     !(
-  //       // Remove income & expense if monthlyAmt is 0 or undefined
-  //       // ((item.category === catIncome || item.category === catExpense) &&
-  //       //   (!item.monthlyAmt || item.monthlyAmt === 0)) ||
-  //       // Remove debt if currAmt is 0 or undefined
-  //       (item.category === catDebt && (!item.currAmt || item.currAmt === 0)) ||
-  //       (item.category === catExpense && (!item.monthlyAmt || item.monthlyAmt === 0))
-  //     )
-  // );
+  ].filter(
+    (item) =>
+      !(
+        // Remove income & expense if monthlyAmt is 0 or undefined
+        ((item.category === catIncome || item.category === catExpense) &&
+          (!item.monthlyAmt || item.monthlyAmt === 0))
+
+        // Remove debt if currAmt is 0 or undefined
+        || (item.category === catDebt && (!item.currAmt || item.currAmt === 0))
+
+        // Remove inv if currAmt and monthlyAmt is 0 or undefined
+        // || (item.category === catInv && (!item.currAmt || item.currAmt === 0) && (!item.monthlyAmt || item.monthlyAmt === 0))
+      )
+  );
 }
