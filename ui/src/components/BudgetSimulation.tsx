@@ -99,7 +99,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         // Ensure the updated countryMap is used
         const updatedTableData = generateTableData(formData, data);
         editDataRef.current = updatedTableData;
-        setTableData(updatedTableData);
+        setTableData(editDataRef.current);
         previousCountryRef.current = formData.country;
       } catch (error) {
         console.error("Error fetching country data:", error);
