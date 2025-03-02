@@ -411,8 +411,12 @@ export const BudgetTable = forwardRef(function BudgetTable(
                     hover:bg-blue-500 transition duration-200 focus:outline-none focus:ring focus:ring-blue-400"
           onClick={() => setShowInputs((prev) => !prev)}
         >
-          {showInputs ? "Hide Inputs" : "Show Inputs"}
+          {showInputs ? "Hide Parameters" : "Show Parameters"}
         </button>
+        <div className="flex items-center">
+          <span className="px-2 py-1 text-sm rounded-lg text-gray-400">
+            You can customize the parameters values in the table below for precise control over the simulation. Hover over the info icons to learn more.          </span>
+        </div>
       </div>
   
       <table className="w-full border-collapse text-gray-300 bg-gray-900">
