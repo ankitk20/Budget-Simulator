@@ -415,7 +415,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
         </button>
         <div className="flex items-center">
           <span className="px-2 py-1 text-sm rounded-lg text-gray-400">
-            You can customize the parameters values in the table below for precise control over the simulation. Hover over the info icons to learn more.          </span>
+            You can customize the parameters in the table below for precise control over the simulation. Hover over the info icons to learn more.          </span>
         </div>
       </div>
   
