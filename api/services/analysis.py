@@ -144,7 +144,9 @@ async def analyze_trend(payload: AnalysisModel):
     last_value = df["Debt"].iloc[-1]
 
     # Ensure first non-zero value and last value are from different years
-    if last_idx != first_non_zero_idx and last_value < first_non_zero_value:
+    if last_idx == first_non_zero_idx and last_value == 0:
+        insights["Summary"].append("✅ Your have no debts, which indicates good financial management.")
+    elif last_idx != first_non_zero_idx and last_value < first_non_zero_value:
         insights["Summary"].append("✅ Your debt will decrease, which indicates good financial management.")
     else:
         insights["Summary"].append("⚠️ Your debt will increase. Consider reducing liabilities.")
