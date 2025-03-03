@@ -38,15 +38,6 @@ countryMap: Record<string, number>): TableData[] {
       rateOfIncrement: countryMap["inflRt"],
     },
     {
-      category: catExpense,
-      currAmt: 0,
-      type: "Investment Outflow",
-      monthlyAmt: formData.monthlyInvAmt || 0,
-      stYr: currentYear,
-      numOfYears: formData.retireAge - formData.currentAge,
-      rateOfIncrement: 0,
-    },
-    {
       category: catDebt,
       currAmt: formData.homeLoanAmt || 0,
       type: "Home",
@@ -75,26 +66,6 @@ countryMap: Record<string, number>): TableData[] {
     },
     {
       category: catInv,
-      currAmt: 0,
-      type: "High Risk",
-      monthlyAmt: 0,
-      stYr: currentYear,
-      numOfYears: formData.retireAge - formData.currentAge,
-      rateOfInterest: countryMap["highRiskRtOfRet"],
-      rateOfIncrement: 0,
-    },
-    {
-      category: catInv,
-      currAmt: 0,
-      type: "Moderate Risk",
-      monthlyAmt: 0,
-      stYr: currentYear,
-      numOfYears: formData.retireAge - formData.currentAge,
-      rateOfInterest: countryMap["moderateRiskRtOfRet"],
-      rateOfIncrement: 0,
-    },
-    {
-      category: catInv,
       currAmt: formData.currentAmt || 0,
       type: "Low Risk",
       monthlyAmt: formData.monthlyInvAmt || 0,
@@ -115,10 +86,7 @@ countryMap: Record<string, number>): TableData[] {
     },
     { category: summary, type: typeNetWorth },
     { category: summary, type: typeInflAdjNetWorth },
-    { category: summary, type: typeEatInv },
-    { category: eatRatio, type: typeLowRiskEat },
-    { category: eatRatio, type: typeModRiskEat },
-    { category: eatRatio, type: typeHighRiskEat },
+    { category: summary, type: typeEatInv }
   ].filter(
     (item) =>
       !(

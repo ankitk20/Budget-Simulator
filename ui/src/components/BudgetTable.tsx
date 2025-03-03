@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { TableData } from "@/utils/data";
-import { catInv, defaultSimYr, eatRatio, isInputColumnKeys, summary, typeEatInv } from "@/utils/constant";
+import { defaultSimYr, eatRatio, isInputColumnKeys, summary, typeEatInv } from "@/utils/constant";
 import AddRowButton from "./AddRowButton";
 import DelRowButton from "./DelRowButton";
 import {
@@ -47,8 +47,9 @@ export const BudgetTable = forwardRef(function BudgetTable(
   };
 
   const addRowAt = (index: number) => {
+    const currCat = editDataRef.current[index]["category"];
     const newRow: TableData = {
-      category: editDataRef.current[index]["category"] || "",
+      category: currCat,
       type: "",
       currAmt: 0,
       monthlyAmt: 0,
@@ -85,7 +86,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
         </div>
       ),
       cell: ({ row }: { row: Row<TableData> }) => {
-        const isDisabled = [catInv, summary, eatRatio].includes(row.original.category);
+        const isDisabled = [ summary, eatRatio].includes(row.original.category);
         return (
           <div
             className="relative min-w-[150px]"
@@ -128,7 +129,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
         </div>
       ),
       cell: ({ row }: { row: Row<TableData> }) => {
-        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio || row.original?.category === catInv;
+        const isNonEditableRow = row.original?.category === summary || row.original?.category === eatRatio;
         return (
         <input
           type="text"

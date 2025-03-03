@@ -20,6 +20,8 @@ import Glossary from "./Glossary";
 import flattenJSON from "@/utils/helper";
 import { generateTableData } from "@/utils/generateTableData";
 import { fetchCountryData } from "@/utils/fetchCountryData";
+import { addInvExpenseEntry } from "@/utils/addInvExpenseEntry";
+import { addEatenRatioEntry } from "@/utils/addEatenRatioEntry";
 
 interface BudgetSimulationProps {
   demo?: boolean;
@@ -109,10 +111,18 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     fetchUserInput();
   }, [formData, session]); // Ensure dependencies are correctly listed
   
+  const addInvExpense = async (tableData: TableData[]) => {
+    editDataRef.current = await addInvExpenseEntry(tableData);
+  };
+
+  const addRatioRow = async (tableData: TableData[], eatenRatio: TableData[]) => {
+    editDataRef.current = await addEatenRatioEntry(tableData, eatenRatio);
+  };
 
   const fetchStream = async () => {
     setInputInProgress(false);
     setShowInput(false);
+    await addInvExpense(editDataRef.current);
     setTableData(editDataRef.current);
 
     // Read user inputs only when Simulate button is clicked
@@ -193,7 +203,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
 
       const lines = accumulated.split("\n");
       accumulated = lines.pop() || "";
-      lines.forEach((line) => {
+      lines.forEach(async (line) => {
         if (line.trim()) {
           try {
             const columnData = JSON.parse(line);
@@ -246,19 +256,23 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
             Object.assign(financialDataRef.current, { country: formData.country });
 
             ribbonChartDataRef.current.push(ribbonEntry);
-            setTableData((prevData) =>
-              prevData.map((row) => {
-                const categoryKey = row.category;
-                const typeKey = row.type;
-                if (yearData[categoryKey] && yearData[categoryKey][typeKey] !== undefined) {
-                  return {
-                    ...row,
-                    [year]: yearData[categoryKey][typeKey],
-                  };
-                }
-                return row;
-              })
-            );
+
+            // Add ratio rows dynamically based on eaten investments
+            await addRatioRow(editDataRef.current, yearData[eatRatio]);
+
+            editDataRef.current = editDataRef.current.map((row) => {
+              const categoryKey = row.category;
+              const typeKey = row.type;
+              if (yearData[categoryKey] && yearData[categoryKey][typeKey] !== undefined) {
+                return {
+                  ...row,
+                  [year]: yearData[categoryKey][typeKey], // ✅ Update the row with the latest `yearData`
+                };
+              }
+              return row;
+            });
+
+            setTableData(editDataRef.current);
 
             // Flatten and store the simulation data
             simulationDataRef.current.push(flattenJSON(year, yearData));

@@ -9,7 +9,7 @@ async def simulate_years(data: SimulationInput):
     inflRate = country_glossary["inflRt"]
 
     # Initialize investment corpus
-    investment_corpus = {key: value["currAmt"] for key, value in data["Investment"].items()}
+    investment_corpus = {key: value["currAmt"] for key, value in (data.get("Investment").items() or {})}
     
     yearly_data = {
         "Income": {k: 0 for k in (data.get("Income") or {})},  # Handle None by defaulting to {}
@@ -21,15 +21,11 @@ async def simulate_years(data: SimulationInput):
             "Net Worth": 0,
             "Infl Adj Net Worth": 0
         },
-        "Eaten Ratio": {
-            "High Risk Eaten": 0.00,
-            "Moderate Risk Eaten": 0.00,
-            "Low Risk Eat": 0.00
-        }
+        "Eaten Ratio": {}
     }
     for year in range(start_year, start_year + sim_years):
-        ntWrth = 0
-        inflAdjNtWrth = 0
+        net_worth = 0
+        infl_adj_net_worth = 0
         eaten_inv = 0
         total_income = 0
         total_inv = 0
@@ -116,52 +112,47 @@ async def simulate_years(data: SimulationInput):
 
         bal = int(total_income - total_debt - total_expense)
         init_bal = int(abs(bal))
-        low_ratio = 0
-        moderate_ratio = 0
-        high_ratio = 0
 
         if bal >= 0:
             yearly_data["Investment"]["Savings"] += bal
         else:
             eaten_inv = init_bal
 
-            lowRiskCurrAmt = yearly_data["Investment"]["Low Risk"]
-            moderateRiskCurrAmt = yearly_data["Investment"]["Moderate Risk"]
-            highRiskCurrAmt = yearly_data["Investment"]["High Risk"]
+            # Sort investment categories by interest rate (ascending, lowest first)
+            sorted_investments = sorted(
+                data["Investment"].items(),
+                key=lambda x: x[1]["rateOfInt"]  # Sort by interest rate
+            )
+            ratios = {}  # Store the withdrawal ratio for each investment category
 
-            if bal < 0 and abs(bal) <= lowRiskCurrAmt:
-                low_ratio = 1.00
-                yearly_data["Investment"]["Low Risk"] += bal
-                bal = 0
-            else:
-                low_ratio = yearly_data["Investment"]["Low Risk"] / init_bal
-                bal += yearly_data["Investment"]["Low Risk"]
-                yearly_data["Investment"]["Low Risk"] = 0
+            # Iterate over sorted investments and withdraw from the lowest interest first
+            for inv in sorted_investments:
+                inv_type = inv[0]
 
-            if bal < 0 and abs(bal) <= moderateRiskCurrAmt:
-                moderate_ratio = 1 - low_ratio
-                yearly_data["Investment"]["Moderate Risk"] += bal
-                bal = 0
-            elif bal != 0:
-                moderate_ratio = yearly_data["Investment"]["Moderate Risk"] / init_bal
-                bal += yearly_data["Investment"]["Moderate Risk"]
-                yearly_data["Investment"]["Moderate Risk"] = 0
+                # if (inv_type == "Savings"): # For now, don't withdraw from savings
+                #     continue
 
-            if bal < 0 and abs(bal) <= highRiskCurrAmt:
-                high_ratio = 1 - moderate_ratio - low_ratio
-                yearly_data["Investment"]["High Risk"] += bal
-                bal = 0
-            elif bal != 0:
-                high_ratio = yearly_data["Investment"]["High Risk"] / init_bal
-                bal += yearly_data["Investment"]["High Risk"]
-                yearly_data["Investment"]["High Risk"] = 0
+                curr_amt = yearly_data["Investment"][inv_type]
 
-        ntWrth = int(total_income + total_inv - total_debt - total_expense - init_bal)
-        inflAdjNtWrth = int(ntWrth/((1+(inflRate/100))**(year-start_year)))
+                if abs(bal) <= curr_amt:
+                    ratios[inv_type] = round(1.00 - sum(ratios.values()), 2)  # Remaining ratio
+                    yearly_data["Investment"][inv_type] += bal
+                    bal = 0  # Deficit covered, exit loop
+                    break
+                else:
+                    ratios[inv_type] = round(curr_amt / init_bal, 2)
+                    bal += curr_amt
+                    yearly_data["Investment"][inv_type] = 0  # Exhaust this investment first
 
-        summary = {"Eaten Investment": eaten_inv, "Net Worth": ntWrth, "Infl Adj Net Worth": inflAdjNtWrth}
-        ratio = {"High Risk Eaten": round(high_ratio, 2), "Moderate Risk Eaten": round(moderate_ratio, 2), "Low Risk Eaten": round(low_ratio, 2)}
+            yearly_data["Eaten Ratio"] = ratios
+
+        # If bal < 0 then say broke
+
+        # net_worth = int(total_income + total_inv + bal - total_debt - total_expense - init_bal)
+        net_worth = int(sum(yearly_data.get("Investment").values()))
+        infl_adj_net_worth = int(net_worth/((1+(inflRate/100))**(year-start_year)))
+
+        summary = {"Eaten Investment": eaten_inv, "Net Worth": net_worth, "Infl Adj Net Worth": infl_adj_net_worth}
         yearly_data["Summary"] = summary
-        yearly_data["Eaten Ratio"] = ratio
 
         yield {str(year): yearly_data }
