@@ -320,7 +320,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
               )
             }
             <Button 
-              label={"View Glossary"} 
+              label={"View Assumptions"} 
               onClick={() => {
                 setGlossaryOpen(true); // Call the simulation function
               }}
@@ -364,7 +364,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
                   loading={loading}
                   className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
               <Button 
-                label={"View Glossary"} 
+                label={"View Assumptions"} 
                 onClick={() => {
                   setGlossaryOpen(true); // Call the simulation function
                 }}
