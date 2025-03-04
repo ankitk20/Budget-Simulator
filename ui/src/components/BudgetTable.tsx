@@ -136,7 +136,10 @@ export const BudgetTable = forwardRef(function BudgetTable(
           defaultValue={editDataRef.current[row.index]?.type || ""}
           onChange={(e) => updateCell(row.index, "type", e.target.value)}
           onFocus={(e) => e.target.select()}
-          className="text-inherit bg-transparent border-none outline-none w-full min-w-[200px]"
+          className={`text-inherit bg-transparent border border-gray-500 w-full min-w-[200px] 
+           rounded-md px-2 py-1 outline-none 
+           hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400
+           ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
           readOnly={isNonEditableRow}
         />
       );
@@ -182,7 +185,11 @@ export const BudgetTable = forwardRef(function BudgetTable(
               updateCell(row.index, "currAmt", numericValue);
             }}
             onFocus={(e) => e.target.select()}
-            className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+            className={`appearance-none text-inherit bg-transparent w-full 
+              rounded-md px-2 py-1 outline-none 
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
@@ -228,7 +235,11 @@ export const BudgetTable = forwardRef(function BudgetTable(
               updateCell(row.index, "monthlyAmt", numericValue);
             }}
             onFocus={(e) => e.target.select()}
-            className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none text-inherit bg-transparent border-none outline-none w-full"
+            className={`appearance-none text-inherit bg-transparent border border-gray-500 w-full 
+              rounded-md px-2 py-1 outline-none 
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
@@ -259,7 +270,12 @@ export const BudgetTable = forwardRef(function BudgetTable(
             defaultValue={editDataRef.current[row.index]?.stYr || ""}
             onChange={(e) => updateCell(row.index, "stYr", Number(e.target.value))}
             onFocus={(e) => e.target.select()}
-            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className={`appearance-none text-inherit bg-transparent border border-gray-500 w-full 
+              rounded-md px-2 py-1 outline-none transition-all
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400
+              dark:border-gray-600 dark:hover:border-blue-300 dark:focus:border-blue-400 dark:focus:ring-blue-300
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
@@ -289,8 +305,13 @@ export const BudgetTable = forwardRef(function BudgetTable(
             type="number"
             defaultValue={editDataRef.current[row.index]?.numOfYears || ""}
             onChange={(e) => updateCell(row.index, "numOfYears", Number(e.target.value))}
-            onFocus={(e) => e.target.select()}
-            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            onFocus={(e) => e.target.select()} // Selects text on focus for better editing experience
+            className={`appearance-none text-inherit bg-transparent border border-gray-500 w-full 
+              rounded-md px-2 py-1 outline-none transition-all
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400
+              dark:border-gray-600 dark:hover:border-blue-300 dark:focus:border-blue-400 dark:focus:ring-blue-300
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
@@ -320,7 +341,12 @@ export const BudgetTable = forwardRef(function BudgetTable(
             type="number"
             defaultValue={editDataRef.current[row.index]?.rateOfInterest || ""}
             onChange={(e) => updateCell(row.index, "rateOfInterest", Number(e.target.value))}
-            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className={`appearance-none text-inherit bg-transparent border border-gray-500 w-full 
+              rounded-md px-2 py-1 outline-none transition-all
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400
+              dark:border-gray-600 dark:hover:border-blue-300 dark:focus:border-blue-400 dark:focus:ring-blue-300
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
@@ -350,7 +376,12 @@ export const BudgetTable = forwardRef(function BudgetTable(
             type="number"
             defaultValue={editDataRef.current[row.index]?.rateOfIncrement || ""}
             onChange={(e) => updateCell(row.index, "rateOfIncrement", Number(e.target.value))}
-            className="text-inherit bg-transparent border-none outline-none w-full appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className={`appearance-none text-inherit bg-transparent border border-gray-500 w-full 
+              rounded-md px-2 py-1 outline-none transition-all
+              hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 
+              dark:border-gray-600 dark:hover:border-blue-400 dark:focus:border-blue-500 dark:focus:ring-blue-400
+              [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none
+              ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
             readOnly={isNonEditableRow}
           />
         );
