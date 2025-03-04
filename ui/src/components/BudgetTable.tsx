@@ -139,7 +139,7 @@ export const BudgetTable = forwardRef(function BudgetTable(
           className={`text-inherit bg-transparent border border-gray-500 w-full min-w-[200px] 
            rounded-md px-2 py-1 outline-none 
            hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-400
-           ${isNonEditableRow ? "border-none cursor-not-allowed opacity-50" : "border-gray-500"}`}
+           ${isNonEditableRow ? "border-none cursor-not-allowed" : "border-gray-500"}`}
           readOnly={isNonEditableRow}
         />
       );
