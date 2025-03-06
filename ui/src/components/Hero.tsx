@@ -14,12 +14,15 @@ export default function Hero() {
 
   const handleStartSimulating = async () => {
     setLoading(true);
-    if (session) {
+
+    const isSessionValid = session?.expires ? new Date(session.expires).getTime() > Date.now() : false;
+
+    if (session && isSessionValid) {
       router.push("/simulate");
+      setLoading(false);
     } else {
       await signIn("google", { callbackUrl: "/simulate" });
     }
-    setLoading(false);
   };
 
   return (
