@@ -114,7 +114,7 @@ async def analyze_trend(payload: AnalysisModel):
     if income_cagr > expense_cagr and income_expense_ratio >= 1:
         insights["Summary"].append(
             # f"✅ Your income is growing at {income_cagr:.2%} per year, faster than your expenses ({expense_cagr:.2%}). "
-            f"Your income-to-expense ratio is {income_expense_ratio:.2f}, indicating a good financial balance."
+            f"✅ Your income-to-expense ratio is {income_expense_ratio:.2f}, indicating a good financial balance."
         )
     elif income_cagr > expense_cagr and income_expense_ratio < 1:
         insights["Summary"].append(

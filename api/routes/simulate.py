@@ -146,7 +146,7 @@ async def simulate_financials(request: Request, payload: SimulationInput) -> Str
                     "symbol": await get_country_data(parsed_payload["country"], "symbol"),
                 })
                 yield json.dumps(result) + "\n"
-                await asyncio.sleep(0.1)
+                # await asyncio.sleep(0.1)
 
         return StreamingResponse(result_generator(), media_type="application/json")
 
