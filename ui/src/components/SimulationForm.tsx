@@ -33,14 +33,14 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
 
   return (
     <div className="mb-6 p-6 bg-gray-900 rounded-xl shadow-lg border border-gray-800">
-      <h2 className="text-xl font-semibold text-gray-300 mb-4">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-300 mb-4 text-center">
         Start Your Financial Plan
       </h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
         {/* Country Selector */}
-        <div>
-          <label className="block text-gray-400 text-sm mb-2">Country</label>
+        <div className="col-span-1">
+          <label className="block text-gray-400 text-sm mb-1">Country</label>
           <select
             className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
             value={country}
@@ -65,11 +65,11 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
           { label: "Vehicle Loan Amount", field: "vehLoanAmt", value: vehLoanAmt },
           { label: "Education Loan Amount", field: "eduLoanAmt", value: eduLoanAmt },
         ].map(({ label, field, value }) => (
-          <div key={field}>
-            <label className="block text-gray-400 text-sm mb-2">{label}</label>
+          <div key={field} className="col-span-1">
+            <label className="block text-gray-400 text-sm mb-1">{label}</label>
             <input
               type="text"
-              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500 text-base"
               value={formatCurrency(value)}
               onChange={(e) => {
                 const rawValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
@@ -79,18 +79,18 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
             />
           </div>
         ))}
-
+  
         {/* Age Inputs */}
         {[
           { label: "Current Age", field: "currentAge", value: currentAge },
           { label: "Expected Life Age", field: "lifeExpectancy", value: lifeExpectancy },
           { label: "Target Retirement Age", field: "retireAge", value: retireAge },
         ].map(({ label, field, value }) => (
-          <div key={field}>
-            <label className="block text-gray-400 text-sm mb-2">{label}</label>
+          <div key={field} className="col-span-1">
+            <label className="block text-gray-400 text-sm mb-1">{label}</label>
             <input
               type="number"
-              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500 text-base"
               value={value}
               min={1}
               max={120}
