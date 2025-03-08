@@ -109,7 +109,7 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
     }
   
     fetchUserInput();
-  }, [formData, session]); // Ensure dependencies are correctly listed
+  }, [formData.country, session]); // Ensure dependencies are correctly listed
   
   const addInvExpense = async (tableData: TableData[]) => {
     editDataRef.current = await addInvExpenseEntry(tableData);
