@@ -298,20 +298,22 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
         </>
       )}
 
-      <div className="flex items-center my-2 relative w-full">
-        {/* Always show "Run Simulation" button */}
-        <div className="flex space-x-4">
+      <div ref={simTableRef} className="flex flex-wrap items-center my-2 relative w-full gap-2">
+        {/* Button Container */}
+        <div className="flex flex-col sm:flex-row items-center gap-2">
+          {/* "Run Simulation" Button */}
           <Button 
             label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
             onClick={() => {
-              fetchStream(); // Call the simulation function
-              hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
+              fetchStream();
+              hideInputBtnRef.current?.hideInput();
             }} 
             loading={loading}
             className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200"
-          />        
-            {/* Show "View Insights" button only if simulation is complete */}
-            { !inputInProgress && (
+          />
+
+          {/* Show "View Insights" button only if simulation is complete */}
+          { !inputInProgress && (
               <Button
                 label="View Simulation Table"
                 onClick={scrollToSimTable}
@@ -319,15 +321,16 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
                 className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
               )
             }
-            <Button 
-              label={"View Assumptions"} 
-              onClick={() => {
-                setGlossaryOpen(true); // Call the simulation function
-              }}
-              className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 absolute right-0"
-            />
+
+          {/* "View Assumptions" (Always stays in the right corner) */}
+          <Button 
+            label="View Assumptions" 
+            onClick={() => setGlossaryOpen(true)}
+            className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 absolute right-0"
+          />
         </div>
       </div>
+
 
         {/* Show Analysis only if simulation is complete */}
       { !inputInProgress && !loading && financialDataRef.current.simYr !== 0 && (
@@ -345,29 +348,32 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
             <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
           </div>
 
-          <div ref={simTableRef} className="flex items-center my-2 relative w-full">
-            {/* Always show "Run Simulation" button */}
-            <div className="flex space-x-4">
+          <div ref={simTableRef} className="flex flex-wrap items-center my-2 relative w-full gap-2">
+            {/* Button Container */}
+            <div className="flex flex-col sm:flex-row items-center gap-2">
+              {/* "Run Simulation" Button */}
               <Button 
                 label={loading ? "Simulating..." : demo ? "Run Demo Simulation" : "Run Simulation"} 
                 onClick={() => {
-                  fetchStream(); // Call the simulation function
-                  hideInputBtnRef.current?.hideInput(); // Hide inputs if the ref exists
+                  fetchStream();
+                  hideInputBtnRef.current?.hideInput();
                 }} 
                 loading={loading}
                 className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200"
-              />        
-              {/* Show "View Insights" button */}
-                <Button
-                  label="View Summary"
-                  onClick={scrollToInsights}
-                  loading={loading}
-                  className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 " />
+              />
+
+              {/* "View Summary" Button (Moves below on mobile) */}
+              <Button
+                label="View Summary"
+                onClick={scrollToInsights}
+                loading={loading}
+                className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 flex-1"
+              />
+
+              {/* "View Assumptions" (Always stays in the right corner) */}
               <Button 
-                label={"View Assumptions"} 
-                onClick={() => {
-                  setGlossaryOpen(true); // Call the simulation function
-                }}
+                label="View Assumptions" 
+                onClick={() => setGlossaryOpen(true)}
                 className="text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 bg-gray-700 text-gray-200 absolute right-0"
               />
             </div>
