@@ -338,16 +338,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
           <div ref={insightsRef} className="mb-8">
             <FinancialAnalysis simulationSummaryRef={financialDataRef} />
           </div>
-          <div className="mb-8">
-            <YearlyLineChart data={lineChartData.data} />
-          </div>
-          <div className="mb-8">
-            <YearlyRibbonChart data={ribbonChartData} />
-          </div>
-          <div className="mb-8">
-            <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
-          </div>
-
           <div ref={simTableRef} className="flex flex-wrap items-center my-2 relative w-full gap-2">
             {/* Button Container */}
             <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -378,7 +368,6 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
               />
             </div>
           </div>
-
           <div className="mb-8">
             <BudgetTable
               ref={hideInputBtnRef}
@@ -390,6 +379,15 @@ export default function BudgetSimulation({ demo = true }: BudgetSimulationProps)
               showInput={showInput}
               demo={demo}
             />
+          </div>
+          <div className="mb-8">
+            <YearlyLineChart data={lineChartData.data} />
+          </div>
+          <div className="mb-8">
+            <YearlyRibbonChart data={ribbonChartData} />
+          </div>
+          <div className="mb-8">
+            <StackedBarChart data={ribbonChartDataRef.current} categories={[...categoriesRef.current]} />
           </div>
         </>
       )}
