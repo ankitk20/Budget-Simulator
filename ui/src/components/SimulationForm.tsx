@@ -40,8 +40,9 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
 
         {/* Country Selector */}
         <div className="col-span-1">
-          <label className="block text-gray-400 text-sm mb-1">Country</label>
+          <label htmlFor="country" className="block text-gray-400 text-sm mb-1">Country</label>
           <select
+            id="country"
             className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500"
             value={country}
             onChange={(e) => onChange("country", e.target.value)}
@@ -66,8 +67,9 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
           { label: "Education Loan Amount", field: "eduLoanAmt", value: eduLoanAmt },
         ].map(({ label, field, value }) => (
           <div key={field} className="col-span-1">
-            <label className="block text-gray-400 text-sm mb-1">{label}</label>
+            <label htmlFor={field} className="block text-gray-400 text-sm mb-1">{label}</label>
             <input
+              id={field}
               type="text"
               className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500 text-base"
               value={formatCurrency(value)}
@@ -87,8 +89,9 @@ const SimulationForm: React.FC<SimulationFormProps> = ({ formData, onChange }) =
           { label: "Target Retirement Age", field: "retireAge", value: retireAge },
         ].map(({ label, field, value }) => (
           <div key={field} className="col-span-1">
-            <label className="block text-gray-400 text-sm mb-1">{label}</label>
+            <label htmlFor={field} className="block text-gray-400 text-sm mb-1">{label}</label>
             <input
+              id={field}
               type="number"
               className="w-full p-3 rounded-lg bg-gray-800 text-gray-200 border border-gray-700 focus:ring-2 focus:ring-blue-500 text-base"
               value={value}
