@@ -50,7 +50,7 @@ export default function FinancialAnalysis({ simulationSummaryRef }: { simulation
   }
 
   return (
-    <section className="w-full min-h-screen py-1 bg-gray-900 text-white">
+    <section className="w-full py-16 bg-gray-900 text-white rounded-xl shadow-lg border border-gray-800">
       <div className="container mx-auto max-w-6xl px-6">
         {/* Summary Section */}
         <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📝 Summary</h3>
@@ -68,7 +68,7 @@ export default function FinancialAnalysis({ simulationSummaryRef }: { simulation
         </ul>
 
         {/* Trend Section */}
-        <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📊 Financial Trend</h3>
+        {/* <h3 className="text-3xl font-semibold mt-16 mb-6 text-center">📊 Financial Trend</h3>
         <div className="grid grid-cols-1 mb-16 md:grid-cols-2 gap-6">
           {data.Trend?.map((item, index) => {
             const isPositive = item.includes("🔼");
@@ -87,7 +87,7 @@ export default function FinancialAnalysis({ simulationSummaryRef }: { simulation
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </section>
   );
