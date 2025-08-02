@@ -75,7 +75,7 @@ Contributions are welcome! To contribute:
 
 ## License
 
-This project is licensed under the [MIT License]([LICENSE](https://github.com/ankitk20/Budget-Simulator/blob/main/LICENSE)).
+This project is licensed under the [MIT License](https://github.com/ankitk20/Budget-Simulator/blob/main/LICENSE).
 
 ## Contact
 
